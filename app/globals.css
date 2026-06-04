@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-green: #00a651;
+  --color-brand-teal: #00b5e2;
+  --color-brand-navy: #003087;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+
+  ::selection {
+    @apply bg-brand-teal/30 text-brand-navy;
+  }
+}
+
+/* Hero mesh background */
+.hero-bg {
+  background-color: var(--color-brand-navy);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(0, 181, 226, 0.35), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(0, 166, 81, 0.3), transparent),
+    radial-gradient(ellipse 50% 40% at 60% 80%, rgba(0, 48, 135, 0.5), transparent),
+    linear-gradient(160deg, #001a4d 0%, #003087 45%, #002060 100%);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+.glass {
+  @apply border border-white/10 bg-white/10 backdrop-blur-xl;
+}
+
+.glass-light {
+  @apply border border-white/20 bg-white/80 backdrop-blur-xl shadow-lg shadow-brand-navy/5;
+}
+
+.card-glow {
+  @apply transition-all duration-500;
+}
+
+.card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(0, 181, 226, 0.15),
+    0 20px 40px -12px rgba(0, 48, 135, 0.15);
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-brand-green via-brand-teal to-brand-teal bg-clip-text text-transparent;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-green px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-green/25 transition hover:bg-brand-green/90 hover:shadow-brand-green/40;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/50 hover:bg-white/10;
+}
+
+.section-padding {
+  @apply py-24 lg:py-32;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
