@@ -1,0 +1,39 @@
+{
+  "name": "Neuroflex Kenya - Physio & Wellness",
+  "short_name": "Neuroflex",
+  "description": "Expert neurological rehabilitation and physiotherapy services in Nairobi. Stroke recovery, pediatric care, and wellness programs.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#001a4d",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/assets/logos/logo2.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logos/logo2.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logos/logo2.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["medical", "health"],
+  "screenshots": [
+    {
+      "src": "/assets/logos/logo2.jpeg",
+      "sizes": "540x720",
+      "type": "image/jpeg"
+    }
+  ]
+}

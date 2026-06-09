@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FloatingBookingWidget from "@/components/FloatingBookingWidget";
+import ManifestLink from "@/components/ManifestLink";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -26,6 +28,9 @@ export const metadata: Metadata = {
       "Recover. Move. Thrive. Advanced rehabilitation and compassionate care in Nairobi.",
     type: "website",
   },
+  other: {
+    "manifest": "/manifest.json",
+  },
 };
 
 export default function RootLayout({
@@ -36,9 +41,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
+        <ManifestLink />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <FloatingBookingWidget />
         <Toaster position="top-center" />
       </body>
     </html>

@@ -14,7 +14,7 @@ export default function Team() {
           subtitle="A multidisciplinary team dedicated to guiding you through every step of your recovery."
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {team.map((member, index) => (
             <MotionReveal key={member.name} delay={index * 0.08}>
               <div className="group card-glow h-full overflow-hidden rounded-3xl border border-gray-100 bg-white">

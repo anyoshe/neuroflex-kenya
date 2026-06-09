@@ -65,10 +65,27 @@ export default function Contact() {
     }
 
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setForm(initialForm);
-    toast.success("Appointment request sent! We'll contact you shortly.");
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      setForm(initialForm);
+      toast.success("Appointment request sent! We'll contact you shortly.");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Failed to send request. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputClass =

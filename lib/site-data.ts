@@ -1,9 +1,11 @@
 import {
   Baby,
   Brain,
+  Droplets,
   Heart,
   UserCog,
   Users,
+  Wind,
   Zap,
   type LucideIcon,
 } from "lucide-react";
@@ -60,6 +62,16 @@ export const services: {
     title: "Wellness & Fitness",
     desc: "Corporate wellness, fitness training, and pain management.",
   },
+  {
+    icon: Droplets,
+    title: "Lymphatic Drainage",
+    desc: "Highly effective for reducing swelling (lymphedema) and aiding immune function.",
+  },
+  {
+    icon: Wind,
+    title: "Carminative Management",
+    desc: "Comprehensive assessment and management of flatulence and gastric discomfort.",
+  },
 ];
 
 export const processSteps = [
@@ -93,22 +105,16 @@ export const team = [
     initials: "DM",
   },
   {
-    name: "Dr. Sarah Wanjiku",
-    role: "Senior Physiotherapist",
-    bio: "Expert in stroke recovery and musculoskeletal therapy with patient-centered care.",
-    initials: "SW",
+    name: "John Ruben Kyui",
+    role: "Senior Lecturer Specialist, Orthopedics",
+    bio: "Expert clinician specializing in orthopedic rehabilitation and musculoskeletal injury recovery.",
+    initials: "JK",
   },
   {
-    name: "James Ochieng",
-    role: "Pediatric Specialist",
-    bio: "Dedicated to developmental therapy for children with neurological conditions.",
-    initials: "JO",
-  },
-  {
-    name: "Grace Muthoni",
-    role: "Wellness Coordinator",
-    bio: "Designs holistic wellness programs and guides patients through their recovery journey.",
-    initials: "GM",
+    name: "Sharon Jepng'etich",
+    role: "Neuro Rehabilitation Therapist, Geriatrics Specialist",
+    bio: "Dedicated to comprehensive neuro-rehabilitation care and geriatric patient management.",
+    initials: "SJ",
   },
 ] as const;
 
