@@ -1,39 +1,40 @@
 {
-  "name": "Neuroflex Kenya - Physio & Wellness",
+  "name": "Neuroflex Kenya - Physio & Wellness Centre",
   "short_name": "Neuroflex",
-  "description": "Expert neurological rehabilitation and physiotherapy services in Nairobi. Stroke recovery, pediatric care, and wellness programs.",
+  "description": "Expert neurological rehabilitation and physiotherapy in Nairobi. Stroke recovery, pediatric care, and wellness programs by NRPT Dennis Masaki.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#001a4d",
   "background_color": "#ffffff",
+  "categories": ["health", "medical", "fitness"],
   "icons": [
     {
-      "src": "/assets/logos/logo2.jpeg",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/logos/logo2.jpeg",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/logos/logo2.jpeg",
-      "sizes": "192x192",
-      "type": "image/jpeg",
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "categories": ["medical", "health"],
   "screenshots": [
     {
       "src": "/assets/logos/logo2.jpeg",
       "sizes": "540x720",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     }
   ]
 }

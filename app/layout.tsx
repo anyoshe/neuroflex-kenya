@@ -18,18 +18,33 @@ export const metadata: Metadata = {
     "neurological rehabilitation Kenya",
     "stroke recovery",
     "Neuroflex Kenya",
+    "physical therapy",
   ],
+  authors: [{ name: "NRPT Dennis Masaki" }],
   icons: {
-    icon: "/assets/logos/logo2.jpeg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/icons/icon-192x192.png",           // For iOS
+    shortcut: "/favicon.ico",
   },
+  manifest: "/manifest.json",                   // Important for PWA
   openGraph: {
     title: "Neuroflex Kenya | Physio & Wellness Centre",
     description:
       "Recover. Move. Thrive. Advanced rehabilitation and compassionate care in Nairobi.",
+    images: [
+      {
+        url: "/assets/logos/logo2.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Neuroflex Kenya Logo",
+      },
+    ],
+    siteName: "Neuroflex Kenya",
     type: "website",
-  },
-  other: {
-    "manifest": "/manifest.json",
   },
 };
 
