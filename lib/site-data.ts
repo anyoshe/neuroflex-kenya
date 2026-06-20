@@ -143,7 +143,7 @@ export const contactInfo = {
   phone: "+254 729 213 135",
   phoneHref: "tel:+254729213135",
   location: "Nairobi, Kenya",
-  hours: "Mon – Sat: 8:00 AM – 6:00 PM",
+  hours: "Mon – Sun: 8:00 AM – 9:00 PM",
   email: "info@neuroflexkenya.com",
   emailHref: "mailto:info@neuroflexkenya.com",
 } as const;
