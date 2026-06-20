@@ -28,46 +28,6 @@ export default function ReportBuilder() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // const saveToDatabase = async () => {
-  //   if (!formData.patientName) {
-  //     setMessage({ type: "error", text: "Patient name is required" });
-  //     return;
-  //   }
-
-  //   setSaving(true);
-  //   setMessage(null);
-
-  //   const dataToSave = {
-  //     reportNo: formData.reportNo,
-  //     patientName: formData.patientName,
-  //     age: formData.age,
-  //     sex: formData.sex,
-  //     residence: formData.residence,
-  //     tel: formData.tel,
-  //     reportingDate: formData.reportingDate,
-  //     nextOfKin: formData.nextOfKin,
-  //     presentingHistory: formData.presentingHistory,
-  //     assessmentFindings: formData.assessmentFindings,
-  //     intervention: formData.intervention,
-  //     review: formData.review,
-  //   };
-
-  //   const result = await saveReport(dataToSave);
-
-  //   if (result.success) {
-  //     setMessage({
-  //       type: "success",
-  //       text: result.warning || "✅ Report saved successfully!",
-  //     });
-  //   } else {
-  //     setMessage({ 
-  //       type: "error", 
-  //       text: `Could not save to database: ${result.error}` 
-  //     });
-  //   }
-
-  //   setSaving(false);
-  // };
     const saveToDatabase = async () => {
     if (!formData.patientName) {
       setMessage({ type: "error", text: "Patient name is required" });
