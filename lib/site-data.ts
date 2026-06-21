@@ -142,7 +142,7 @@ export const testimonials = [
 export const contactInfo = {
   phone: "+254 729 213 135",
   phoneHref: "tel:+254729213135",
-  location: "Nairobi, Kenya",
+  location: "Fedha Road, 300m off Outering Road, Embakasi, Nairobi, Kenya.",
   hours: "Mon – Sun: 8:00 AM – 9:00 PM",
   email: "info@neuroflexkenya.com",
   emailHref: "mailto:info@neuroflexkenya.com",
