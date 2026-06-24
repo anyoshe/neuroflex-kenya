@@ -1,0 +1,68 @@
+export default function SchemaMarkup() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": "Neuroflex Kenya | Physio & Wellness Centre",
+    "image": "https://www.neuroflexkenya.com/assets/logos/logo2.jpeg",
+    "@id": "https://www.neuroflexkenya.com/#clinic",
+    "url": "https://www.neuroflexkenya.com",
+    "telephone": "+254729213135",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Nairobi, Kenya", 
+      "addressLocality": "Nairobi",
+      "addressRegion": "Nairobi County",
+      "postalCode": "00100",
+      "addressCountry": "KE"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "08:00",
+        "closes": "21:00"
+      }
+    ],
+    "medicalSpecialty": ["NeurologicalRehabilitation", "Physiotherapy"],
+    "employee": {
+      "@type": "MedicalOrganization",
+      "name": "NRPT Dennis Masaki",
+      "jobTitle": "Lead Physiotherapist"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Neuroflex Therapy Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "MedicalTherapy",
+            "name": "Stroke & Neurological Rehabilitation"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "MedicalTherapy",
+            "name": "Pediatric Physical Therapy"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "MedicalTherapy",
+            "name": "Pain Management & Sports Injury Rehab"
+          }
+        }
+      ]
+    }
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}

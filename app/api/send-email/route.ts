@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
       age, 
       sex, 
       phone, 
+      residence, // Extracted residence field
       email, 
       service, 
       conditionCause, 
@@ -17,18 +18,20 @@ export async function POST(request: NextRequest) {
       message 
     } = body;
 
-    // Validation
-    if (!name || !age || !sex || !phone || !service || !conditionCause || !preferredDate) {
+    // Validation - Added residence to the mandatory check
+    if (!name || !age || !sex || !phone || !residence || !service || !conditionCause || !preferredDate) {
       return NextResponse.json({ 
         error: "Missing required fields. Please fill all mandatory fields." 
       }, { status: 400 });
     }
 
+    // Pass the residence variable forward into your email handler
     await sendBookingEmails({
       name,
       age,
       sex,
       phone,
+      residence,
       email: email || "",
       service,
       conditionCause,

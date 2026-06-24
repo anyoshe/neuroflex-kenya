@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image"; // Added Next.js Image import
 import { Send, X, Mail, MessageCircle, Calendar } from "lucide-react";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -11,6 +12,7 @@ const formSchema = z.object({
   age: z.string().min(1, "Age is required"),
   sex: z.enum(["Male", "Female", "Other"]),
   phone: z.string().min(10, "Valid phone number is required"),
+  residence: z.string().min(2, "Residence / Location is required"),
   email: z.string().email("Please enter a valid email").optional().or(z.literal("")),
   service: z.string().min(1, "Please select a service"),
   conditionCause: z.string().min(10, "Please describe the condition or reason for visit"),
@@ -35,6 +37,7 @@ const initialForm: FormData = {
   age: "",
   sex: "Male",
   phone: "",
+  residence: "",
   email: "",
   service: "",
   conditionCause: "",
@@ -88,13 +91,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         if (!response.ok) throw new Error(data.error || "Failed to send email");
 
         toast.success("Appointment request sent successfully!");
-      } else {
+     } else {
         const whatsappNumber = "254729213135";
         const whatsappMessage = 
-          `*🔔 NEW APPOINTMENT REQUEST - NEUROFLEX KENYA*%0A%0A` +
+          `*🟢 NEUROFLEX AND PHYSIO WELLNESS CENTER 🟢*%0A%0A` + // Uses bolding + green indicators for visual styling
           `👤 *Patient Name:* ${encodeURIComponent(form.name)}%0A` +
           `🎂 *Age:* ${form.age}    |    *Sex:* ${form.sex}%0A` +
           `📞 *Phone:* ${encodeURIComponent(form.phone)}%0A` +
+          `📍 *Residence:* ${encodeURIComponent(form.residence)}%0A` +
           `✉️ *Email:* ${encodeURIComponent(form.email || "Not provided")}%0A` +
           `🛠️ *Service:* ${encodeURIComponent(form.service)}%0A` +
           `📅 *Preferred Date:* ${form.preferredDate}%0A%0A` +
@@ -106,7 +110,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, "_blank");
         toast.success("Opening WhatsApp...");
       }
-
       setForm(initialForm);
       onClose();
     } catch (error) {
@@ -124,14 +127,23 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 overflow-hidden">
       <MotionReveal>
         <div className="relative w-full max-w-lg md:max-w-2xl max-h-[94vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-          
-          <div className="flex items-center justify-between border-b px-6 py-5">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900">Book Appointment</h3>
-              <p className="text-sm text-gray-500">Please provide details for better assessment</p>
+          {/* Responsive header section with reduced height on small screens */}
+          <div className="flex items-center justify-between border-b px-4 py-1.5 sm:px-6 sm:py-2">
+            <div className="flex-1 pr-2 sm:pr-4">
+              <div className="overflow-hidden rounded-xl border border-gray-100 bg-white p-1 sm:p-2">
+                <Image
+                  src="/assets/logos/logo1-transparent.png"
+                  alt="Neuroflex and Physio Wellness Centre"
+                  width={640}
+                  height={210}
+                  className="h-14 w-full object-contain sm:h-20" // h-14 on mobile, scales up to h-20 on larger screens
+                  priority
+                />
+              </div>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-2">
-              <X size={28} />
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-1.5 sm:p-2 self-center">
+              <X size={22} className="sm:hidden" />
+              <X size={24} className="hidden sm:block" />
             </button>
           </div>
 
@@ -165,7 +177,18 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
                 </div>
 
-                {/* Email Field Added Back */}
+                <div className="sm:col-span-2">
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Residence / Location <span className="text-red-500">*</span></label>
+                  <input 
+                    name="residence" 
+                    value={form.residence} 
+                    onChange={handleChange} 
+                    className={inputClass} 
+                    placeholder="E.g., Kilimani, Westlands, Mombasa Road..." 
+                  />
+                  {errors.residence && <p className="mt-1 text-xs text-red-500">{errors.residence}</p>}
+                </div>
+
                 <div className="sm:col-span-2">
                   <label className="mb-1.5 block text-sm font-medium text-gray-700">Email Address</label>
                   <input 
@@ -211,7 +234,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <textarea name="message" rows={3} value={form.message} onChange={handleChange} className={inputClass} placeholder="Any other relevant details..." />
               </div>
 
-              {/* Response Method */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">How would you prefer us to contact you?</label>
                 <div className="grid grid-cols-2 gap-4">

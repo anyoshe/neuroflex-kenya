@@ -5,13 +5,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingBookingWidget from "@/components/FloatingBookingWidget";
 import ManifestLink from "@/components/ManifestLink";
+import SchemaMarkup from "@/components/SchemaMarkup"; // 1. Import it here
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "https://www.neuroflexkenya.com";
+const siteUrl = "https://www.neuroflexkenya.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -21,21 +20,25 @@ export const metadata: Metadata = {
   keywords: [
     "physiotherapy Nairobi",
     "neurological rehabilitation Kenya",
-    "stroke recovery",
+    "stroke recovery Nairobi",
     "Neuroflex Kenya",
-    "physical therapy",
+    "Dennis Masaki physiotherapist",
+    "physical therapy Kenya",
   ],
   authors: [{ name: "NRPT Dennis Masaki" }],
+  alternates: {
+    canonical: "/", 
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
       { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: "/icons/icon-192x192.png",           // For iOS
+    apple: "/icons/icon-192x192.png",
     shortcut: "/favicon.ico",
   },
-  manifest: "/manifest.json",                   // Important for PWA
+  manifest: "/manifest.json",
   openGraph: {
     title: "Neuroflex Kenya | Physio & Wellness Centre",
     description:
@@ -61,6 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
+        <SchemaMarkup /> {/* 2. Injected for Search Engines */}
         <ManifestLink />
         <Navbar />
         <main className="flex-1">{children}</main>

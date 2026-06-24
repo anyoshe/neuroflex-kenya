@@ -6,6 +6,7 @@ type BookingEmailPayload = {
   age: string;
   sex: string;
   phone: string;
+  residence: string; // Added residence property
   email: string;
   service: string;
   conditionCause: string;
@@ -26,7 +27,7 @@ function getEmailConfig() {
   const user = process.env.EMAIL_USER?.trim();
   const password = process.env.EMAIL_PASSWORD?.replace(/\s/g, "");
   const to = process.env.EMAIL_TO?.trim() || user;
-  const fromName = process.env.EMAIL_FROM_NAME?.trim() || "Neuroflex Kenya";
+  const fromName = process.env.EMAIL_FROM_NAME?.trim() || "Neuroflex and Physio Wellness Center"; // Updated fallback sender name
 
   if (!user || !password) {
     throw new Error("Email is not configured. Set EMAIL_USER and EMAIL_PASSWORD in .env.local");
@@ -56,6 +57,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
     age: escapeHtml(payload.age),
     sex: escapeHtml(payload.sex),
     phone: escapeHtml(payload.phone),
+    residence: escapeHtml(payload.residence), // Escaped residence field
     email: escapeHtml(payload.email || "Not provided"),
     service: escapeHtml(payload.service),
     conditionCause: escapeHtml(payload.conditionCause).replace(/\n/g, "<br>"),
@@ -74,8 +76,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;">
         <div style="background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; padding: 30px 40px; text-align: center;">
-          <h1 style="margin: 0; font-size: 28px;">Neuroflex Kenya</h1>
-          <p style="margin: 8px 0 0; opacity: 0.95; font-size: 16px;">Physiotherapy & Wellness Centre</p>
+          <h1 style="margin: 0; font-size: 26px;">Neuroflex and Physio Wellness Center</h1>
         </div>
 
         <div style="padding: 40px; background: #ffffff;">
@@ -86,6 +87,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
               <tr><td style="padding: 8px 0; width: 140px;"><strong>Patient Name:</strong></td><td>${safe.name}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Age / Sex:</strong></td><td>${safe.age} years • ${safe.sex}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Phone:</strong></td><td>${safe.phone}</td></tr>
+              <tr><td style="padding: 8px 0;"><strong>Residence:</strong></td><td>${safe.residence}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Email:</strong></td><td>${safe.email}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Service:</strong></td><td>${safe.service}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Preferred Date:</strong></td><td>${safe.preferredDate}</td></tr>
@@ -105,7 +107,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
         </div>
 
         <div style="background: #f1f5f9; padding: 20px 40px; text-align: center; font-size: 13px; color: #64748b;">
-          <p>Neuroflex Kenya • Fedha Road, Embakasi, Nairobi</p>
+          <p>Neuroflex and Physio Wellness Center • Fedha Road, Embakasi, Nairobi</p>
           <p>📞 ${contactInfo.phone} &nbsp; | &nbsp; 📧 ${user}</p>
         </div>
       </div>
@@ -117,7 +119,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
     await transporter.sendMail({
       from,
       to: payload.email,
-      subject: "✅ Appointment Request Received - Neuroflex Kenya",
+      subject: "✅ Appointment Request Received - Neuroflex and Physio Wellness Center",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
           <h2 style="color: #1e40af;">Thank You, ${safe.name}!</h2>
@@ -131,7 +133,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
           <p>Our team will review your request and contact you within <strong>24 hours</strong>.</p>
           
           <p style="margin-top: 30px;">Best regards,<br>
-          <strong>Neuroflex Kenya Team</strong><br>
+          <strong>Neuroflex and Physio Wellness Center Team</strong><br>
           Physiotherapy & Wellness Centre
           </p>
         </div>
