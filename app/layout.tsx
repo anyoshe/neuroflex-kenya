@@ -9,7 +9,12 @@ import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://www.neuroflexkenya.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Neuroflex Kenya | Physio & Wellness Centre",
   description:
     "Expert neurological rehabilitation and physiotherapy in Nairobi. Stroke recovery, pediatric care, and wellness programs led by NRPT Dennis Masaki.",

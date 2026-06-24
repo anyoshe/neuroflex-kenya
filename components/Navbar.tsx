@@ -7,7 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import { navLinks } from "@/lib/site-data";
 
-export default function Navbar() {
+type NavbarProps = {
+  onBookAppointment?: () => void;   // Optional
+};
+
+export default function Navbar({ onBookAppointment }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -27,13 +31,28 @@ export default function Navbar() {
 
   const closeMenu = () => setIsOpen(false);
 
+  const handleBookClick = () => {
+    closeMenu();
+    
+    if (onBookAppointment) {
+      onBookAppointment();
+    } else {
+      // Fallback: Scroll to contact section if modal is not available
+      const contactSection = document.getElementById("contact");
+      if (contactSection) {
+        contactSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }
+  };
+
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "glass-light py-3"
-            : "bg-transparent py-5"
+          scrolled ? "glass-light py-3" : "bg-transparent py-5"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
@@ -66,9 +85,13 @@ export default function Navbar() {
             >
               +254 729 213 135
             </a>
-            <a href="#contact" className="btn-primary !py-2.5 !px-6 !text-sm">
+            
+            <button
+              onClick={handleBookClick}
+              className="btn-primary !py-2.5 !px-6 !text-sm"
+            >
               Book Appointment
-            </a>
+            </button>
           </div>
 
           <button
@@ -83,6 +106,7 @@ export default function Navbar() {
         </div>
       </header>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -102,11 +126,7 @@ export default function Navbar() {
             >
               <div className="flex items-center justify-between">
                 <Logo size="small" />
-                <button
-                  onClick={closeMenu}
-                  className="rounded-xl p-2 text-gray-600 hover:bg-gray-100"
-                  aria-label="Close menu"
-                >
+                <button onClick={closeMenu} className="rounded-xl p-2 text-gray-600 hover:bg-gray-100">
                   <X size={24} />
                 </button>
               </div>
@@ -131,19 +151,15 @@ export default function Navbar() {
               </nav>
 
               <div className="mt-8 space-y-3 border-t pt-8">
-                <a
-                  href="tel:+254729213135"
-                  className="block text-center text-brand-navy font-medium"
-                >
+                <a href="tel:+254729213135" className="block text-center text-brand-navy font-medium">
                   +254 729 213 135
                 </a>
-                <a
-                  href="#contact"
-                  onClick={closeMenu}
+                <button
+                  onClick={handleBookClick}
                   className="btn-primary w-full"
                 >
                   Book Appointment
-                </a>
+                </button>
               </div>
             </motion.div>
           </>

@@ -19,6 +19,10 @@ import { motion } from "framer-motion";
 import { stats } from "@/lib/site-data";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
+type HeroProps = {
+  onBookAppointment?: () => void;
+};
+
 const trustBadges = [
   { icon: ShieldCheck, label: "Evidence-Based Care" },
   { icon: Users, label: "500+ Patients Recovered" },
@@ -36,8 +40,23 @@ const recoveryPlan = [
   "Personalized therapy roadmap",
   "Guided progress tracking",
 ];
+export default function Hero({ onBookAppointment }: HeroProps) {
 
-export default function Hero() {
+  // Logic to handle the click
+  const handleBookClick = () => {
+    if (onBookAppointment) {
+      onBookAppointment();
+    } else {
+      // Fallback: Scroll to contact section if modal is not available
+      const contactSection = document.getElementById("contact");
+      if (contactSection) {
+        contactSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }
+  };
   return (
     <section
       id="home"
@@ -94,13 +113,14 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="mt-8 flex flex-col gap-3 sm:flex-row"
             >
-              <Link
-                href="#contact"
+
+              <button
+                onClick={handleBookClick}
                 className="btn-primary group flex items-center justify-center gap-2 !px-8 !py-3.5 text-base font-semibold transition-all hover:shadow-xl hover:-translate-y-0.5"
               >
                 Book Assessment
                 <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </button>
 
               <a
                 href="https://wa.me/254729213135"
@@ -200,11 +220,10 @@ export default function Hero() {
                 {stats.map((stat, i) => (
                   <div
                     key={stat.label}
-                    className={`rounded-2xl border border-white/10 p-4 transition-all ${
-                      i === 0
+                    className={`rounded-2xl border border-white/10 p-4 transition-all ${i === 0
                         ? "bg-white text-brand-navy"
                         : "bg-white/[0.08] text-white hover:bg-white/[0.12]"
-                    }`}
+                      }`}
                   >
                     <div className="text-3xl font-bold tabular-nums">
                       <AnimatedCounter value={stat.value} suffix={stat.suffix} />

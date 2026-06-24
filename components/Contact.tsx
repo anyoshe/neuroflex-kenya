@@ -1,19 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Send, X, Mail, MessageCircle, Calendar } from "lucide-react";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import { contactInfo } from "@/lib/site-data";
 import { MotionReveal } from "@/components/ui/MotionReveal";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
+  name: z.string().min(2, "Full name is required"),
+  age: z.string().min(1, "Age is required"),
+  sex: z.enum(["Male", "Female", "Other"]),
+  phone: z.string().min(10, "Valid phone number is required"),
+  email: z.string().email("Please enter a valid email").optional().or(z.literal("")),
   service: z.string().min(1, "Please select a service"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  conditionCause: z.string().min(10, "Please describe the condition or reason for visit"),
+  preferredDate: z.string().min(1, "Preferred date is required"),
+  message: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -30,20 +32,28 @@ const serviceOptions = [
 
 const initialForm: FormData = {
   name: "",
-  email: "",
+  age: "",
+  sex: "Male",
   phone: "",
+  email: "",
   service: "",
+  conditionCause: "",
+  preferredDate: "",
   message: "",
 };
 
-export default function Contact() {
+type ContactModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [submissionMethod, setSubmissionMethod] = useState<"email" | "whatsapp">("email");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
@@ -60,234 +70,187 @@ export default function Contact() {
         fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
-      toast.error("Please fix the errors in the form");
+      toast.error("Please fill all required fields");
       return;
     }
 
     setSubmitting(true);
-    try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
 
-      if (!response.ok) {
-        throw new Error("Failed to send email");
+    try {
+      if (submissionMethod === "email") {
+        const response = await fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Failed to send email");
+
+        toast.success("Appointment request sent successfully!");
+      } else {
+        const whatsappNumber = "254729213135";
+        const whatsappMessage = 
+          `*🔔 NEW APPOINTMENT REQUEST - NEUROFLEX KENYA*%0A%0A` +
+          `👤 *Patient Name:* ${encodeURIComponent(form.name)}%0A` +
+          `🎂 *Age:* ${form.age}    |    *Sex:* ${form.sex}%0A` +
+          `📞 *Phone:* ${encodeURIComponent(form.phone)}%0A` +
+          `✉️ *Email:* ${encodeURIComponent(form.email || "Not provided")}%0A` +
+          `🛠️ *Service:* ${encodeURIComponent(form.service)}%0A` +
+          `📅 *Preferred Date:* ${form.preferredDate}%0A%0A` +
+          `📝 *Condition / Reason:*%0A${encodeURIComponent(form.conditionCause)}%0A%0A` +
+          `${form.message ? `💬 *Additional Info:*%0A${encodeURIComponent(form.message)}%0A%0A` : ''}` +
+          `────────────────%0A` +
+          `Sent from Neuroflex Kenya Website`;
+
+        window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, "_blank");
+        toast.success("Opening WhatsApp...");
       }
 
       setForm(initialForm);
-      toast.success("Appointment request sent! We'll contact you shortly.");
+      onClose();
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("Failed to send request. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Something went wrong.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const inputClass =
-    "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
+  const inputClass = "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
+
+  if (!isOpen) return null;
 
   return (
-    <section id="contact" className="section-padding bg-gray-50">
-      <div className="mx-auto max-w-7xl px-6">
-        <SectionHeader
-          badge="Contact"
-          title="Start Your Recovery Today"
-          subtitle="Book a consultation or reach out — our team responds within 24 hours."
-        />
-
-        <div className="grid gap-10 lg:grid-cols-5">
-          <MotionReveal className="lg:col-span-2" delay={0.1}>
-            <div className="space-y-4">
-              {[
-                {
-                  icon: MapPin,
-                  label: "Location",
-                  value: contactInfo.location,
-                },
-                {
-                  icon: Phone,
-                  label: "Phone",
-                  value: contactInfo.phone,
-                  href: contactInfo.phoneHref,
-                },
-                {
-                  icon: Mail,
-                  label: "Email",
-                  value: contactInfo.email,
-                  href: contactInfo.emailHref,
-                },
-                {
-                  icon: Clock,
-                  label: "Hours",
-                  value: contactInfo.hours,
-                },
-              ].map(({ icon: Icon, label, value, href }) => (
-                <div
-                  key={label}
-                  className="flex items-start gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-green/10 text-brand-green">
-                    <Icon size={18} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-                      {label}
-                    </div>
-                    {href ? (
-                      <a
-                        href={href}
-                        className="mt-1 block font-medium text-brand-navy transition hover:text-brand-green"
-                      >
-                        {value}
-                      </a>
-                    ) : (
-                      <div className="mt-1 font-medium text-brand-navy">{value}</div>
-                    )}
-                  </div>
-                </div>
-              ))}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 overflow-hidden">
+      <MotionReveal>
+        <div className="relative w-full max-w-lg md:max-w-2xl max-h-[94vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+          
+          <div className="flex items-center justify-between border-b px-6 py-5">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900">Book Appointment</h3>
+              <p className="text-sm text-gray-500">Please provide details for better assessment</p>
             </div>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-2">
+              <X size={28} />
+            </button>
+          </div>
 
-            <div className="mt-6 overflow-hidden rounded-2xl border border-gray-100 bg-brand-navy p-6 text-white">
-              <h3 className="font-bold">Emergency?</h3>
-              <p className="mt-2 text-sm text-gray-300">
-                For urgent medical emergencies, please call emergency services or
-                visit the nearest hospital.
-              </p>
-              <a
-                href={contactInfo.phoneHref}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-teal hover:underline"
-              >
-                <Phone size={16} />
-                Call {contactInfo.phone}
-              </a>
-            </div>
-          </MotionReveal>
-
-          <MotionReveal className="lg:col-span-3" delay={0.2}>
-            <form
-              onSubmit={handleSubmit}
-              className="rounded-3xl border border-gray-100 bg-white p-8 shadow-lg"
-            >
-              <h3 className="text-xl font-bold text-gray-900">
-                Request an Appointment
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Fill in your details and we&apos;ll get back to you promptly.
-              </p>
-
-              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <div className="flex-1 overflow-y-auto p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    className={inputClass}
-                    placeholder="John Doe"
-                  />
-                  {errors.name && (
-                    <p className="mt-1 text-xs text-red-500">{errors.name}</p>
-                  )}
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Full Name <span className="text-red-500">*</span></label>
+                  <input name="name" value={form.name} onChange={handleChange} className={inputClass} placeholder="Full Name" />
+                  {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className={inputClass}
-                    placeholder="you@email.com"
-                  />
-                  {errors.email && (
-                    <p className="mt-1 text-xs text-red-500">{errors.email}</p>
-                  )}
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Age <span className="text-red-500">*</span></label>
+                  <input name="age" type="number" value={form.age} onChange={handleChange} className={inputClass} placeholder="Age" />
+                  {errors.age && <p className="mt-1 text-xs text-red-500">{errors.age}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Phone
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className={inputClass}
-                    placeholder="+254 7XX XXX XXX"
-                  />
-                  {errors.phone && (
-                    <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="service" className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Service
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={form.service}
-                    onChange={handleChange}
-                    className={inputClass}
-                  >
-                    <option value="">Select a service</option>
-                    {serviceOptions.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Sex <span className="text-red-500">*</span></label>
+                  <select name="sex" value={form.sex} onChange={handleChange} className={inputClass}>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                   </select>
-                  {errors.service && (
-                    <p className="mt-1 text-xs text-red-500">{errors.service}</p>
-                  )}
+                </div>
+
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Phone Number <span className="text-red-500">*</span></label>
+                  <input name="phone" value={form.phone} onChange={handleChange} className={inputClass} placeholder="+254 7XX XXX XXX" />
+                  {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
+                </div>
+
+                {/* Email Field Added Back */}
+                <div className="sm:col-span-2">
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Email Address</label>
+                  <input 
+                    name="email" 
+                    type="email" 
+                    value={form.email} 
+                    onChange={handleChange} 
+                    className={inputClass} 
+                    placeholder="you@email.com (optional)" 
+                  />
+                  {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    value={form.message}
-                    onChange={handleChange}
-                    className={inputClass}
-                    placeholder="Tell us about your condition or preferred appointment time..."
-                  />
-                  {errors.message && (
-                    <p className="mt-1 text-xs text-red-500">{errors.message}</p>
-                  )}
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Service Required <span className="text-red-500">*</span></label>
+                  <select name="service" value={form.service} onChange={handleChange} className={inputClass}>
+                    <option value="">Select Service</option>
+                    {serviceOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                  {errors.service && <p className="mt-1 text-xs text-red-500">{errors.service}</p>}
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="btn-primary mt-6 w-full disabled:opacity-60 sm:w-auto"
-              >
-                {submitting ? "Sending..." : "Send Request"}
-                <Send size={16} />
-              </button>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">Cause of Condition / Reason for Visit <span className="text-red-500">*</span></label>
+                <textarea name="conditionCause" rows={4} value={form.conditionCause} onChange={handleChange} className={inputClass} placeholder="E.g., Stroke 3 months ago, road accident, chronic back pain..." />
+                {errors.conditionCause && <p className="mt-1 text-xs text-red-500">{errors.conditionCause}</p>}
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">Preferred Appointment Date <span className="text-red-500">*</span></label>
+                <div className="relative">
+                  <Calendar className="absolute left-4 top-3.5 text-gray-400" size={20} />
+                  <input type="date" name="preferredDate" value={form.preferredDate} onChange={handleChange} min={new Date().toISOString().split("T")[0]} className={`${inputClass} pl-11`} />
+                </div>
+                {errors.preferredDate && <p className="mt-1 text-xs text-red-500">{errors.preferredDate}</p>}
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">Additional Information (Optional)</label>
+                <textarea name="message" rows={3} value={form.message} onChange={handleChange} className={inputClass} placeholder="Any other relevant details..." />
+              </div>
+
+              {/* Response Method */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">How would you prefer us to contact you?</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <button type="button" onClick={() => setSubmissionMethod("email")} className={`flex flex-col items-center gap-3 rounded-2xl border-2 p-5 transition-all ${submissionMethod === "email" ? "border-brand-teal bg-brand-teal/5" : "border-gray-200 hover:border-gray-300"}`}>
+                    <Mail size={32} className={submissionMethod === "email" ? "text-brand-teal" : "text-gray-400"} />
+                    <div className="text-center">
+                      <div className="font-semibold">Via Email</div>
+                      <div className="text-xs text-gray-500">Detailed response</div>
+                    </div>
+                  </button>
+
+                  <button type="button" onClick={() => setSubmissionMethod("whatsapp")} className={`flex flex-col items-center gap-3 rounded-2xl border-2 p-5 transition-all ${submissionMethod === "whatsapp" ? "border-green-600 bg-green-50" : "border-gray-200 hover:border-gray-300"}`}>
+                    <MessageCircle size={32} className={submissionMethod === "whatsapp" ? "text-green-600" : "text-gray-400"} />
+                    <div className="text-center">
+                      <div className="font-semibold">Via WhatsApp</div>
+                      <div className="text-xs text-gray-500">Fastest response</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
             </form>
-          </MotionReveal>
+          </div>
+
+          <div className="border-t p-6 md:p-8">
+            <button
+              type="button"
+              disabled={submitting}
+              onClick={handleSubmit}
+              className="btn-primary w-full py-4 text-lg disabled:opacity-60 flex items-center justify-center gap-3"
+            >
+              {submitting ? "Processing..." : submissionMethod === "email" ? (
+                <>Send Appointment Request <Send size={20} /></>
+              ) : (
+                <>Continue on WhatsApp <MessageCircle size={20} /></>
+              )}
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </MotionReveal>
+    </div>
   );
 }

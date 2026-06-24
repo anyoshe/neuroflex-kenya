@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:email": "npx tsx scripts/test-email.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -20,7 +21,7 @@
     "jspdf": "^4.2.1",
     "lucide-react": "^1.17.0",
     "next": "16.2.7",
-    "nodemailer": "^8.0.10",
+    "nodemailer": "^8.0.11",
     "pg": "^8.21.0",
     "postgres": "^3.4.9",
     "react": "19.2.4",

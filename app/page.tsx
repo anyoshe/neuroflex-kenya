@@ -1,21 +1,35 @@
+"use client";
+
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
 import Team from "@/components/Team";
 import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
+import ContactInfo from "@/components/ContactInfo";
+import ContactModal from "@/components/Contact";
 
 export default function Home() {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
   return (
     <>
-      <Hero />
+      <Navbar onBookAppointment={() => setIsContactModalOpen(true)} />
+      <Hero onBookAppointment={() => setIsContactModalOpen(true)} />
       <About />
       <Services />
       <Process />
       <Team />
       <Testimonials />
-      <Contact />
+
+      <ContactInfo onBookAppointment={() => setIsContactModalOpen(true)} />
+
+      <ContactModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+      />
     </>
   );
 }
