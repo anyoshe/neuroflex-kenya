@@ -153,6 +153,21 @@
 
 //   return "Failed to send email. Please try again or contact us on WhatsApp.";
 // }
+
+// /**
+//  * Verifies the SMTP transporter connection configuration.
+//  * Used by test scripts to guarantee credentials are valid.
+//  */
+// export async function verifyMailConnection(): Promise<boolean> {
+//   const transporter = createMailTransporter();
+//   try {
+//     await transporter.verify();
+//     return true;
+//   } catch (error) {
+//     console.error("Transporter verification error:", error);
+//     throw error;
+//   }
+// }
 import nodemailer from "nodemailer";
 import { contactInfo } from "@/lib/site-data";
 
@@ -161,11 +176,12 @@ type BookingEmailPayload = {
   age: string;
   sex: string;
   phone: string;
-  residence: string; // Added residence property
+  residence: string;
   email: string;
   service: string;
   conditionCause: string;
   preferredDate: string;
+  preferredTime: string; // Added preferredTime to payload type
   message?: string;
 };
 
@@ -182,7 +198,7 @@ function getEmailConfig() {
   const user = process.env.EMAIL_USER?.trim();
   const password = process.env.EMAIL_PASSWORD?.replace(/\s/g, "");
   const to = process.env.EMAIL_TO?.trim() || user;
-  const fromName = process.env.EMAIL_FROM_NAME?.trim() || "Neuroflex and Physio Wellness Center"; // Updated fallback sender name
+  const fromName = process.env.EMAIL_FROM_NAME?.trim() || "Neuroflex and Physio Wellness Center";
 
   if (!user || !password) {
     throw new Error("Email is not configured. Set EMAIL_USER and EMAIL_PASSWORD in .env.local");
@@ -212,11 +228,12 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
     age: escapeHtml(payload.age),
     sex: escapeHtml(payload.sex),
     phone: escapeHtml(payload.phone),
-    residence: escapeHtml(payload.residence), // Escaped residence field
+    residence: escapeHtml(payload.residence),
     email: escapeHtml(payload.email || "Not provided"),
     service: escapeHtml(payload.service),
     conditionCause: escapeHtml(payload.conditionCause).replace(/\n/g, "<br>"),
     preferredDate: escapeHtml(payload.preferredDate),
+    preferredTime: escapeHtml(payload.preferredTime), // Escaped preferredTime field
     message: payload.message ? escapeHtml(payload.message).replace(/\n/g, "<br>") : "None",
   };
 
@@ -225,7 +242,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
   // === ADMIN NOTIFICATION ===
   await transporter.sendMail({
     from,
-    to,                                 // This comes from .env EMAIL_TO
+    to,                                 
     replyTo: payload.email || user,
     subject: `New Appointment Request - ${safe.name}`,
     html: `
@@ -246,6 +263,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
               <tr><td style="padding: 8px 0;"><strong>Email:</strong></td><td>${safe.email}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Service:</strong></td><td>${safe.service}</td></tr>
               <tr><td style="padding: 8px 0;"><strong>Preferred Date:</strong></td><td>${safe.preferredDate}</td></tr>
+              <tr><td style="padding: 8px 0;"><strong>Preferred Time:</strong></td><td>${safe.preferredTime}</td></tr>
             </table>
           </div>
 
@@ -282,7 +300,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
           
           <div style="background: #f0f9ff; border-left: 5px solid #3b82f6; padding: 20px; margin: 25px 0;">
             <p><strong>Service:</strong> ${safe.service}</p>
-            <p><strong>Preferred Date:</strong> ${safe.preferredDate}</p>
+            <p><strong>Preferred Date & Time:</strong> ${safe.preferredDate} at ${safe.preferredTime}</p>
           </div>
 
           <p>Our team will review your request and contact you within <strong>24 hours</strong>.</p>
@@ -309,10 +327,6 @@ export function getEmailErrorMessage(error: unknown) {
   return "Failed to send email. Please try again or contact us on WhatsApp.";
 }
 
-/**
- * Verifies the SMTP transporter connection configuration.
- * Used by test scripts to guarantee credentials are valid.
- */
 export async function verifyMailConnection(): Promise<boolean> {
   const transporter = createMailTransporter();
   try {
