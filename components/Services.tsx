@@ -1,12 +1,19 @@
 "use client";
 
+import Image from "next/image";
+import { useState } from "react";  // ← Import useState
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
 import { services } from "@/lib/site-data";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import ContactModal from "@/components/Contact";   // ← Import the modal
 
 export default function Services() {
+  const [isModalOpen, setIsModalOpen] = useState(false);   // ← Add this state
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <section id="services" className="section-padding bg-white">
       <div className="mx-auto max-w-7xl px-6">
@@ -29,9 +36,21 @@ export default function Services() {
                   isFeatured ? "md:col-span-2 lg:row-span-1" : ""
                 }`}
               >
-                {isFeatured && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-navy via-brand-navy to-brand-teal/80 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                )}
+                {/* Service Image */}
+                <div className="relative mb-6 h-52 w-full overflow-hidden rounded-2xl">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={isFeatured}
+                  />
+                  
+                  {isFeatured && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-transparent" />
+                  )}
+                </div>
 
                 <div className="relative z-10">
                   <div
@@ -69,8 +88,9 @@ export default function Services() {
                     {service.desc}
                   </p>
 
-                  <Link
-                    href="#contact"
+                  {/* Updated Button - Opens Modal */}
+                  <button
+                    onClick={openModal}
                     className={`mt-6 inline-flex items-center gap-1 text-sm font-semibold transition ${
                       isFeatured
                         ? "text-brand-green group-hover:text-brand-teal"
@@ -79,13 +99,16 @@ export default function Services() {
                   >
                     Book consultation
                     <ArrowUpRight size={16} />
-                  </Link>
+                  </button>
                 </div>
               </MotionReveal>
             );
           })}
         </div>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </section>
   );
 }
