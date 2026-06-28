@@ -1,5 +1,13 @@
 [
   {
+    "quote": "The experience was fine.",
+    "name": "Denis John",
+    "role": "Gym Fitness",
+    "rating": 3,
+    "image": "/images/testimonials/peter-k.jpg",
+    "date": "2026-06-28T19:52:39.456Z"
+  },
+  {
     "quote": "Their Services were top notch. Friendly and knowledgeable. I won't hestate to refer any patient to them.",
     "name": "Chris Okemwa",
     "role": "Accident recovery Patient",

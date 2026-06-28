@@ -26,6 +26,7 @@ export async function addApprovedTestimonial(newTestimonial: any) {
     quote: newTestimonial.comment || newTestimonial.quote,
     name: newTestimonial.name,
     role: newTestimonial.role,
+    rating: newTestimonial.rating || 5,
     image: "/images/testimonials/peter-k.jpg",
     date: new Date().toISOString()
   };

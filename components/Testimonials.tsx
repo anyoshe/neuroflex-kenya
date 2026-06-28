@@ -22,13 +22,13 @@ export default function Testimonials() {
   const [message, setMessage] = useState("");
 
   // Load live testimonials on mount
-useEffect(() => {
-  async function loadLiveTestimonials() {
-    const live = await getLiveTestimonials([...testimonials]);
-    setDisplayTestimonials(live);
-  }
-  loadLiveTestimonials();
-}, []);
+  useEffect(() => {
+    async function loadLiveTestimonials() {
+      const live = await getLiveTestimonials([...testimonials]);
+      setDisplayTestimonials(live);
+    }
+    loadLiveTestimonials();
+  }, []);
 
   // Auto-rotate
   useEffect(() => {
@@ -82,13 +82,13 @@ useEffect(() => {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-         <div className="[&_p]:!text-white">
-        <SectionHeader
-          badge="Testimonials"
-          title="Stories of Recovery"
-          subtitle="Real outcomes from patients who trusted us with their rehabilitation journey."
-        />
-       </div>
+        <div className="[&_p]:!text-white">
+          <SectionHeader
+            badge="Testimonials"
+            title="Stories of Recovery"
+            subtitle="Real outcomes from patients who trusted us with their rehabilitation journey."
+          />
+        </div>
 
         {/* Original Carousel */}
         <div className="relative mx-auto max-w-4xl mt-12">
@@ -108,6 +108,17 @@ useEffect(() => {
                 <p className="text-xl leading-relaxed text-gray-800 sm:text-2xl">
                   “{displayTestimonials[active].quote}”
                 </p>
+
+                {/* Add Star Rating Here */}
+                <div className="flex gap-1 mt-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`text-xl ${star <= (displayTestimonials[active].rating || 5) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
+                    />
+                  ))}
+                </div>
+
                 <div className="mt-8 flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-teal text-sm font-bold text-white">
                     {displayTestimonials[active].name.charAt(0)}
@@ -130,9 +141,8 @@ useEffect(() => {
                   <button
                     key={i}
                     onClick={() => setActive(i)}
-                    className={`h-2 rounded-full transition-all ${
-                      i === active ? "w-8 bg-brand-green" : "w-2 bg-gray-300"
-                    }`}
+                    className={`h-2 rounded-full transition-all ${i === active ? "w-8 bg-brand-green" : "w-2 bg-gray-300"
+                      }`}
                   />
                 ))}
               </div>
@@ -213,7 +223,7 @@ useEffect(() => {
                 <div>
                   <label className="block text-sm font-medium mb-2">Rating</label>
                   <div className="flex gap-1">
-                    {[1,2,3,4,5].map((star) => (
+                    {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
                         type="button"
