@@ -1,200 +1,3 @@
-// import {
-//   Baby,
-//   Brain,
-//   Droplets,
-//   Heart,
-//   UserCog,
-//   Users,
-//   Wind,
-//   Zap,
-//   type LucideIcon,
-// } from "lucide-react";
-
-// export const navLinks = [
-//   { href: "#home", label: "Home" },
-//   { href: "#about", label: "About" },
-//   { href: "#services", label: "Services" },
-//   { href: "#team", label: "Team" },
-//   { href: "#contact", label: "Contact" },
-// ] as const;
-
-// export const stats = [
-//   { value: 500, suffix: "+", label: "Patients Treated" },
-//   { value: 98, suffix: "%", label: "Success Rate" },
-//   { value: 15, suffix: "+", label: "Years Experience" },
-//   { value: 6, suffix: "", label: "Specialty Programs" },
-// ] as const;
-
-// export const services: {
-//   icon: LucideIcon;
-//   title: string;
-//   desc: string;
-//   featured?: boolean;
-//   image: string;
-//   slug: string;
-//   duration: string;
-//   priceRange: string;
-//   bestFor: string;
-//   benefits: string[];
-// }[] = [
-//   {
-//     icon: Brain,
-//     title: "Neurological Rehabilitation",
-//     desc: "Stroke recovery, Parkinson's, MS, and traumatic brain injury programs.",
-//     image: "/images/services/neuroimage1.jpg",
-//     slug: "neurological-rehabilitation",
-//     featured: true,
-//     duration: "60 - 90 minutes",
-//     priceRange: "KSh 6,000 - 9,000",
-//     bestFor: "Stroke, Parkinson’s, Brain Injury",
-//     benefits: [
-//       "Improves mobility and coordination",
-//       "Enhances cognitive function",
-//       "Promotes neuroplasticity",
-//       "Reduces muscle spasticity",
-//       "Restores independence in daily activities",
-//       "Supports long-term recovery"
-//     ],
-//   },
-//   {
-//     icon: Heart,
-//     title: "Cardiac & Pulmonary Rehab",
-//     desc: "Post-surgical recovery and respiratory condition management.",
-//     image: "/images/services/cardiacimage.jpg",
-//     slug: "cardiac-pulmonary-rehab",
-//     duration: "45 - 70 minutes",
-//     priceRange: "KSh 5,000 - 8,000",
-//     bestFor: "Post Heart Surgery, COPD, Asthma",
-//     benefits: [
-//       "Improves heart and lung function",
-//       "Increases exercise tolerance",
-//       "Reduces shortness of breath",
-//       "Lowers risk of future cardiac events",
-//       "Boosts overall stamina and confidence"
-//     ],
-//   },
-//   {
-//     icon: UserCog,
-//     title: "Musculoskeletal Physiotherapy",
-//     desc: "Back pain, sports injuries, and joint replacement recovery.",
-//     image: "/images/services/muscularimage1.jpg",
-//     slug: "musculoskeletal-physiotherapy",
-//     duration: "45 - 75 minutes",
-//     priceRange: "KSh 5,000 - 7,500",
-//     bestFor: "Back Pain, Sports Injuries, Joint Issues",
-//     benefits: [
-//       "Pain relief and management",
-//       "Improved joint mobility",
-//       "Strengthening of muscles",
-//       "Faster recovery after surgery",
-//       "Prevention of future injuries"
-//     ],
-//   },
-//   {
-//     icon: UserCog,
-//     title: "Kinesiology Taping Therapy",
-//     desc: "Supportive taping techniques to reduce pain, improve stability, enhance performance, and accelerate recovery.",
-//     image: "/images/services/kinesologyimage.jpeg",
-//     slug: "kinesiology-taping-therapy",
-//     duration: "30 - 60 minutes",
-//     priceRange: "KSh 3,500 - 6,000",
-//     bestFor: "Sports Injuries, Muscle Pain, Joint Support",
-//     benefits: [
-//       "Reduces pain and inflammation",
-//       "Improves muscle function",
-//       "Enhances athletic performance",
-//       "Provides joint stability",
-//       "Accelerates injury recovery"
-//     ],
-//   },
-//   {
-//     icon: Baby,
-//     title: "Pediatric Physiotherapy",
-//     desc: "Developmental delays, cerebral palsy, and torticollis care.",
-//     image: "/images/services/pedetric.jpg",
-//     slug: "pediatric-physiotherapy",
-//     duration: "45 - 60 minutes",
-//     priceRange: "KSh 4,000 - 7,000",
-//     bestFor: "Children with Developmental Delays",
-//     benefits: [
-//       "Supports developmental milestones",
-//       "Improves motor skills",
-//       "Enhances coordination and balance",
-//       "Helps with cerebral palsy management",
-//       "Gentle and child-friendly approach"
-//     ],
-//   },
-//   {
-//     icon: Users,
-//     title: "Geriatric Care",
-//     desc: "Fall prevention and mobility training for seniors.",
-//     image: "/images/services/geriaticimage1.jpg",
-//     slug: "geriatric-care",
-//     duration: "45 - 60 minutes",
-//     priceRange: "KSh 4,500 - 6,500",
-//     bestFor: "Seniors & Elderly Mobility",
-//     benefits: [
-//       "Fall prevention training",
-//       "Improved balance and gait",
-//       "Maintains independence",
-//       "Reduces joint stiffness",
-//       "Enhances quality of life"
-//     ],
-//   },
-//   {
-//     icon: Zap,
-//     title: "Wellness & Fitness",
-//     desc: "Corporate wellness, fitness training, and pain management.",
-//     image: "/images/services/fitnessimage1.jpg",
-//     slug: "wellness-fitness",
-//     duration: "45 - 75 minutes",
-//     priceRange: "KSh 4,000 - 7,000",
-//     bestFor: "General Fitness & Wellness",
-//     benefits: [
-//       "Personalized fitness programs",
-//       "Pain management strategies",
-//       "Corporate wellness support",
-//       "Improved strength and flexibility",
-//       "Overall health optimization"
-//     ],
-//   },
-//   {
-//     icon: Droplets,
-//     title: "Lymphatic Drainage",
-//     desc: "Highly effective for reducing swelling (lymphedema) and aiding immune function.",
-//     image: "/images/services/lympaticimage1.jpg",
-//     slug: "lymphatic-drainage",
-//     duration: "45 - 75 minutes",
-//     priceRange: "KSh 4,500 - 7,500",
-//     bestFor: "Swelling, Detox, Post-Surgery",
-//     benefits: [
-//       "Reduces swelling and fluid retention",
-//       "Boosts immune system function",
-//       "Accelerates post-surgical recovery",
-//       "Improves skin tone and reduces cellulite",
-//       "Relieves sinus congestion",
-//       "Promotes deep relaxation"
-//     ],
-//   },
-//   {
-//     icon: Wind,
-//     title: "Carminative Management",
-//     desc: "Comprehensive assessment and management of flatulence and gastric discomfort.",
-//     image: "/images/services/carminativeimage.jpg",
-//     slug: "carminative-management",
-//     duration: "40 - 60 minutes",
-//     priceRange: "KSh 4,000 - 6,000",
-//     bestFor: "Digestive Discomfort & Bloating",
-//     benefits: [
-//       "Relieves bloating and gas",
-//       "Improves digestive comfort",
-//       "Reduces abdominal pain",
-//       "Supports better gut health",
-//       "Non-invasive and gentle approach"
-//     ],
-//   },
-// ];
-
 import {
   Baby,
   Brain,
@@ -222,7 +25,6 @@ export const stats = [
   { value: 6, suffix: "", label: "Specialty Programs" },
 ] as const;
 
-// Main Services Data
 export const services: {
   icon: LucideIcon;
   title: string;
@@ -234,13 +36,13 @@ export const services: {
   priceRange: string;
   bestFor: string;
   benefits: string[];
-  galleryImages: string[];           // ← Added for multiple images per service
+  galleryImages: string[];
 }[] = [
   {
     icon: Brain,
     title: "Neurological Rehabilitation",
     desc: "Stroke recovery, Parkinson's, MS, and traumatic brain injury programs.",
-    image: "/images/services/neuroimage1.jpg",
+    image: "/images/services/neuroimage1.webp",
     slug: "neurological-rehabilitation",
     featured: true,
     duration: "60 - 90 minutes",
@@ -255,17 +57,17 @@ export const services: {
       "Supports long-term recovery"
     ],
     galleryImages: [
-      "/images/services/physioimage1.jpg",
-      "/images/services/neuroimage2.jpg",
-      "/images/services/physioimage6.jpg",
-      // "/images/services/physioimage1.jpg"
+      "/images/services/physioimage1.webp",
+      "/images/services/neuroimage2.webp",
+      "/images/services/physioimage6.webp",
+      
     ]
   },
   {
     icon: Heart,
     title: "Cardiac & Pulmonary Rehab",
     desc: "Post-surgical recovery and respiratory condition management.",
-    image: "/images/services/cardiacimage.jpg",
+    image: "/images/services/cardiacimage.webp",
     slug: "cardiac-pulmonary-rehab",
     duration: "45 - 70 minutes",
     priceRange: "KSh 5,000 - 8,000",
@@ -278,16 +80,16 @@ export const services: {
       "Boosts overall stamina and confidence"
     ],
     galleryImages: [
-      "/images/services/cardiac3.jpg",
-      "/images/services/cardiacimage.jpg",
-      "/images/services/cardiac2.jpg"
+      "/images/services/cardiac3.webp",
+      "/images/services/cardiacimage.webp",
+      "/images/services/cardiac2.webp"
     ]
   },
   {
     icon: UserCog,
     title: "Musculoskeletal Physiotherapy",
     desc: "Back pain, sports injuries, and joint replacement recovery.",
-    image: "/images/services/muscularimage1.jpg",
+    image: "/images/services/muscularimage1.webp",
     slug: "musculoskeletal-physiotherapy",
     duration: "45 - 75 minutes",
     priceRange: "KSh 5,000 - 7,500",
@@ -300,16 +102,16 @@ export const services: {
       "Prevention of future injuries"
     ],
     galleryImages: [
-      "/images/services/musket1.jpg",
-      "/images/services/musket2.jpg",
-      "/images/services/physioimage5.jpg"
+      "/images/services/musket1.webp",
+      "/images/services/musket2.webp",
+      "/images/services/physioimage5.webp"
     ]
   },
   {
     icon: UserCog,
     title: "Kinesiology Taping Therapy",
     desc: "Supportive taping techniques to reduce pain, improve stability, enhance performance, and accelerate recovery.",
-    image: "/images/services/kinesologyimage.jpeg",
+    image: "/images/services/kinesologyimage1.webp",
     slug: "kinesiology-taping-therapy",
     duration: "30 - 60 minutes",
     priceRange: "KSh 3,500 - 6,000",
@@ -322,16 +124,16 @@ export const services: {
       "Accelerates injury recovery"
     ],
     galleryImages: [
-      "/images/services/kines2.jpg",
-      "/images/services/kinesologyimage1.jpg",
-      "/images/services/kineshand.jpg"
+      "/images/services/kines2.webp",
+      "/images/services/kinesologyimage1.webp",
+      "/images/services/kineshand.webp"
     ]
   },
   {
     icon: Baby,
     title: "Pediatric Physiotherapy",
     desc: "Developmental delays, cerebral palsy, and torticollis care.",
-    image: "/images/services/pedetric.jpg",
+    image: "/images/services/pedetric.webp",
     slug: "pediatric-physiotherapy",
     duration: "45 - 60 minutes",
     priceRange: "KSh 4,000 - 7,000",
@@ -344,16 +146,16 @@ export const services: {
       "Gentle and child-friendly approach"
     ],
     galleryImages: [
-      "/images/services/kids2.jpg",
-      "/images/services/babytherapy1.jpg",
-      "/images/services/kids3.jpg"
+      "/images/services/kids2.webp",
+      "/images/services/babytherapy1.webp",
+      "/images/services/kids3.webp"
     ]
   },
   {
     icon: Users,
     title: "Geriatric Care",
     desc: "Fall prevention and mobility training for seniors.",
-    image: "/images/services/geriaticimage1.jpeg",
+    image: "/images/services/geriaticimage1.webp",
     slug: "geriatric-care",
     duration: "45 - 60 minutes",
     priceRange: "KSh 4,500 - 6,500",
@@ -366,16 +168,16 @@ export const services: {
       "Enhances quality of life"
     ],
     galleryImages: [
-      "/images/services/gatric1.jpg",
-      "/images/services/gatric2.jpg",
-      "/images/services/gatric3.jpg"
+      "/images/services/gatric1.webp",
+      "/images/services/gatric2.webp",
+      "/images/services/gatric3.webp"
     ]
   },
   {
     icon: Zap,
     title: "Wellness & Fitness",
     desc: "Corporate wellness, fitness training, and pain management.",
-    image: "/images/services/fitnessimage1.jpg",
+    image: "/images/services/fitnessimage1.webp",
     slug: "wellness-fitness",
     duration: "45 - 75 minutes",
     priceRange: "KSh 4,000 - 7,000",
@@ -388,16 +190,16 @@ export const services: {
       "Overall health optimization"
     ],
     galleryImages: [
-      "/images/services/fitnessimage2.jpg",
-      "/images/services/wellnes.jpg",
-      "/images/services/neuroimage.jpg"
+      "/images/services/fitnessimage2.webp",
+      "/images/services/wellnes.webp",
+      "/images/services/neuroimage.webp"
     ]
   },
   {
     icon: Droplets,
     title: "Lymphatic Drainage",
     desc: "Highly effective for reducing swelling (lymphedema) and aiding immune function.",
-    image: "/images/services/lympaticimage1.jpg",
+    image: "/images/services/lympaticimage1.webp",
     slug: "lymphatic-drainage",
     duration: "45 - 75 minutes",
     priceRange: "KSh 4,500 - 7,500",
@@ -411,19 +213,19 @@ export const services: {
       "Promotes deep relaxation"
     ],
     galleryImages: [
-      "/images/services/lympatic-stomach.jpg",
-      "/images/services/lympatic-stomach.jpeg",
-      "/images/services/lympatic-thighs.jpeg",
-      "/images/services/physioimage3.jpg",
-      "/images/services/lympatic-back.jpeg",
-      "/images/services/physioimage4.jpg"
+      "/images/services/lympatic-stomach.webp",
+      "/images/services/lympatic-thighs.webp",
+      "/images/services/physioimage3.webp",
+      "/images/services/lympatic-back.webp",
+      "/images/services/physioimage4.webp",
+      "/images/services/physioimage2.webp"
     ]
   },
   {
     icon: Wind,
     title: "Carminative Management",
     desc: "Comprehensive assessment and management of flatulence and gastric discomfort.",
-    image: "/images/services/carminativeimage.jpg",
+    image: "/images/services/carminativeimage.webp",
     slug: "carminative-management",
     duration: "40 - 60 minutes",
     priceRange: "KSh 4,000 - 6,000",
@@ -436,9 +238,9 @@ export const services: {
       "Non-invasive and gentle approach"
     ],
     galleryImages: [
-      "/images/services/carminative3.jpg",
-      "/images/services/carminative2.jpg",
-      "/images/services/carminative1.jpg"
+      "/images/services/carminative3.webp",
+      "/images/services/carminative2.webp",
+      "/images/services/carminative1.webp"
     ]
   },
 ];
