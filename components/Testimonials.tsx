@@ -26,7 +26,7 @@ export default function Testimonials() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/services/heroimage.jpg"
+          src="/images/services/heroimage.webp"
           alt="Background"
           fill
           className="object-cover"
