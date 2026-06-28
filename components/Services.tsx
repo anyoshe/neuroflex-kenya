@@ -1,15 +1,14 @@
 "use client";
-
 import Image from "next/image";
-import { useState } from "react";  // ← Import useState
-import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { services } from "@/lib/site-data";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import ContactModal from "@/components/Contact";   // ← Import the modal
+import ContactModal from "@/components/Contact";
 
 export default function Services() {
-  const [isModalOpen, setIsModalOpen] = useState(false);   // ← Add this state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -23,83 +22,82 @@ export default function Services() {
           subtitle="From neurological recovery to wellness programs — every service is tailored to your unique recovery goals."
         />
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
             const Icon = service.icon;
-            const isFeatured = service.featured;
+            const isFirst = index === 0;
+            const isLast = index === services.length - 1;
+            const isHighlighted = isFirst || isLast;
 
             return (
               <MotionReveal
                 key={service.title}
                 delay={index * 0.08}
-                className={`group card-glow relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 ${
-                  isFeatured ? "md:col-span-2 lg:row-span-1" : ""
+                className={`card-glow relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 transition-all duration-300 [&_img]:transition-transform [&_img]:duration-500 hover:[&_img]:scale-105 hover:border-brand-green/20 hover:shadow-lg ${
+                  isFirst ? "lg:col-span-2" : ""
+                } ${
+                  isLast ? "lg:col-span-3 mx-auto max-w-4xl" : ""
                 }`}
               >
                 {/* Service Image */}
-                <div className="relative mb-6 h-52 w-full overflow-hidden rounded-2xl">
+                <div className="relative mb-6 h-56 w-full overflow-hidden rounded-2xl">
                   <Image
                     src={service.image}
                     alt={service.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority={isFeatured}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
+                    priority={isHighlighted}
                   />
-                  
-                  {isFeatured && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-transparent" />
-                  )}
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent opacity-40" />
                 </div>
 
                 <div className="relative z-10">
-                  <div
-                    className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors duration-300 ${
-                      isFeatured
-                        ? "bg-brand-green/10 text-brand-green group-hover:bg-white/20 group-hover:text-white"
-                        : "bg-brand-green/10 text-brand-green group-hover:bg-brand-green group-hover:text-white"
-                    }`}
-                  >
+                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-green/10 text-brand-green transition-all duration-300 [.card-glow:hover_&]:bg-brand-green [.card-glow:hover_&]:text-white">
                     <Icon size={28} />
                   </div>
 
-                  <h3
-                    className={`mb-3 text-xl font-bold transition-colors ${
-                      isFeatured
-                        ? "text-gray-900 group-hover:text-white"
-                        : "text-gray-900"
-                    }`}
-                  >
-                    {service.title}
-                    {isFeatured && (
-                      <span className="ml-2 inline-block rounded-full bg-brand-green/10 px-2 py-0.5 text-xs font-semibold text-brand-green group-hover:bg-white/20 group-hover:text-white">
-                        Flagship
+                  <h3 className="mb-3 text-2xl font-bold text-gray-900 transition-colors flex flex-wrap items-center gap-2">
+                    <span className={`rounded-lg px-1 transition-all duration-300 ${
+                      isHighlighted ? "[.card-glow:hover_&]:bg-brand-green/10 [.card-glow:hover_&]:text-brand-green" : ""
+                    }`}>
+                      {service.title}
+                    </span>
+                    
+                    {isHighlighted && (
+                      <span className="inline-block rounded-full bg-brand-green/10 px-3 py-1 text-xs font-semibold text-brand-green">
+                        {isFirst ? "Flagship" : "Popular Choice"}
                       </span>
                     )}
                   </h3>
 
-                  <p
-                    className={`leading-relaxed transition-colors ${
-                      isFeatured
-                        ? "text-gray-600 group-hover:text-gray-200"
-                        : "text-gray-600"
-                    }`}
-                  >
+                  <p className={`leading-relaxed transition-all duration-300 text-gray-600 rounded-xl p-1 ${
+                    isHighlighted ? "[.card-glow:hover_&]:bg-brand-green/5 [.card-glow:hover_&]:text-gray-900" : ""
+                  }`}>
                     {service.desc}
                   </p>
 
-                  {/* Updated Button - Opens Modal */}
-                  <button
-                    onClick={openModal}
-                    className={`mt-6 inline-flex items-center gap-1 text-sm font-semibold transition ${
-                      isFeatured
-                        ? "text-brand-green group-hover:text-brand-teal"
-                        : "text-brand-green hover:gap-2"
-                    }`}
-                  >
-                    Book consultation
-                    <ArrowUpRight size={16} />
-                  </button>
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    <button
+                      onClick={openModal}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-green transition hover:gap-2"
+                    >
+                      Book consultation
+                      <ArrowUpRight size={16} />
+                    </button>
+
+                    <a
+                      href={`/services/${service.slug}`}
+                      className={`inline-flex items-center gap-1.5 text-sm font-semibold transition hover:gap-2 ${
+                        isHighlighted
+                          ? "text-brand-green underline decoration-brand-green/30"
+                          : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      Learn more
+                      <BookOpen size={16} />
+                    </a>
+                  </div>
                 </div>
               </MotionReveal>
             );
@@ -107,7 +105,6 @@ export default function Services() {
         </div>
       </div>
 
-      {/* Contact Modal */}
       <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </section>
   );
