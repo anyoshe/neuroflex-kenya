@@ -1,0 +1,19 @@
+[
+  {
+    "id": "1782666824871",
+    "name": "Nikita Kerubo",
+    "role": "Fitness",
+    "comment": "Gym was awesome",
+    "rating": 5,
+    "date": "2026-06-28T17:13:44.871Z",
+    "status": "pending"
+  },
+  {
+    "id": "1782670274854",
+    "name": "Julius Kamau",
+    "role": "Stroke Recovery",
+    "comment": "Amazing services provided",
+    "rating": 5,
+    "date": "2026-06-28T18:11:14.854Z"
+  }
+]
