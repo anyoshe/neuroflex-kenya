@@ -67,7 +67,7 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
             className="lg:col-span-5 h-[350px] lg:h-auto min-h-[300px] overflow-hidden rounded-3xl border border-gray-200/60 shadow-lg shadow-brand-navy/5 relative group" 
             delay={0.2}
           >
-            <iframe
+            {/* <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7906161117143!2d36.8920197!3d-1.3004863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f12494ca2bafb%3A0xf2b0bf96b7e33828!2sFedha%20Rd%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1719260000000!5m2!1sen!2ske"
               width="100%"
               height="100%"
@@ -76,7 +76,17 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="relative z-0 scale-[1.01] transition-transform duration-500 group-hover:scale-100"
-            />
+            /> */}
+            <iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988!2d36.8961964!3d-1.3122836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zTVZRWCs zR0ogTmFpcm9iaQ!5e0!3m2!1sen!2ske!4v1720000000000!5m2!1sen!2ske"
+  width="100%"
+  height="100%"
+  style={{ border: 0 }}
+  allowFullScreen
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+  className="relative z-0 scale-[1.01] transition-transform duration-500 group-hover:scale-100"
+/>
           </MotionReveal>
 
           {/* Bottom Row - Micro-Grid Contact Nodes matching brand style rules */}

@@ -1,49 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
-import { addApprovedTestimonial } from '@/lib/testimonial-manager';  // ← Changed import
+import prisma from '@/lib/prisma'; // 1. Use the safe global instance
+import { NextResponse } from 'next/server';
 
-const PENDING_FILE = path.join(process.cwd(), 'data/pending-testimonials.json');
+// 2. Force dynamic execution
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
-export async function GET(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get('id');
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
 
-  if (!id) {
-    return new Response("<h2>Missing ID</h2>", { headers: { 'Content-Type': 'text/html' } });
-  }
+  if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
 
   try {
-    let pending = [];
-    try {
-      const data = await readFile(PENDING_FILE, 'utf8');
-      pending = JSON.parse(data);
-    } catch {}
-
-    const testimonialIndex = pending.findIndex((t: any) => t.id === id);
-
-    if (testimonialIndex === -1) {
-      return new Response("<h2>Testimonial not found or already processed.</h2>", { headers: { 'Content-Type': 'text/html' } });
-    }
-
-    const approved = pending[testimonialIndex];
-
-    // Remove from pending
-    pending.splice(testimonialIndex, 1);
-    await writeFile(PENDING_FILE, JSON.stringify(pending, null, 2));
-
-    // Auto-add to live testimonials
-    await addApprovedTestimonial(approved);
-
-    return new Response(`
-      <h2>✅ Success!</h2>
-      <p>The testimonial from <strong>${approved.name}</strong> has been approved and is now live on your website.</p>
-      <p><a href="/">Go back to homepage</a></p>
-    `, {
-      headers: { 'Content-Type': 'text/html' }
+    await prisma.testimonial.update({
+      where: { id },
+      data: { approved: true }
     });
 
+    return new Response(`
+      <h2>✅ Approved!</h2>
+      <p>The testimonial is now live.</p>
+    `, { headers: { 'Content-Type': 'text/html' } });
   } catch (error) {
-    console.error(error);
-    return new Response("<h2>Server Error</h2>", { headers: { 'Content-Type': 'text/html' } });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

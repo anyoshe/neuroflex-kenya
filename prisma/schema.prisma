@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  comment   String
+  rating    Int
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

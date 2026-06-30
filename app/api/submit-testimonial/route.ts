@@ -1,38 +1,27 @@
-import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
+import prisma from '@/lib/prisma'; // 1. Use the safe global instance
+import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
-const PENDING_FILE = path.join(process.cwd(), 'data/pending-testimonials.json');
+// 2. Force dynamic execution so Next.js doesn't execute Prisma during build-time page generation
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const { name, role, comment, rating } = await request.json();
 
-    if (!name || !role || !comment) {
-      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
-    }
+    const testimonial = await prisma.testimonial.create({
+      data: {
+        name,
+        role,
+        comment,
+        rating: Number(rating),
+        approved: false
+      }
+    });
 
-    const testimonial = {
-      id: Date.now().toString(),
-      name: name.trim(),
-      role: role.trim(),
-      comment: comment.trim(),
-      rating: Number(rating),
-      date: new Date().toISOString(),
-    };
-
-    // Save to pending
-    let pending = [];
-    try {
-      const data = await readFile(PENDING_FILE, 'utf8');
-      pending = JSON.parse(data);
-    } catch {}
-
-    pending.push(testimonial);
-    await writeFile(PENDING_FILE, JSON.stringify(pending, null, 2));
-
-    // Send email with links
+    // Send email for approval
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -53,19 +42,16 @@ export async function POST(request: NextRequest) {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Role:</strong> ${role}</p>
         <p><strong>Rating:</strong> ${rating} ⭐</p>
+        <p><strong>Comment:</strong></p>
         <blockquote>${comment}</blockquote>
         <p>
-          <a href="${approveLink}" style="background:#10b981;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">✅ Approve & Publish</a>
-          &nbsp;&nbsp;
-          <a href="${rejectLink}" style="background:#ef4444;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">❌ Reject</a>
+          <a href="${approveLink}">✅ Approve</a> | <a href="${rejectLink}">❌ Reject</a>
         </p>
       `,
     });
 
     return NextResponse.json({ success: true });
-
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
   }
 }

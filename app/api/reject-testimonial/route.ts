@@ -1,31 +1,26 @@
-import { NextRequest, NextResponse } from "next/server";
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
+import prisma from '@/lib/prisma'; // 1. Use the safe global instance
+import { NextResponse } from 'next/server';
 
-const PENDING_FILE = path.join(process.cwd(), 'data/pending-testimonials.json');
+// 2. Force dynamic execution
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
-export async function GET(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get('id');
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
 
   if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
 
   try {
-    let pending = [];
-    try {
-      const data = await readFile(PENDING_FILE, 'utf8');
-      pending = JSON.parse(data);
-    } catch {}
-
-    pending = pending.filter((t: any) => t.id !== id);
-    await writeFile(PENDING_FILE, JSON.stringify(pending, null, 2));
-
-    return new Response(`
-      <h2>❌ Testimonial Rejected</h2>
-      <p>The testimonial has been rejected and removed.</p>
-    `, {
-      headers: { 'Content-Type': 'text/html' }
+    await prisma.testimonial.delete({
+      where: { id }
     });
 
+    return new Response(`
+      <h2>❌ Rejected</h2>
+      <p>The testimonial has been rejected.</p>
+    `, { headers: { 'Content-Type': 'text/html' } });
   } catch (error) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }

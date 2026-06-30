@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote, X, Star } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { getLiveTestimonials } from "@/lib/testimonial-manager";
 import { testimonials } from "@/lib/site-data";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
@@ -21,25 +20,40 @@ export default function Testimonials() {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Load live testimonials on mount
   useEffect(() => {
     async function loadLiveTestimonials() {
-      const live = await getLiveTestimonials([...testimonials]);
-      setDisplayTestimonials(live);
+      try {
+        const res = await fetch('/api/get-testimonials');
+        const live = await res.json();
+        // Only override if we received an array back with items
+        if (Array.isArray(live) && live.length > 0) {
+          setDisplayTestimonials(live);
+        }
+      } catch (err) {
+        console.error("Failed to load testimonials:", err);
+      }
     }
     loadLiveTestimonials();
   }, []);
 
-  // Auto-rotate
+  // Auto-rotate — with safety check for division by zero
   useEffect(() => {
+    if (displayTestimonials.length === 0) return;
     const timer = setInterval(() => {
       setActive((prev) => (prev + 1) % displayTestimonials.length);
     }, 6000);
     return () => clearInterval(timer);
   }, [displayTestimonials.length]);
 
-  const prev = () => setActive((i) => (i - 1 + displayTestimonials.length) % displayTestimonials.length);
-  const next = () => setActive((i) => (i + 1) % displayTestimonials.length);
+  const prev = () => {
+    if (displayTestimonials.length === 0) return;
+    setActive((i) => (i - 1 + displayTestimonials.length) % displayTestimonials.length);
+  };
+  
+  const next = () => {
+    if (displayTestimonials.length === 0) return;
+    setActive((i) => (i + 1) % displayTestimonials.length);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,6 +80,9 @@ export default function Testimonials() {
       setSubmitting(false);
     }
   };
+
+  // Get current testimonial safely
+  const currentTestimonial = displayTestimonials[active];
 
   return (
     <section className="relative section-padding overflow-hidden">
@@ -97,71 +114,79 @@ export default function Testimonials() {
           </div>
 
           <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/95 backdrop-blur-md p-8 shadow-2xl sm:p-12">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -30 }}
-                transition={{ duration: 0.4 }}
-              >
-                <p className="text-xl leading-relaxed text-gray-800 sm:text-2xl">
-                  “{displayTestimonials[active].quote}”
-                </p>
+            {currentTestimonial ? (
+              <>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={active}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    {/* Fixed: Use .comment or fallback to .quote if static data uses it */}
+                    <p className="text-xl leading-relaxed text-gray-800 sm:text-2xl">
+                      “{currentTestimonial.comment || currentTestimonial.quote}”
+                    </p>
 
-                {/* Add Star Rating Here */}
-                <div className="flex gap-1 mt-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`text-xl ${star <= (displayTestimonials[active].rating || 5) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
-                    />
-                  ))}
-                </div>
-
-                <div className="mt-8 flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-teal text-sm font-bold text-white">
-                    {displayTestimonials[active].name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {displayTestimonials[active].name}
+                    {/* Star Rating */}
+                    <div className="flex gap-1 mt-4">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`text-xl ${star <= (currentTestimonial.rating || 5) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
+                        />
+                      ))}
                     </div>
-                    <div className="text-sm text-gray-600">
-                      {displayTestimonials[active].role}
+
+                    <div className="mt-8 flex items-center gap-4">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-teal text-sm font-bold text-white">
+                        {currentTestimonial.name?.charAt(0) || "P"}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">
+                          {currentTestimonial.name}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {currentTestimonial.role}
+                        </div>
+                      </div>
                     </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="mt-8 flex items-center justify-between">
+                  <div className="flex gap-2">
+                    {displayTestimonials.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActive(i)}
+                        className={`h-2 rounded-full transition-all ${i === active ? "w-8 bg-brand-green" : "w-2 bg-gray-300"}`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={prev}
+                      className="rounded-full border border-gray-200 p-2 text-gray-600 transition hover:border-brand-green hover:text-brand-green"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button
+                      onClick={next}
+                      className="rounded-full border border-gray-200 p-2 text-gray-600 transition hover:border-brand-green hover:text-brand-green"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="mt-8 flex items-center justify-between">
-              <div className="flex gap-2">
-                {displayTestimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActive(i)}
-                    className={`h-2 rounded-full transition-all ${i === active ? "w-8 bg-brand-green" : "w-2 bg-gray-300"
-                      }`}
-                  />
-                ))}
+              </>
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                No approved testimonials available yet.
               </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={prev}
-                  className="rounded-full border border-gray-200 p-2 text-gray-600 transition hover:border-brand-green hover:text-brand-green"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  onClick={next}
-                  className="rounded-full border border-gray-200 p-2 text-gray-600 transition hover:border-brand-green hover:text-brand-green"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -176,7 +201,7 @@ export default function Testimonials() {
         </div>
       </div>
 
-      {/* Modal Popup */}
+      {/* Modal Popup Code (Kept exactly as original) */}
       <AnimatePresence>
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
