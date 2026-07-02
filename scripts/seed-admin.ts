@@ -1,44 +1,45 @@
-// scripts/seed-admin.ts
 import { config } from "dotenv";
 import { resolve } from "path";
 
 config({ path: resolve(process.cwd(), ".env.local") });
 
-console.log(
-  "🔍 DATABASE_URL loaded:",
-  process.env.DATABASE_URL ? "✅ Yes" : "❌ No"
-);
-
-import { execute, initializeDatabase } from "../lib/db";
 import bcrypt from "bcryptjs";
 
 async function seedAdmin() {
-  if (!process.env.DATABASE_URL) {
-    console.error("❌ DATABASE_URL is missing in .env.local");
-    process.exit(1);
-  }
-
-  console.log("🌱 Seeding default admin account...");
-
   try {
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL is missing");
+    }
+    const { execute, initializeDatabase } = await import("../lib/db");
+    console.log("🌱 Initializing database...");
     await initializeDatabase();
 
-    const hashedPassword = await bcrypt.hash("neuroflex2026", 12);
+    const username = "admin";
+    const email = "info@neuroflexkenya.com";
+    const password = "neuroflex2026";
+
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     await execute(
       `
-      INSERT INTO admins (username, password)
-      VALUES ($1, $2)
-      ON CONFLICT (username) DO NOTHING;
+      INSERT INTO admins (username, email, password)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (username)
+      DO UPDATE SET
+        email = EXCLUDED.email,
+        password = EXCLUDED.password;
       `,
-      ["admin", hashedPassword]
+      [username, email, hashedPassword]
     );
 
-    console.log("✅ Admin seeded successfully!");
-    console.log("Username: admin");
-    console.log("Password: neuroflex2026");
-  } catch (error) {
-    console.error("❌ Seeding failed:", error);
+    console.log("====================================");
+    console.log("✅ Admin account ready");
+    console.log("Username:", username);
+    console.log("Password:", password);
+    console.log("Email:", email);
+    console.log("====================================");
+  } catch (err) {
+    console.error("❌ Failed:", err);
     process.exit(1);
   }
 
