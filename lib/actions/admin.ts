@@ -1,6 +1,6 @@
 "use server";
 
-import { sql } from "@/lib/db";
+import { execute, query } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { createHmac, timingSafeEqual } from "crypto";
 
@@ -80,50 +80,69 @@ function verifyToken(token: string) {
 }
 
 // ================== LOGIN ==================
-export async function loginAdmin(username: string, password: string): Promise<AdminLoginResult> {
+export async function loginAdmin(
+  username: string,
+  password: string
+): Promise<AdminLoginResult> {
   const normalizedUsername = username.trim().toLowerCase();
 
   if (!normalizedUsername || !password) {
-    return { success: false, error: "Username and password are required" };
+    return {
+      success: false,
+      error: "Username and password are required",
+    };
   }
 
   try {
-    const result = await sql`
-      SELECT * FROM admins 
-      WHERE username = ${normalizedUsername} 
+    const result = await query(
+      `
+      SELECT *
+      FROM admins
+      WHERE username = $1
       LIMIT 1
-    `;
+      `,
+      [normalizedUsername]
+    );
 
     const admin = result[0];
 
     if (admin) {
       const passwordMatches = await bcrypt.compare(password, admin.password);
+
       if (passwordMatches) {
         const now = Math.floor(Date.now() / 1000);
+
         const token = signToken({
           sub: admin.id,
           username: admin.username,
           iat: now,
           exp: now + TOKEN_TTL_SECONDS,
         });
-        return { success: true, token };
+
+        return {
+          success: true,
+          token,
+        };
       }
     }
   } catch (error) {
     console.warn("Database error during login:", error);
+
     if (!allowFallbackAdmin()) {
       return {
         success: false,
-        error: "Could not connect to database. Using fallback login is enabled."
+        error: "Could not connect to database.",
       };
     }
   }
 
-  // Fallback Admin
-  if (allowFallbackAdmin() && 
-      normalizedUsername === TEMP_ADMIN.username && 
-      password === TEMP_ADMIN.password) {
+  if (
+    allowFallbackAdmin() &&
+    normalizedUsername === TEMP_ADMIN.username &&
+    password === TEMP_ADMIN.password
+  ) {
     const now = Math.floor(Date.now() / 1000);
+
     const token = signToken({
       sub: 999,
       username: "admin",
@@ -131,74 +150,131 @@ export async function loginAdmin(username: string, password: string): Promise<Ad
       iat: now,
       exp: now + TOKEN_TTL_SECONDS,
     });
-    return { success: true, token, fallback: true };
+
+    return {
+      success: true,
+      token,
+      fallback: true,
+    };
   }
 
-  return { success: false, error: "Invalid username or password" };
+  return {
+    success: false,
+    error: "Invalid username or password",
+  };
 }
 
-// ================== REPORTS ==================
+// ================== SAVE REPORT ==================
 export async function saveReport(data: ReportInput) {
   try {
-    const result = await sql`
+    const result = await query(
+      `
       INSERT INTO reports (
-        report_no, patient_name, age, sex, residence, tel,
-        reporting_date, next_of_kin, presenting_history,
-        assessment_findings, intervention, review, created_by
-      ) VALUES (
-        ${data.reportNo || null},
-        ${data.patientName},
-        ${data.age ? parseInt(String(data.age)) : null},
-        ${data.sex || null},
-        ${data.residence || null},
-        ${data.tel || null},
-        ${data.reportingDate || null},
-        ${data.nextOfKin || null},
-        ${data.presentingHistory || null},
-        ${data.assessmentFindings || null},
-        ${data.intervention || null},
-        ${data.review || null},
-        'Dennis Masaki'
+        report_no,
+        patient_name,
+        age,
+        sex,
+        residence,
+        tel,
+        reporting_date,
+        next_of_kin,
+        presenting_history,
+        assessment_findings,
+        intervention,
+        review,
+        created_by
       )
-      RETURNING *;
-    `;
+      VALUES (
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13
+      )
+      RETURNING *
+      `,
+      [
+        data.reportNo || null,
+        data.patientName,
+        data.age ? parseInt(String(data.age)) : null,
+        data.sex || null,
+        data.residence || null,
+        data.tel || null,
+        data.reportingDate || null,
+        data.nextOfKin || null,
+        data.presentingHistory || null,
+        data.assessmentFindings || null,
+        data.intervention || null,
+        data.review || null,
+        "Dennis Masaki",
+      ]
+    );
 
-    return { success: true, report: result[0] };
-  } catch (error: any) {
+    return {
+      success: true,
+      report: result[0],
+    };
+  } catch (error) {
     console.error("Save report error:", error);
+
     return {
       success: false,
-      error: "Could not save report to database. Check your internet connection."
+      error: "Could not save report to database.",
     };
   }
 }
-
+// ================== GET REPORTS ==================
 export async function getReports() {
   try {
-    const reports = await sql`SELECT * FROM reports ORDER BY created_at DESC`;
-    return reports;
+    return await query(
+      `
+      SELECT *
+      FROM reports
+      ORDER BY created_at DESC
+      `
+    );
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+// ================== GET INQUIRIES ==================
+export async function getInquiries() {
+  try {
+    return await query(
+      `
+      SELECT *
+      FROM inquiries
+      ORDER BY created_at DESC
+      `
+    );
   } catch (error) {
     console.error(error);
     return [];
   }
 }
 
-// ================== INQUIRIES ==================
-export async function getInquiries() {
-  try {
-    const inquiries = await sql`SELECT * FROM inquiries ORDER BY created_at DESC`;
-    return inquiries;
-  } catch {
-    return [];
-  }
-}
+// ================== UPDATE INQUIRY STATUS ==================
 
-export async function updateInquiryStatus(id: number, status: string) {
+export async function updateInquiryStatus(
+  id: number,
+  status: string
+) {
   try {
-    await sql`UPDATE inquiries SET status = ${status} WHERE id = ${id}`;
-    return { success: true };
-  } catch {
-    return { success: false };
+    await execute(
+      `
+      UPDATE inquiries
+      SET status = $1
+      WHERE id = $2
+      `,
+      [status, id]
+    );
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+    };
   }
 }
 

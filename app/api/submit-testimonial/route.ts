@@ -1,27 +1,27 @@
-import prisma from '@/lib/prisma'; // 1. Use the safe global instance
-import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { execute, query } from "@/lib/db";
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
-// 2. Force dynamic execution so Next.js doesn't execute Prisma during build-time page generation
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
 export async function POST(request: Request) {
   try {
     const { name, role, comment, rating } = await request.json();
 
-    const testimonial = await prisma.testimonial.create({
-      data: {
-        name,
-        role,
-        comment,
-        rating: Number(rating),
-        approved: false
-      }
-    });
+    const rows = await query<{ id: number }>(
+      `
+      INSERT INTO "Testimonial"
+      (name, role, comment, rating, approved)
+      VALUES ($1, $2, $3, $4, false)
+      RETURNING id
+      `,
+      [name, role, comment, Number(rating)]
+    );
 
-    // Send email for approval
+    const testimonial = rows[0];
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -30,8 +30,11 @@ export async function POST(request: Request) {
       },
     });
 
-    const approveLink = `${process.env.NEXT_PUBLIC_SITE_URL}/api/approve-testimonial?id=${testimonial.id}`;
-    const rejectLink = `${process.env.NEXT_PUBLIC_SITE_URL}/api/reject-testimonial?id=${testimonial.id}`;
+    const approveLink =
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/approve-testimonial?id=${testimonial.id}`;
+
+    const rejectLink =
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/reject-testimonial?id=${testimonial.id}`;
 
     await transporter.sendMail({
       from: `"Neuroflex Kenya" <${process.env.EMAIL_USER}>`,
@@ -45,13 +48,19 @@ export async function POST(request: Request) {
         <p><strong>Comment:</strong></p>
         <blockquote>${comment}</blockquote>
         <p>
-          <a href="${approveLink}">✅ Approve</a> | <a href="${rejectLink}">❌ Reject</a>
+          <a href="${approveLink}">✅ Approve</a> |
+          <a href="${rejectLink}">❌ Reject</a>
         </p>
       `,
     });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
+    console.error("Testimonial submission failed:", error);
+
+    return NextResponse.json(
+      { error: "Failed to submit" },
+      { status: 500 }
+    );
   }
 }

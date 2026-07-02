@@ -1,52 +1,109 @@
-// lib/db.ts
-import dns from 'node:dns';
-dns.setDefaultResultOrder('ipv4first');
+import { Client } from "pg";
+import type { QueryResultRow } from "pg";
 
-import { neon } from "@neondatabase/serverless";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("❌ DATABASE_URL is not set in .env.local");
 }
 
-const sql = neon(process.env.DATABASE_URL, {
-  fetchOptions: { 
-    cache: "no-store", 
-    keepalive: true,
-    // Add retry for flaky connections
-  },
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
 });
 
-console.log("✅ Neon Database client initialized");
+let connected = false;
 
-export { sql };
+async function getClient() {
+  if (!connected) {
+    await client.connect();
+    connected = true;
+    console.log("✅ PostgreSQL connected");
+  }
+
+  return client;
+}
+
+export async function query<T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params: unknown[] = []
+): Promise<T[]> {
+  const db = await getClient();
+  const result = await db.query<T>(text, params);
+  return result.rows;
+}
+
+export async function execute(
+  text: string,
+  params: any[] = []
+) {
+  const db = await getClient();
+  return db.query(text, params);
+}
 
 export async function initializeDatabase() {
-  if (!process.env.DATABASE_URL) return false;
+  const db = await getClient();
 
   try {
     console.log("🔧 Initializing database tables...");
 
-    await sql`CREATE TABLE IF NOT EXISTS admins (
-      id SERIAL PRIMARY KEY,
-      username TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      created_at TIMESTAMP DEFAULT NOW()
-    )`;
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id SERIAL PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        email TEXT UNIQUE,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
 
-    await sql`CREATE TABLE IF NOT EXISTS reports (...)`;   // (keep your full tables)
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS inquiries (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        email TEXT,
+        message TEXT,
+        status TEXT DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
 
-    await sql`CREATE TABLE IF NOT EXISTS inquiries (...)`; // (keep your full tables)
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS reports (
+        id SERIAL PRIMARY KEY,
+        report_no TEXT,
+        patient_name TEXT NOT NULL,
+        age INTEGER,
+        sex TEXT,
+        residence TEXT,
+        tel TEXT,
+        reporting_date TEXT,
+        next_of_kin TEXT,
+        presenting_history TEXT,
+        assessment_findings TEXT,
+        intervention TEXT,
+        review TEXT,
+        created_by TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
 
-    await sql`
-      INSERT INTO admins (username, password)
-      VALUES ('admin', '$2a$12$8K5fK8v7vN9pL2mX9qR7tOe5vW8xY7zU9iO0pL2mX9qR7tOe5vW8xY')
-      ON CONFLICT (username) DO NOTHING;
-    `;
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS "Testimonial" (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        role TEXT NOT NULL,
+        comment TEXT NOT NULL,
+        rating INTEGER NOT NULL,
+        approved BOOLEAN DEFAULT false NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
 
-    console.log("✅ Database tables initialized successfully");
+    console.log("✅ Database initialized");
+
     return true;
-  } catch (error) {
-    console.error("⚠️ Database initialization failed:", error);
+  } catch (err) {
+    console.error(err);
     return false;
   }
 }

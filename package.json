@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "dotenv -e .env.local -- next build",
-    "postinstall": "prisma generate",
-    "start": "next start",
+    "dev": "NODE_OPTIONS=--no-network-family-autoselection next dev --webpack",
+    "build": "NODE_OPTIONS=--no-network-family-autoselection dotenv -e .env.local -- next build",
+    "start": "NODE_OPTIONS=--no-network-family-autoselection next start",
     "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "test:email": "npx tsx scripts/test-email.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
-    "@prisma/adapter-neon": "^7.8.0",
-    "@prisma/client": "^7.8.0",
     "@types/pg": "^8.20.0",
     "@vercel/kv": "^3.0.0",
     "bcryptjs": "^3.0.3",
@@ -26,12 +26,12 @@
     "lucide-react": "^1.17.0",
     "next": "16.2.7",
     "nodemailer": "^8.0.11",
-    "pg": "^8.21.0",
+    "pg": "^8.22.0",
     "postgres": "^3.4.9",
-    "prisma": "^7.8.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hot-toast": "^2.6.0",
+    "ws": "^8.21.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

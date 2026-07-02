@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, integer, boolean } from "drizzle-orm/pg-core";
 
 export const admins = pgTable("admins", {
   id: serial("id").primaryKey(),
@@ -34,4 +34,14 @@ export const reports = pgTable("reports", {
   review: text("review"),
   createdBy: text("created_by"),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const testimonials = pgTable("Testimonial", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  role: text("role").notNull(),
+  comment: text("comment").notNull(),
+  rating: integer("rating").notNull(),
+  approved: boolean("approved").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
