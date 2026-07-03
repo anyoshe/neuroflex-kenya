@@ -164,6 +164,41 @@ export async function loginAdmin(
   };
 }
 
+export async function generateReportNumber() {
+  try {
+    const rows = await query<{
+      report_no: string | null;
+    }>(`
+      SELECT report_no
+      FROM reports
+      ORDER BY id DESC
+      LIMIT 1
+    `);
+
+    if (rows.length === 0 || !rows[0].report_no) {
+      return "NRPT-0001";
+    }
+
+    const last = rows[0].report_no;
+
+    const match = last.match(/(\d+)$/);
+
+    if (!match) {
+      return "NRPT-0001";
+    }
+
+    const next =
+      Number(match[1]) + 1;
+
+    return `NRPT-${String(next).padStart(4, "0")}`;
+
+  } catch (error) {
+
+    console.error(error);
+
+    return "NRPT-0001";
+  }
+}
 // ================== SAVE REPORT ==================
 export async function saveReport(data: ReportInput) {
   try {
@@ -190,9 +225,9 @@ export async function saveReport(data: ReportInput) {
       RETURNING *
       `,
       [
-        data.reportNo || null,
+        data.reportNo,
         data.patientName,
-        data.age ? parseInt(String(data.age)) : null,
+        data.age ? parseInt(String(data.age), 10) : null,
         data.sex || null,
         data.residence || null,
         data.tel || null,
@@ -211,27 +246,150 @@ export async function saveReport(data: ReportInput) {
       report: result[0],
     };
   } catch (error) {
-    console.error("Save report error:", error);
+    console.error(error);
 
     return {
       success: false,
-      error: "Could not save report to database.",
+      error: "Could not save report.",
     };
   }
 }
+
 // ================== GET REPORTS ==================
+
 export async function getReports() {
   try {
     return await query(
       `
-      SELECT *
+      SELECT
+        id,
+        report_no,
+        patient_name,
+        age,
+        sex,
+        reporting_date,
+        created_at
       FROM reports
       ORDER BY created_at DESC
       `
     );
   } catch (error) {
     console.error(error);
+
     return [];
+  }
+}
+
+// ================== DELETE REPORT ==================
+
+export async function deleteReport(id: number) {
+  try {
+    await execute(
+      `
+      DELETE FROM reports
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      error: "Unable to delete report.",
+    };
+  }
+}
+
+// ================== GET SINGLE REPORT ==================
+
+export async function getReport(id: number) {
+  try {
+    const rows = await query<{
+      id: number;
+      report_no: string;
+      patient_name: string;
+      age: number;
+      sex: string;
+      residence: string | null;
+      tel: string | null;
+      reporting_date: string;
+      next_of_kin: string | null;
+      presenting_history: string | null;
+      assessment_findings: string | null;
+      intervention: string | null;
+      review: string | null;
+      created_at: string;
+    }>(
+      `
+      SELECT *
+      FROM reports
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [id]
+    );
+
+    return rows.length ? rows[0] : null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+// ================== UPDATE REPORT ==================
+
+export async function updateReport(
+  id: number,
+  data: ReportInput
+) {
+  try {
+    await execute(
+      `
+      UPDATE reports
+      SET
+        patient_name = $1,
+        age = $2,
+        sex = $3,
+        residence = $4,
+        tel = $5,
+        reporting_date = $6,
+        next_of_kin = $7,
+        presenting_history = $8,
+        assessment_findings = $9,
+        intervention = $10,
+        review = $11
+      WHERE id = $12
+      `,
+      [
+        data.patientName,
+        data.age ? Number(data.age) : null,
+        data.sex || null,
+        data.residence || null,
+        data.tel || null,
+        data.reportingDate || null,
+        data.nextOfKin || null,
+        data.presentingHistory || null,
+        data.assessmentFindings || null,
+        data.intervention || null,
+        data.review || null,
+        id,
+      ]
+    );
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      error: "Unable to update report.",
+    };
   }
 }
 // ================== GET INQUIRIES ==================
