@@ -45,6 +45,7 @@ export async function initializeDatabase() {
   try {
     console.log("🔧 Initializing database tables...");
 
+    // Admins
     await db.query(`
       CREATE TABLE IF NOT EXISTS admins (
         id SERIAL PRIMARY KEY,
@@ -55,18 +56,26 @@ export async function initializeDatabase() {
       )
     `);
 
+   // Inquiries - FULL SCHEMA
     await db.query(`
       CREATE TABLE IF NOT EXISTS inquiries (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
+        age INTEGER,
+        sex TEXT,
         phone TEXT NOT NULL,
+        residence TEXT,
         email TEXT,
+        service TEXT,
+        condition_cause TEXT,
+        preferred_date TEXT,
+        preferred_time TEXT,
         message TEXT,
         status TEXT DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
-
+     // Reports
     await db.query(`
       CREATE TABLE IF NOT EXISTS reports (
         id SERIAL PRIMARY KEY,
@@ -86,7 +95,7 @@ export async function initializeDatabase() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
-
+    // Testimonials
     await db.query(`
       CREATE TABLE IF NOT EXISTS "Testimonial" (
         id SERIAL PRIMARY KEY,

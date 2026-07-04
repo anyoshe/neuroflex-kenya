@@ -11,9 +11,16 @@ export const admins = pgTable("admins", {
 export const inquiries = pgTable("inquiries", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
+  age: integer("age"),
+  sex: text("sex"),
   phone: text("phone").notNull(),
+  residence: text("residence"),
   email: text("email"),
-  message: text("message").notNull(),
+  service: text("service"),
+  conditionCause: text("condition_cause"), 
+  preferredDate: text("preferred_date"),     
+  preferredTime: text("preferred_time"),
+  message: text("message"),
   status: text("status").default("pending"),
   createdAt: timestamp("created_at").defaultNow(),
 });

@@ -95,12 +95,9 @@ export default function AdminDashboard({
 
           <div className="flex justify-between items-center">
 
-            {/* <h1 className="text-xl md:text-2xl font-bold">
-              Neuroflex Admin
-            </h1> */}
             <Link href="#home" aria-label="Neuroflex Kenya home">
             <Logo size="small" />
-          </Link>
+             </Link>
 
             {/* Desktop */}
 

@@ -22,6 +22,21 @@ type ReportInput = {
   intervention?: string | null;
   review?: string | null;
 };
+// ================== NEW: Inquiry / Booking Type ==================
+type InquiryInput = {
+  name: string;
+  age?: number | null;
+  sex?: string | null;
+  phone: string;
+  residence?: string | null;
+  email?: string | null;
+  service?: string | null;
+  conditionCause?: string | null;
+  preferredDate?: string | null;
+  preferredTime?: string | null;
+  message?: string | null;
+  status?: string;
+};
 
 const TOKEN_TTL_SECONDS = 60 * 60 * 24 * 7;
 
@@ -392,47 +407,71 @@ export async function updateReport(
     };
   }
 }
-// ================== GET INQUIRIES ==================
+
+
+// ================== INQUIRIES / BOOKINGS ==================
+
 export async function getInquiries() {
   try {
-    return await query(
-      `
-      SELECT *
+    return await query(`
+      SELECT 
+        id,
+        name,
+        age,
+        sex,
+        phone,
+        residence,
+        email,
+        service,
+        condition_cause as "conditionCause",
+        preferred_date as "preferredDate",
+        preferred_time as "preferredTime",
+        message,
+        status,
+        created_at as "createdAt"
       FROM inquiries
       ORDER BY created_at DESC
-      `
-    );
+    `);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching inquiries:", error);
     return [];
   }
 }
 
-// ================== UPDATE INQUIRY STATUS ==================
-
-export async function updateInquiryStatus(
-  id: number,
-  status: string
-) {
+export async function updateInquiryStatus(id: number, status: string) {
   try {
     await execute(
-      `
-      UPDATE inquiries
-      SET status = $1
-      WHERE id = $2
-      `,
+      `UPDATE inquiries SET status = $1 WHERE id = $2`,
       [status, id]
     );
-
-    return {
-      success: true,
-    };
+    return { success: true };
   } catch (error) {
     console.error(error);
+    return { success: false, error: "Failed to update status" };
+  }
+}
 
-    return {
-      success: false,
-    };
+// Optional: Get single inquiry
+export async function getInquiry(id: number) {
+  try {
+    const rows = await query(`
+      SELECT * FROM inquiries WHERE id = $1 LIMIT 1
+    `, [id]);
+    return rows.length ? rows[0] : null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+// Optional: Delete inquiry
+export async function deleteInquiry(id: number) {
+  try {
+    await execute(`DELETE FROM inquiries WHERE id = $1`, [id]);
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Failed to delete inquiry" };
   }
 }
 

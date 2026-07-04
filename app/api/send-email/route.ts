@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getEmailErrorMessage, sendBookingEmails } from "@/lib/email";
+import { query } from "@/lib/db";
+import { getEmailErrorMessage, sendBookingEmails, verifyMailConnection } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,18 +16,44 @@ export async function POST(request: NextRequest) {
       service, 
       conditionCause, 
       preferredDate, 
-      preferredTime, // Destructured preferredTime field
+      preferredTime,
       message 
     } = body;
 
-    // Validation - Added preferredTime to the mandatory check
-    if (!name || !age || !sex || !phone || !residence || !service || !conditionCause || !preferredDate || !preferredTime) {
+    // Validation
+    if (!name || !phone || !service || !conditionCause || !preferredDate || !preferredTime) {
       return NextResponse.json({ 
         error: "Missing required fields. Please fill all mandatory fields." 
       }, { status: 400 });
     }
-
-    // Pass the residence and preferredTime variables forward into your email handler
+    // === INSERT INTO DATABASE ===
+    const rows = await query<{ id: number }>(
+      `
+      INSERT INTO inquiries 
+      (
+        name, age, sex, phone, residence, email, 
+        service, condition_cause, preferred_date, preferred_time, 
+        message, status
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pending')
+      RETURNING id
+      `,
+      [
+        name,
+        age ? parseInt(String(age), 10) : null,
+        sex || null,
+        phone,
+        residence || null,
+        email || null,
+        service,
+        conditionCause,
+        preferredDate,
+        preferredTime,
+        message || null,        // ← 11th parameter
+      ]
+    );
+    // === SEND EMAILS ===
+    await verifyMailConnection();
     await sendBookingEmails({
       name,
       age,
@@ -37,18 +64,19 @@ export async function POST(request: NextRequest) {
       service,
       conditionCause,
       preferredDate,
-      preferredTime, // Passed forward to email handler
+      preferredTime,
       message: message || "",
     });
-
+ 
     return NextResponse.json({ 
-      message: "Appointment request sent successfully" 
+      success: true,
+      message: "Appointment request received successfully"
     }, { status: 200 });
 
-  } catch (error) {
-    console.error("Email error:", error);
+  } catch (error: any) {
+    console.error("Booking submission failed:", error);
     return NextResponse.json(
-      { error: getEmailErrorMessage(error) },
+      { error: error.message || "Failed to submit appointment request" },
       { status: 500 }
     );
   }

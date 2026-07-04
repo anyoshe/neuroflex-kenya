@@ -27,17 +27,25 @@ export default function Services() {
             const Icon = service.icon;
             const isFirst = index === 0;
             const isLast = index === services.length - 1;
-            const isHighlighted = isFirst || isLast;
+            const isSecondLast = index === services.length - 2;
+            const isHighlighted =
+              isFirst || isSecondLast || isLast;
 
             return (
               <MotionReveal
                 key={service.title}
                 delay={index * 0.08}
-                className={`card-glow relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 transition-all duration-300 [&_img]:transition-transform [&_img]:duration-500 hover:[&_img]:scale-105 hover:border-brand-green/20 hover:shadow-lg ${
-                  isFirst ? "lg:col-span-2" : ""
-                } ${
-                  isLast ? "lg:col-span-3 mx-auto max-w-4xl" : ""
-                }`}
+                className={`card-glow relative overflow-hidden rounded-3xl
+                            border border-gray-100 bg-white p-8 transition-all duration-300
+                            [&_img]:transition-transform [&_img]:duration-500
+                            hover:[&_img]:scale-105 hover:border-brand-green/20 hover:shadow-lg
+
+                            ${isFirst ? "lg:col-span-2" : ""}
+
+                            ${isSecondLast ? "lg:col-span-1" : ""}
+
+                            ${isLast ? "lg:col-span-2" : ""}
+                            `}
               >
                 {/* Service Image */}
                 <div className="relative mb-6 h-56 w-full overflow-hidden rounded-2xl">
@@ -58,12 +66,11 @@ export default function Services() {
                   </div>
 
                   <h3 className="mb-3 text-2xl font-bold text-gray-900 transition-colors flex flex-wrap items-center gap-2">
-                    <span className={`rounded-lg px-1 transition-all duration-300 ${
-                      isHighlighted ? "[.card-glow:hover_&]:bg-brand-green/10 [.card-glow:hover_&]:text-brand-green" : ""
-                    }`}>
+                    <span className={`rounded-lg px-1 transition-all duration-300 ${isHighlighted ? "[.card-glow:hover_&]:bg-brand-green/10 [.card-glow:hover_&]:text-brand-green" : ""
+                      }`}>
                       {service.title}
                     </span>
-                    
+
                     {isHighlighted && (
                       <span className="inline-block rounded-full bg-brand-green/10 px-3 py-1 text-xs font-semibold text-brand-green">
                         {isFirst ? "Flagship" : "Popular Choice"}
@@ -71,9 +78,8 @@ export default function Services() {
                     )}
                   </h3>
 
-                  <p className={`leading-relaxed transition-all duration-300 text-gray-600 rounded-xl p-1 ${
-                    isHighlighted ? "[.card-glow:hover_&]:bg-brand-green/5 [.card-glow:hover_&]:text-gray-900" : ""
-                  }`}>
+                  <p className={`leading-relaxed transition-all duration-300 text-gray-600 rounded-xl p-1 ${isHighlighted ? "[.card-glow:hover_&]:bg-brand-green/5 [.card-glow:hover_&]:text-gray-900" : ""
+                    }`}>
                     {service.desc}
                   </p>
 
@@ -88,11 +94,10 @@ export default function Services() {
 
                     <a
                       href={`/services/${service.slug}`}
-                      className={`inline-flex items-center gap-1.5 text-sm font-semibold transition hover:gap-2 ${
-                        isHighlighted
+                      className={`inline-flex items-center gap-1.5 text-sm font-semibold transition hover:gap-2 ${isHighlighted
                           ? "text-brand-green underline decoration-brand-green/30"
                           : "text-gray-600 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       Learn more
                       <BookOpen size={16} />

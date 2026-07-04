@@ -10,23 +10,29 @@ export async function GET(request: NextRequest) {
 
   const url = new URL(request.url);
 
-  const reportUrl =
-    `${url.origin}/report/pdf?${url.searchParams.toString()}`;
 
+  const params = new URLSearchParams(url.searchParams);
+
+  params.set("pdf", "true");
+
+  const reportUrl = `${url.origin}/report/pdf?${params.toString()}`;
   await page.goto(reportUrl, {
     waitUntil: "networkidle",
   });
 
   const pdf = await page.pdf({
-    format: "A4",
-    printBackground: true,
-    margin: {
-      top: "4mm",
-      right: "4mm",
-      bottom: "4mm",
-      left: "4mm",
-    },
-  });
+  format: "A4",
+  printBackground: true,
+
+  margin: {
+    top: "10mm",      // almost flush with top
+    right: "5mm",
+    bottom: "10mm",
+    left: "5mm",
+  },
+
+  preferCSSPageSize: true,
+});
 
   await browser.close();
 

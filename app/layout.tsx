@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import FloatingBookingWidget from "@/components/FloatingBookingWidget";
 import ManifestLink from "@/components/ManifestLink";
 import SchemaMarkup from "@/components/SchemaMarkup"; // 1. Import it here
 import { Toaster } from "react-hot-toast";
 import "./report-preview.css";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -28,7 +26,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "NRPT Dennis Masaki" }],
   alternates: {
-    canonical: "/", 
+    canonical: "/",
   },
   icons: {
     icon: [
@@ -65,12 +63,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <SchemaMarkup /> {/* 2. Injected for Search Engines */}
+        <SchemaMarkup />
         <ManifestLink />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <FloatingBookingWidget />
+
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
+
         <Toaster position="top-center" />
       </body>
     </html>

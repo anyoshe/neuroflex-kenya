@@ -263,21 +263,21 @@ export default function ReportBuilder({
         .replace(/\s+/g, "_");
 
     await generatePDF({
-  reportNo,
+            reportNo,
 
-  patientName: formData.patientName,
-  age: formData.age,
-  sex: formData.sex,
-  residence: formData.residence,
-  tel: formData.tel,
-  reportingDate: formData.reportingDate,
-  nextOfKin: formData.nextOfKin,
-  presentingHistory: formData.presentingHistory,
-  assessmentFindings: formData.assessmentFindings,
-  intervention: formData.intervention,
-  review: formData.review,
-  createdBy: "Dennis Masaki",
-});
+            patientName: formData.patientName,
+            age: formData.age,
+            sex: formData.sex,
+            residence: formData.residence,
+            tel: formData.tel,
+            reportingDate: formData.reportingDate,
+            nextOfKin: formData.nextOfKin,
+            presentingHistory: formData.presentingHistory,
+            assessmentFindings: formData.assessmentFindings,
+            intervention: formData.intervention,
+            review: formData.review,
+            createdBy: "Dennis Masaki",
+          });
 
       setMessage({
         type: "success",

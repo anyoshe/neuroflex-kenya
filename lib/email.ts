@@ -3,11 +3,11 @@ import { contactInfo } from "@/lib/site-data";
 
 type BookingEmailPayload = {
   name: string;
-  age: string;
-  sex: string;
+  age?: string | number | null;
+  sex?: string | null;
   phone: string;
-  residence: string;
-  email: string;
+  residence?: string | null;
+  email?: string;
   service: string;
   conditionCause: string;
   preferredDate: string;
@@ -53,19 +53,31 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
   const { user, to, fromName } = getEmailConfig();
   const transporter = createMailTransporter();
 
-  const safe = {
-    name: escapeHtml(payload.name),
-    age: escapeHtml(payload.age),
-    sex: escapeHtml(payload.sex),
-    phone: escapeHtml(payload.phone),
-    residence: escapeHtml(payload.residence),
-    email: escapeHtml(payload.email || "Not provided"),
-    service: escapeHtml(payload.service),
-    conditionCause: escapeHtml(payload.conditionCause).replace(/\n/g, "<br>"),
-    preferredDate: escapeHtml(payload.preferredDate),
-    preferredTime: escapeHtml(payload.preferredTime), // Escaped preferredTime field
-    message: payload.message ? escapeHtml(payload.message).replace(/\n/g, "<br>") : "None",
-  };
+ const safe = {
+  name: escapeHtml(payload.name),
+
+  age: escapeHtml(String(payload.age ?? "")),
+
+  sex: escapeHtml(payload.sex ?? ""),
+
+  phone: escapeHtml(payload.phone),
+
+  residence: escapeHtml(payload.residence ?? ""),
+
+  email: escapeHtml(payload.email || "Not provided"),
+
+  service: escapeHtml(payload.service),
+
+  conditionCause: escapeHtml(payload.conditionCause).replace(/\n/g,"<br>"),
+
+  preferredDate: escapeHtml(payload.preferredDate),
+
+  preferredTime: escapeHtml(payload.preferredTime),
+
+  message: payload.message
+      ? escapeHtml(payload.message).replace(/\n/g,"<br>")
+      : "None",
+};
 
   const from = `"${fromName}" <${user}>`;
 

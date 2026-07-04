@@ -45,7 +45,7 @@ function Info({
 export default function ReportTemplate({ report }: Props) {
   return (
 
-    <div className="">
+    <div className="px-5 pb-5">
 
       {/* =================== HEADER =================== */}
 

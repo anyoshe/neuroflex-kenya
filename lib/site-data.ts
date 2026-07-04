@@ -22,7 +22,7 @@ export const stats = [
   { value: 500, suffix: "+", label: "Patients Treated" },
   { value: 98, suffix: "%", label: "Success Rate" },
   { value: 15, suffix: "+", label: "Years Experience" },
-  { value: 6, suffix: "", label: "Specialty Programs" },
+  { value: 10, suffix: "", label: "Specialty Programs" },
 ] as const;
 
 export const services: {
@@ -105,6 +105,30 @@ export const services: {
         "/images/services/musket1.webp",
         "/images/services/musket2.webp",
         "/images/services/physioimage5.webp"
+      ]
+    },
+
+    {
+      icon: Droplets,
+      title: "Cryotherapy",
+      desc: "Targeted cold therapy to reduce pain, inflammation, muscle soreness, and accelerate recovery after injury or surgery.",
+      image: "/images/services/Whole-Body-Cryotherapy.webp",
+      slug: "cryotherapy",
+      duration: "20 - 45 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Sports Injuries, Pain Relief, Post-Surgical Recovery",
+      benefits: [
+        "Reduces pain and inflammation",
+        "Speeds muscle recovery",
+        "Minimizes swelling and bruising",
+        "Enhances post-operative rehabilitation",
+        "Improves recovery after intense physical activity",
+        "Supports faster return to daily activities"
+      ],
+      galleryImages: [
+        "/images/services/cryotherapy1.webp",
+        "/images/services/cryotherapy4.webp",
+        "/images/services/cryotherapy3.webp"
       ]
     },
     {
