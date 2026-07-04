@@ -1,0 +1,19 @@
+@media screen and (max-width:768px) {
+
+  #report-preview .report-header{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    gap:24px !important;
+  }
+
+  #report-preview .report-contact{
+    text-align:center !important;
+  }
+
+  #report-preview img{
+    width:180px !important;
+    height:auto !important;
+  }
+
+}

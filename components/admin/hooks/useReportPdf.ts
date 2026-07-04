@@ -1,123 +1,124 @@
 "use client";
 
 export function useReportPdf() {
-  async function generatePDF(
-    reportId: string,
-    filename: string
-  ) {
+  
+async function generatePDF(report: any) {
+  const params = new URLSearchParams({
+    reportNo: report.reportNo,
+    patientName: report.patientName,
+    age: String(report.age ?? ""),
+    sex: report.sex ?? "",
+    residence: report.residence ?? "",
+    tel: report.tel ?? "",
+    reportingDate: report.reportingDate ?? "",
+    nextOfKin: report.nextOfKin ?? "",
+    presentingHistory: report.presentingHistory ?? "",
+    assessmentFindings: report.assessmentFindings ?? "",
+    intervention: report.intervention ?? "",
+    review: report.review ?? "",
+    createdBy: report.createdBy ?? "Dennis Masaki",
+  });
+
+  const response = await fetch(
+    `/api/report/pdf?${params.toString()}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to generate PDF.");
+  }
+
+  const blob = await response.blob();
+
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+
+  link.href = url;
+
+  link.download = `${report.reportNo}.pdf`;
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  link.remove();
+
+  window.URL.revokeObjectURL(url);
+}
+  function printReport(reportId: string) {
     const report = document.getElementById(reportId);
 
     if (!report) {
-      throw new Error("Report not found.");
+      throw new Error("Report preview not found.");
     }
 
-    // Dynamically import html2pdf to avoid SSR errors
-    const html2pdf =
-      (await import("html2pdf.js")).default;
-
-    await html2pdf()
-  .set({
-    margin: 10,
-    filename,
-
-    image: {
-      type: "jpeg",
-      quality: 1,
-    },
-
-    html2canvas: {
-      scale: 3,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    },
-
-    jsPDF: {
-      unit: "mm",
-      format: "a4",
-      orientation: "portrait",
-    },
-
-    pagebreak: {
-      mode: ["css", "legacy"],
-    },
-  } as any)
-  .from(report)
-  .save();
-  }
-
-  function printReport(reportId: string) {
-    const report =
-      document.getElementById(reportId);
-
-    if (!report) {
-      throw new Error("Report not found.");
-    }
-
-    const printWindow = window.open(
-      "",
-      "_blank",
-      "width=900,height=1200"
-    );
+    const printWindow = window.open("", "_blank");
 
     if (!printWindow) {
-      throw new Error(
-        "Unable to open print window."
-      );
+      throw new Error("Unable to open print window.");
     }
 
+    // Copy all loaded styles (Tailwind included)
+    const styles = Array.from(
+      document.querySelectorAll('link[rel="stylesheet"], style')
+    )
+      .map((style) => style.outerHTML)
+      .join("");
+
     printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
+    <!DOCTYPE html>
+    <html>
       <head>
         <title>Assessment Report</title>
 
+        ${styles}
+
         <style>
-          @page{
-            size:A4;
-            margin:15mm;
+          @page {
+            size: A4 portrait;
+            margin: 4mm;
+          }
+
+          html,
+          body {
+            margin: 0;
+            padding: 0;
+            background: white;
           }
 
           body{
-            margin:0;
-            padding:0;
-            background:#ffffff;
-            font-family:"Times New Roman",serif;
+              margin:0;
+              padding:0;
+              background:#fff;
           }
 
-          #wrapper{
-            width:210mm;
-            margin:auto;
-            padding:15mm;
-            box-sizing:border-box;
-            background:white;
+          #report-preview{
+              width:202mm;
+              margin:0 auto;
           }
 
-          img{
-            max-width:100%;
+          @media print {
+            body {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
           }
         </style>
-
       </head>
 
       <body>
-
-        <div id="wrapper">
-          ${report.outerHTML}
-        </div>
-
+        ${report.outerHTML}
       </body>
-
-      </html>
-    `);
+    </html>
+  `);
 
     printWindow.document.close();
-
     printWindow.focus();
 
     setTimeout(() => {
       printWindow.print();
       printWindow.close();
-    }, 500);
+    }, 700);
   }
 
   return {

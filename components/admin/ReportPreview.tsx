@@ -1,6 +1,5 @@
 "use client";
-
-import ReportTemplate from "./ReportTemplate";
+import ReportDocument from "./ReportDocument";
 
 type Props = {
 
@@ -27,52 +26,37 @@ export default function ReportPreview({
         Live Report Preview
 
       </h2>
+      <div className="bg-slate-200 rounded-xl p-6 flex justify-center">
 
-      <div className="bg-slate-200 rounded-xl p-6">
-
-        <ReportTemplate
-
-          report={{
-
-            reportNo,
-
-            patientName: formData.patientName,
-
-            age: formData.age,
-
-            sex: formData.sex,
-
-            residence: formData.residence,
-
-            tel: formData.tel,
-
-            reportingDate:
-              formData.reportingDate,
-
-            nextOfKin:
-              formData.nextOfKin,
-
-            presentingHistory:
-              formData.presentingHistory,
-
-            assessmentFindings:
-              formData.assessmentFindings,
-
-            intervention:
-              formData.intervention,
-
-            review:
-              formData.review,
-
-            createdBy:
-              "Dennis Masaki",
-
-          }}
-
-        />
+        <div
+              id="report-preview"
+              className="
+              report-preview
+              max-xl:scale-90
+              max-md:scale-75
+              origin-top
+            "
+            >
+              <ReportDocument
+                report={{
+                  reportNo,
+                  patientName: formData.patientName,
+                  age: formData.age,
+                  sex: formData.sex,
+                  residence: formData.residence,
+                  tel: formData.tel,
+                  reportingDate: formData.reportingDate,
+                  nextOfKin: formData.nextOfKin,
+                  presentingHistory: formData.presentingHistory,
+                  assessmentFindings: formData.assessmentFindings,
+                  intervention: formData.intervention,
+                  review: formData.review,
+                  createdBy: "Dennis Masaki",
+                }}
+          />
+        </div>
 
       </div>
-
     </div>
 
   );

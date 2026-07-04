@@ -7,6 +7,7 @@ import FloatingBookingWidget from "@/components/FloatingBookingWidget";
 import ManifestLink from "@/components/ManifestLink";
 import SchemaMarkup from "@/components/SchemaMarkup"; // 1. Import it here
 import { Toaster } from "react-hot-toast";
+import "./report-preview.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 

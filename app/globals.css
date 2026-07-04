@@ -12,9 +12,14 @@
     scroll-behavior: smooth;
   }
 
-  body {
+  /* body {
     @apply bg-white text-gray-900 antialiased;
-  }
+  } */
+   body{
+  background:#ffffff;
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+}
 
   ::selection {
     @apply bg-brand-teal/30 text-brand-navy;
@@ -99,4 +104,14 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@media print {
+
+    #report-preview{
+        width:210mm;
+        min-height:297mm;
+        padding:20mm;
+    }
+
 }

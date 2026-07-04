@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-
+import Link from "next/link";
+import Logo from "../Logo";
 import { getReports } from "@/lib/actions/admin";
 
 import InquiriesPanel from "./InquiriesPanel";
@@ -94,9 +95,12 @@ export default function AdminDashboard({
 
           <div className="flex justify-between items-center">
 
-            <h1 className="text-xl md:text-2xl font-bold">
+            {/* <h1 className="text-xl md:text-2xl font-bold">
               Neuroflex Admin
-            </h1>
+            </h1> */}
+            <Link href="#home" aria-label="Neuroflex Kenya home">
+            <Logo size="small" />
+          </Link>
 
             {/* Desktop */}
 

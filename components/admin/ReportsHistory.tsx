@@ -67,14 +67,14 @@ export default function ReportsHistory({
       )
     );
   }, [search, reports]);
-  
+
   async function handleEdit(id: number) {
-  const report = await getReport(id);
+    const report = await getReport(id);
 
-  if (!report) return;
+    if (!report) return;
 
-  onEdit(report);
-}
+    onEdit(report);
+  }
 
   async function handleDelete(id: number) {
     const confirmed = confirm(
@@ -210,13 +210,13 @@ export default function ReportsHistory({
                       >
                         <Eye size={18} />
                       </button>
-<button
-  onClick={() => handleEdit(report.id)}
-  className="p-2 rounded-lg hover:bg-blue-100"
-  title="Edit report"
->
-    <Pencil size={18} />
-</button>
+                      <button
+                        onClick={() => handleEdit(report.id)}
+                        className="p-2 rounded-lg hover:bg-blue-100"
+                        title="Edit report"
+                      >
+                        <Pencil size={18} />
+                      </button>
 
                       <button
                         onClick={() => handleDelete(report.id)}

@@ -42,6 +42,7 @@ export default function ReportBuilder({
   onUpdated,
 }: Props) {
   const [saving, setSaving] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const [reportNo, setReportNo] = useState("");
   const [editingId, setEditingId] =
@@ -261,14 +262,26 @@ export default function ReportBuilder({
         .trim()
         .replace(/\s+/g, "_");
 
-      await generatePDF(
-        "report-preview",
-        `${filename}.pdf`
-      );
+    await generatePDF({
+  reportNo,
+
+  patientName: formData.patientName,
+  age: formData.age,
+  sex: formData.sex,
+  residence: formData.residence,
+  tel: formData.tel,
+  reportingDate: formData.reportingDate,
+  nextOfKin: formData.nextOfKin,
+  presentingHistory: formData.presentingHistory,
+  assessmentFindings: formData.assessmentFindings,
+  intervention: formData.intervention,
+  review: formData.review,
+  createdBy: "Dennis Masaki",
+});
 
       setMessage({
         type: "success",
-        text: "PDF downloaded successfully.",
+        text: "text: 'Print dialog opened. Select 'Save as PDF' and click Save.",
       });
     } catch (err) {
       console.error(err);
@@ -283,7 +296,7 @@ export default function ReportBuilder({
 
   function handlePrint() {
     try {
-      printReport("report-preview");
+     printReport("report-preview");
     } catch (err) {
       console.error(err);
 
@@ -295,24 +308,64 @@ export default function ReportBuilder({
     }
   }
   return (
-    <div className="grid lg:grid-cols-2 gap-10">
+  <>
+    <div className="grid xl:grid-cols-[40%_60%] gap-8">
 
-      <ReportForm
-  reportNo={reportNo}
-  formData={formData}
-  handleChange={handleChange}
-  saveCurrentReport={handleSave}
-  downloadPDF={handleDownload}
-  printReport={handlePrint}
-  saving={saving}
-  message={message}
-  isEditing={editingId !== null}
-/>
-      <ReportPreview
-        reportNo={reportNo}
-        formData={formData}
-      />
+      {/* FORM */}
+      <div>
+        <ReportForm
+          reportNo={reportNo}
+          formData={formData}
+          handleChange={handleChange}
+          saveCurrentReport={handleSave}
+          downloadPDF={handleDownload}
+          printReport={handlePrint}
+          saving={saving}
+          message={message}
+          isEditing={editingId !== null}
+        />
+
+        {/* Mobile Preview Button */}
+        <button
+          className="xl:hidden mt-5 w-full rounded-xl bg-brand-navy text-white py-3"
+          onClick={() => setShowPreview(true)}
+        >
+          Preview Report
+        </button>
+      </div>
+
+      {/* Desktop Preview */}
+      <div className="hidden xl:block">
+        <ReportPreview
+          reportNo={reportNo}
+          formData={formData}
+        />
+      </div>
 
     </div>
-  );
+
+    {/* Mobile Preview Modal */}
+    {showPreview && (
+      <div className="fixed inset-0 z-50 bg-black/70">
+
+        <div className="absolute inset-0 overflow-auto p-4">
+
+          <button
+            onClick={() => setShowPreview(false)}
+            className="mb-4 rounded-lg bg-red-600 px-4 py-2 text-white"
+          >
+            Close Preview
+          </button>
+
+          <ReportPreview
+            reportNo={reportNo}
+            formData={formData}
+          />
+
+        </div>
+
+      </div>
+    )}
+  </>
+);
 }
