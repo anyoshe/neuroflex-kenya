@@ -1,19 +1,22 @@
 export const runtime = "nodejs";
 
-import { chromium } from "playwright-core";
-import chromiumExecutable from "@sparticuz/chromium";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const browser = await chromium.launch({
-      args: chromiumExecutable.args,
-      executablePath: await chromiumExecutable.executablePath(),
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
       headless: true,
     });
 
-    const page = await browser.newPage({
-      ignoreHTTPSErrors: true,
+    const page = await browser.newPage();
+
+    await page.setViewport({
+      width: 1280,
+      height: 720,
     });
 
     const url = new URL(request.url);
@@ -24,29 +27,27 @@ export async function GET(request: NextRequest) {
     const reportUrl = `${url.origin}/report/pdf?${params.toString()}`;
 
     await page.goto(reportUrl, {
-      waitUntil: "networkidle",
+      waitUntil: "networkidle0",
     });
 
     const pdf = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: {
-        top: "10mm",
-        right: "5mm",
-        bottom: "10mm",
-        left: "5mm",
-      },
-      preferCSSPageSize: true,
-    });
-
+  format: "A4",
+  printBackground: true,
+  preferCSSPageSize: true,
+  margin: {
+    top: "10mm",
+    right: "5mm",
+    bottom: "10mm",
+    left: "5mm",
+  },
+});
     await browser.close();
 
     return new NextResponse(Buffer.from(pdf), {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${
-          url.searchParams.get("reportNo") || "Assessment_Report"
-        }.pdf"`,
+        "Content-Disposition": `attachment; filename="${url.searchParams.get("reportNo") || "Assessment_Report"
+          }.pdf"`,
       },
     });
   } catch (error) {

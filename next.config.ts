@@ -6,9 +6,9 @@ const nextConfig: NextConfig = {
   },
 
   serverExternalPackages: [
-    "@sparticuz/chromium",
-    "playwright-core",
-  ],
+  "@sparticuz/chromium",
+  "puppeteer-core",
+],
 };
 
 export default nextConfig;
