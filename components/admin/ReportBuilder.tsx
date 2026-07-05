@@ -296,7 +296,21 @@ export default function ReportBuilder({
 
   function handlePrint() {
     try {
-      printReport("report-preview");
+      printReport({
+        reportNo,
+        patientName: formData.patientName,
+        age: formData.age,
+        sex: formData.sex,
+        residence: formData.residence,
+        tel: formData.tel,
+        reportingDate: formData.reportingDate,
+        nextOfKin: formData.nextOfKin,
+        presentingHistory: formData.presentingHistory,
+        assessmentFindings: formData.assessmentFindings,
+        intervention: formData.intervention,
+        review: formData.review,
+        createdBy: "Dennis Masaki",
+      });
     } catch (err) {
       console.error(err);
 

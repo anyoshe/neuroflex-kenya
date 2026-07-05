@@ -1,7 +1,227 @@
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { Menu, X } from "lucide-react";
+// import Link from "next/link";
+// import Logo from "../Logo";
+// import { getReports } from "@/lib/actions/admin";
+
+// import InquiriesPanel from "./InquiriesPanel";
+// import ReportBuilder from "./ReportBuilder";
+// import ReportsHistory from "./ReportsHistory";
+
+// type Report = {
+//   id: number;
+//   report_no: string;
+//   patient_name: string;
+//   age: number;
+//   sex: string;
+//   reporting_date: string;
+//   residence: string | null
+//   tel: string | null;
+//   next_of_kin: string | null;
+//   presenting_history: string | null;
+//   assessment_findings: string | null;
+//   intervention: string | null;
+//   review: string | null;
+//   created_at: string;
+// };
+
+// export default function AdminDashboard({
+//   onLogout,
+// }: {
+//   onLogout: () => void;
+// }) {
+//   const [activeTab, setActiveTab] = useState<
+//     "inquiries" | "new-report" | "reports"
+//   >("new-report");
+
+//   const [isMenuOpen, setIsMenuOpen] =
+//     useState(false);
+
+//   const [reports, setReports] =
+//     useState<Report[]>([]);
+
+//   const [editingReport, setEditingReport] =
+//     useState<Report | null>(null);
+//   const [loading, setLoading] = useState(true);
+
+//   async function loadReports() {
+//     try {
+//       setLoading(true);
+
+//       const data = await getReports();
+
+//       setReports(data as Report[]);
+//     } catch (err) {
+//       console.error(err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   }
+
+//   useEffect(() => {
+//     loadReports();
+//   }, []);
+
+//   const navItems = [
+//     {
+//       key: "inquiries",
+//       label: "Inquiries",
+//     },
+//     {
+//       key: "new-report",
+//       label: "New Report",
+//     },
+//     {
+//       key: "reports",
+//       label: "Reports History",
+//     },
+//   ] as const;
+
+//   function handleTabClick(
+//     tab: typeof activeTab
+//   ) {
+//     setActiveTab(tab);
+//     setIsMenuOpen(false);
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+
+//       <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
+
+//         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+
+//           <div className="flex justify-between items-center">
+
+//             <Link href="#home" aria-label="Neuroflex Kenya home">
+//             <Logo size="small" />
+//              </Link>
+
+//             {/* Desktop */}
+
+//             <div className="hidden md:flex gap-2 items-center">
+
+//               {navItems.map((item) => (
+
+//                 <button
+//                   key={item.key}
+//                   onClick={() =>
+//                     handleTabClick(item.key)
+//                   }
+//                   className={`px-6 py-2.5 rounded-xl font-medium transition ${activeTab === item.key
+//                       ? "bg-emerald-600 text-white"
+//                       : "hover:bg-gray-100"
+//                     }`}
+//                 >
+//                   {item.label}
+//                 </button>
+
+//               ))}
+
+//               <button
+//                 onClick={onLogout}
+//                 className="ml-4 text-red-600 hover:text-red-700"
+//               >
+//                 Logout
+//               </button>
+
+//             </div>
+
+//             {/* Mobile */}
+
+//             <button
+//               onClick={() =>
+//                 setIsMenuOpen(!isMenuOpen)
+//               }
+//               className="md:hidden p-2"
+//             >
+//               {isMenuOpen ? (
+//                 <X size={24} />
+//               ) : (
+//                 <Menu size={24} />
+//               )}
+//             </button>
+
+//           </div>
+
+//           {isMenuOpen && (
+
+//             <div className="md:hidden mt-4 border-t pt-4 space-y-2">
+
+//               {navItems.map((item) => (
+
+//                 <button
+//                   key={item.key}
+//                   onClick={() =>
+//                     handleTabClick(item.key)
+//                   }
+//                   className={`w-full text-left px-4 py-3 rounded-xl ${activeTab === item.key
+//                       ? "bg-emerald-600 text-white"
+//                       : "hover:bg-gray-100"
+//                     }`}
+//                 >
+//                   {item.label}
+//                 </button>
+
+//               ))}
+
+//               <button
+//                 onClick={() => {
+//                   setIsMenuOpen(false);
+//                   onLogout();
+//                 }}
+//                 className="w-full text-left px-4 py-3 text-red-600"
+//               >
+//                 Logout
+//               </button>
+
+//             </div>
+
+//           )}
+
+//         </div>
+
+//       </header>
+
+//       <main className="max-w-7xl mx-auto px-4 md:px-6 py-8">
+
+//         {activeTab === "inquiries" && (
+//           <InquiriesPanel />
+//         )}
+
+//         {activeTab === "new-report" && (
+//           <ReportBuilder
+//             editingReport={editingReport}
+//             onUpdated={() => {
+//               setEditingReport(null);
+//               loadReports();
+//             }}
+//           />
+//         )}
+
+//         {activeTab === "reports" && (
+//           <ReportsHistory
+//             reports={reports}
+//             loading={loading}
+//             onRefresh={loadReports}
+//             onEdit={(report) => {
+//               setEditingReport(report);
+//               setActiveTab("new-report");
+//             }}
+//           />
+//         )}
+
+//       </main>
+
+//     </div>
+//   );
+// }
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import Link from "next/link";
 import Logo from "../Logo";
 import { getReports } from "@/lib/actions/admin";
@@ -17,7 +237,7 @@ type Report = {
   age: number;
   sex: string;
   reporting_date: string;
-  residence: string | null
+  residence: string | null;
   tel: string | null;
   next_of_kin: string | null;
   presenting_history: string | null;
@@ -27,31 +247,17 @@ type Report = {
   created_at: string;
 };
 
-export default function AdminDashboard({
-  onLogout,
-}: {
-  onLogout: () => void;
-}) {
-  const [activeTab, setActiveTab] = useState<
-    "inquiries" | "new-report" | "reports"
-  >("new-report");
-
-  const [isMenuOpen, setIsMenuOpen] =
-    useState(false);
-
-  const [reports, setReports] =
-    useState<Report[]>([]);
-
-  const [editingReport, setEditingReport] =
-    useState<Report | null>(null);
+export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
+  const [activeTab, setActiveTab] = useState<"inquiries" | "new-report" | "reports">("new-report");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [editingReport, setEditingReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function loadReports() {
     try {
       setLoading(true);
-
       const data = await getReports();
-
       setReports(data as Report[]);
     } catch (err) {
       console.error(err);
@@ -65,106 +271,78 @@ export default function AdminDashboard({
   }, []);
 
   const navItems = [
-    {
-      key: "inquiries",
-      label: "Inquiries",
-    },
-    {
-      key: "new-report",
-      label: "New Report",
-    },
-    {
-      key: "reports",
-      label: "Reports History",
-    },
+    { key: "inquiries", label: "Inquiries", icon: null },
+    { key: "new-report", label: "New Report", icon: null },
+    { key: "reports", label: "Reports History", icon: null },
   ] as const;
 
-  function handleTabClick(
-    tab: typeof activeTab
-  ) {
+  const handleTabClick = (tab: typeof activeTab) => {
     setActiveTab(tab);
     setIsMenuOpen(false);
-  }
+    if (tab === "new-report") setEditingReport(null);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-
+      {/* Sticky Header */}
       <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
-
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link href="#" aria-label="Neuroflex Kenya Admin">
+              <Logo size="small" />
+            </Link>
 
-          <div className="flex justify-between items-center">
-
-            <Link href="#home" aria-label="Neuroflex Kenya home">
-            <Logo size="small" />
-             </Link>
-
-            {/* Desktop */}
-
-            <div className="hidden md:flex gap-2 items-center">
-
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-2">
               {navItems.map((item) => (
-
                 <button
                   key={item.key}
-                  onClick={() =>
-                    handleTabClick(item.key)
-                  }
-                  className={`px-6 py-2.5 rounded-xl font-medium transition ${activeTab === item.key
-                      ? "bg-emerald-600 text-white"
-                      : "hover:bg-gray-100"
-                    }`}
+                  onClick={() => handleTabClick(item.key)}
+                  className={`px-6 py-3 rounded-2xl font-medium transition-all ${
+                    activeTab === item.key
+                      ? "bg-brand-navy text-white shadow-md"
+                      : "hover:bg-gray-100 text-gray-700"
+                  }`}
                 >
                   {item.label}
                 </button>
-
               ))}
 
               <button
                 onClick={onLogout}
-                className="ml-4 text-red-600 hover:text-red-700"
+                className="ml-6 flex items-center gap-2 text-red-600 hover:text-red-700 px-4 py-2 rounded-2xl hover:bg-red-50 transition-all"
               >
+                <LogOut size={20} />
                 Logout
               </button>
-
             </div>
 
-            {/* Mobile */}
-
+            {/* Mobile Menu Button */}
             <button
-              onClick={() =>
-                setIsMenuOpen(!isMenuOpen)
-              }
-              className="md:hidden p-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-3 rounded-2xl hover:bg-gray-100 transition-all"
+              aria-label="Toggle menu"
             >
-              {isMenuOpen ? (
-                <X size={24} />
-              ) : (
-                <Menu size={24} />
-              )}
+              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
-
           </div>
 
+          {/* Mobile Menu */}
           {isMenuOpen && (
-
-            <div className="md:hidden mt-4 border-t pt-4 space-y-2">
-
+            <div className="md:hidden mt-4 border-t pt-4 space-y-1 bg-white rounded-3xl shadow-lg p-3">
               {navItems.map((item) => (
-
                 <button
                   key={item.key}
-                  onClick={() =>
-                    handleTabClick(item.key)
-                  }
-                  className={`w-full text-left px-4 py-3 rounded-xl ${activeTab === item.key
-                      ? "bg-emerald-600 text-white"
+                  onClick={() => handleTabClick(item.key)}
+                  className={`w-full text-left px-6 py-4 rounded-2xl text-lg font-medium transition-all ${
+                    activeTab === item.key
+                      ? "bg-brand-navy text-white"
                       : "hover:bg-gray-100"
-                    }`}
+                  }`}
                 >
                   {item.label}
                 </button>
-
               ))}
 
               <button
@@ -172,24 +350,19 @@ export default function AdminDashboard({
                   setIsMenuOpen(false);
                   onLogout();
                 }}
-                className="w-full text-left px-4 py-3 text-red-600"
+                className="w-full text-left px-6 py-4 text-red-600 hover:bg-red-50 rounded-2xl flex items-center gap-3 text-lg font-medium"
               >
+                <LogOut size={22} />
                 Logout
               </button>
-
             </div>
-
           )}
-
         </div>
-
       </header>
 
+      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-
-        {activeTab === "inquiries" && (
-          <InquiriesPanel />
-        )}
+        {activeTab === "inquiries" && <InquiriesPanel />}
 
         {activeTab === "new-report" && (
           <ReportBuilder
@@ -212,9 +385,7 @@ export default function AdminDashboard({
             }}
           />
         )}
-
       </main>
-
     </div>
   );
 }

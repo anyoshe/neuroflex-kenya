@@ -1,4 +1,4 @@
-import ReportDocument from "@/components/admin/ReportDocument";
+import PrintReportDocument from "@/components/admin/PrintReportDocument";
 
 type Props = {
   searchParams: Promise<{
@@ -25,23 +25,23 @@ export default async function PdfPage({
 
   return (
     <div className="bg-white">
-      <ReportDocument
-        report={{
-          reportNo: params.reportNo ?? "",
-          patientName: params.patientName ?? "",
-          age: params.age ?? "",
-          sex: params.sex ?? "",
-          residence: params.residence ?? "",
-          tel: params.tel ?? "",
-          reportingDate: params.reportingDate ?? "",
-          nextOfKin: params.nextOfKin ?? "",
-          presentingHistory: params.presentingHistory ?? "",
-          assessmentFindings: params.assessmentFindings ?? "",
-          intervention: params.intervention ?? "",
-          review: params.review ?? "",
-          createdBy: params.createdBy ?? "Dennis Masaki",
-        }}
-      />
+      <PrintReportDocument
+  report={{
+    reportNo: params.reportNo ?? "",
+    patientName: params.patientName ?? "",
+    age: params.age ?? "",
+    sex: params.sex ?? "",
+    residence: params.residence ?? "",
+    tel: params.tel ?? "",
+    reportingDate: params.reportingDate ?? "",
+    nextOfKin: params.nextOfKin ?? "",
+    presentingHistory: params.presentingHistory ?? "",
+    assessmentFindings: params.assessmentFindings ?? "",
+    intervention: params.intervention ?? "",
+    review: params.review ?? "",
+    createdBy: params.createdBy ?? "Dennis Masaki",
+  }}
+/>
     </div>
   );
 }

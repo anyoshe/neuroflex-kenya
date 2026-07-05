@@ -1,5 +1,5 @@
 "use client";
-
+import PrintReportDocument from "./PrintReportDocument";
 import { X, Printer, Download } from "lucide-react";
 import ReportDocument from "./ReportDocument";
 import { useReportPdf } from "./hooks/useReportPdf";
@@ -19,6 +19,22 @@ export default function ReportViewer({
 
   if (!open || !report) return null;
 
+  const reportData = {
+    reportNo: report.report_no,
+    patientName: report.patient_name,
+    age: report.age,
+    sex: report.sex,
+    residence: report.residence,
+    tel: report.tel,
+    reportingDate: report.reporting_date,
+    nextOfKin: report.next_of_kin,
+    presentingHistory: report.presenting_history,
+    assessmentFindings: report.assessment_findings,
+    intervention: report.intervention,
+    review: report.review,
+    createdBy: report.created_by ?? "Dennis Masaki",
+  };
+
   async function handleDownload() {
     const filename = (
       report.report_no ||
@@ -27,29 +43,17 @@ export default function ReportViewer({
     ).replace(/\s+/g, "_");
 
     try {
-    await generatePDF({
-  reportNo: report.report_no,
-  patientName: report.patient_name,
-  age: report.age,
-  sex: report.sex,
-  residence: report.residence,
-  tel: report.tel,
-  reportingDate: report.reporting_date,
-  nextOfKin: report.next_of_kin,
-  presentingHistory: report.presenting_history,
-  assessmentFindings: report.assessment_findings,
-  intervention: report.intervention,
-  review: report.review,
-  createdBy: report.created_by ?? "Dennis Masaki",
-});
+      await generatePDF(reportData);
     } catch (error) {
       console.error(error);
+
     }
   }
 
   function handlePrint() {
     try {
-      printReport("report-preview");
+      // printReport("report-preview");
+      printReport(reportData);
     } catch (error) {
       console.error(error);
     }
@@ -93,23 +97,7 @@ export default function ReportViewer({
 
             <div id="report-preview">
 
-              <ReportDocument
-                report={{
-                  reportNo: report.report_no,
-                  patientName: report.patient_name,
-                  age: report.age,
-                  sex: report.sex,
-                  residence: report.residence,
-                  tel: report.tel,
-                  reportingDate: report.reporting_date,
-                  nextOfKin: report.next_of_kin,
-                  presentingHistory: report.presenting_history,
-                  assessmentFindings: report.assessment_findings,
-                  intervention: report.intervention,
-                  review: report.review,
-                  createdBy: report.created_by || "Dennis Masaki",
-                }}
-              />
+              <ReportDocument report={reportData} />
 
             </div>
 
