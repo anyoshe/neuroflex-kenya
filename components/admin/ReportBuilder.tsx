@@ -73,27 +73,27 @@ export default function ReportBuilder({
     generatePDF,
     printReport,
   } = useReportPdf();
- 
- useEffect(() => {
-  // Don't generate a new number while editing
-  if (editingReport) return;
 
-  async function loadNumber() {
-    try {
-      const number = await generateReportNumber();
-      setReportNo(number);
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    // Don't generate a new number while editing
+    if (editingReport) return;
 
-      setMessage({
-        type: "error",
-        text: "Failed to generate report number.",
-      });
+    async function loadNumber() {
+      try {
+        const number = await generateReportNumber();
+        setReportNo(number);
+      } catch (err) {
+        console.error(err);
+
+        setMessage({
+          type: "error",
+          text: "Failed to generate report number.",
+        });
+      }
     }
-  }
 
-  loadNumber();
-}, [editingReport]);
+    loadNumber();
+  }, [editingReport]);
 
   useEffect(() => {
 
@@ -111,30 +111,30 @@ export default function ReportBuilder({
 
   }, [message]);
 
- useEffect(() => {
-  if (!editingReport) {
-    setEditingId(null);
-    return;
-  }
+  useEffect(() => {
+    if (!editingReport) {
+      setEditingId(null);
+      return;
+    }
 
-  setEditingId(editingReport.id);
+    setEditingId(editingReport.id);
 
-  setReportNo(editingReport.report_no);
+    setReportNo(editingReport.report_no);
 
-  setFormData({
-    patientName: editingReport.patient_name ?? "",
-    age: String(editingReport.age ?? ""),
-    sex: editingReport.sex ?? "",
-    residence: editingReport.residence ?? "",
-    tel: editingReport.tel ?? "",
-    reportingDate: editingReport.reporting_date ?? "",
-    nextOfKin: editingReport.next_of_kin ?? "",
-    presentingHistory: editingReport.presenting_history ?? "",
-    assessmentFindings: editingReport.assessment_findings ?? "",
-    intervention: editingReport.intervention ?? "",
-    review: editingReport.review ?? "",
-  });
-}, [editingReport]);
+    setFormData({
+      patientName: editingReport.patient_name ?? "",
+      age: String(editingReport.age ?? ""),
+      sex: editingReport.sex ?? "",
+      residence: editingReport.residence ?? "",
+      tel: editingReport.tel ?? "",
+      reportingDate: editingReport.reporting_date ?? "",
+      nextOfKin: editingReport.next_of_kin ?? "",
+      presentingHistory: editingReport.presenting_history ?? "",
+      assessmentFindings: editingReport.assessment_findings ?? "",
+      intervention: editingReport.intervention ?? "",
+      review: editingReport.review ?? "",
+    });
+  }, [editingReport]);
 
   function handleChange(
     e:
@@ -151,107 +151,107 @@ export default function ReportBuilder({
   }
 
   async function resetForm() {
-  setEditingId(null);
+    setEditingId(null);
 
-  setFormData({
-    ...emptyForm,
-    reportingDate: new Date().toISOString().split("T")[0],
-  });
-
-  const nextNumber = await generateReportNumber();
-  setReportNo(nextNumber);
-}
-
- async function handleSave() {
-  if (saving) return;
-
-  setMessage(null);
-
-  if (!formData.patientName.trim()) {
-    setMessage({
-      type: "error",
-      text: "Patient name is required.",
+    setFormData({
+      ...emptyForm,
+      reportingDate: new Date().toISOString().split("T")[0],
     });
-    return;
+
+    const nextNumber = await generateReportNumber();
+    setReportNo(nextNumber);
   }
 
-  try {
-    setSaving(true);
+  async function handleSave() {
+    if (saving) return;
 
-    let result;
+    setMessage(null);
 
-    // ===========================
-    // UPDATE EXISTING REPORT
-    // ===========================
-    if (editingId !== null) {
-      result = await updateReport(editingId, formData);
+    if (!formData.patientName.trim()) {
+      setMessage({
+        type: "error",
+        text: "Patient name is required.",
+      });
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      let result;
+
+      // ===========================
+      // UPDATE EXISTING REPORT
+      // ===========================
+      if (editingId !== null) {
+        result = await updateReport(editingId, formData);
+
+        if (!result.success) {
+          setMessage({
+            type: "error",
+            text: result.error ?? "Unable to update report.",
+          });
+          return;
+        }
+
+        setMessage({
+          type: "success",
+          text: "Report updated successfully.",
+        });
+
+        setEditingId(null);
+
+        resetForm();
+
+        const nextNumber = await generateReportNumber();
+        setReportNo(nextNumber);
+
+        onUpdated?.();
+
+        return;
+      }
+
+      // ===========================
+      // CREATE NEW REPORT
+      // ===========================
+      result = await saveReport({
+        reportNo,
+        ...formData,
+      });
 
       if (!result.success) {
         setMessage({
           type: "error",
-          text: result.error ?? "Unable to update report.",
+          text: result.error ?? "Unable to save report.",
         });
         return;
       }
 
       setMessage({
         type: "success",
-        text: "Report updated successfully.",
+        text: "Assessment report saved successfully.",
       });
-
-      setEditingId(null);
 
       resetForm();
 
       const nextNumber = await generateReportNumber();
+
       setReportNo(nextNumber);
 
       onUpdated?.();
 
-      return;
-    }
+    } catch (err) {
+      console.error(err);
 
-    // ===========================
-    // CREATE NEW REPORT
-    // ===========================
-    result = await saveReport({
-      reportNo,
-      ...formData,
-    });
-
-    if (!result.success) {
       setMessage({
         type: "error",
-        text: result.error ?? "Unable to save report.",
+        text: "Unexpected error while saving report.",
       });
-      return;
+
+    } finally {
+      setSaving(false);
     }
-
-    setMessage({
-      type: "success",
-      text: "Assessment report saved successfully.",
-    });
-
-    resetForm();
-
-    const nextNumber = await generateReportNumber();
-
-    setReportNo(nextNumber);
-
-    onUpdated?.();
-
-  } catch (err) {
-    console.error(err);
-
-    setMessage({
-      type: "error",
-      text: "Unexpected error while saving report.",
-    });
-
-  } finally {
-    setSaving(false);
   }
-}
 
   async function handleDownload() {
     try {
@@ -262,22 +262,22 @@ export default function ReportBuilder({
         .trim()
         .replace(/\s+/g, "_");
 
-    await generatePDF({
-            reportNo,
+      await generatePDF({
+        reportNo,
 
-            patientName: formData.patientName,
-            age: formData.age,
-            sex: formData.sex,
-            residence: formData.residence,
-            tel: formData.tel,
-            reportingDate: formData.reportingDate,
-            nextOfKin: formData.nextOfKin,
-            presentingHistory: formData.presentingHistory,
-            assessmentFindings: formData.assessmentFindings,
-            intervention: formData.intervention,
-            review: formData.review,
-            createdBy: "Dennis Masaki",
-          });
+        patientName: formData.patientName,
+        age: formData.age,
+        sex: formData.sex,
+        residence: formData.residence,
+        tel: formData.tel,
+        reportingDate: formData.reportingDate,
+        nextOfKin: formData.nextOfKin,
+        presentingHistory: formData.presentingHistory,
+        assessmentFindings: formData.assessmentFindings,
+        intervention: formData.intervention,
+        review: formData.review,
+        createdBy: "Dennis Masaki",
+      });
 
       setMessage({
         type: "success",
@@ -296,7 +296,7 @@ export default function ReportBuilder({
 
   function handlePrint() {
     try {
-     printReport("report-preview");
+      printReport("report-preview");
     } catch (err) {
       console.error(err);
 
@@ -308,64 +308,75 @@ export default function ReportBuilder({
     }
   }
   return (
-  <>
-    <div className="grid xl:grid-cols-[40%_60%] gap-8">
+    <>
+      <div className="grid xl:grid-cols-[40%_60%] gap-8">
 
-      {/* FORM */}
-      <div>
-        <ReportForm
-          reportNo={reportNo}
-          formData={formData}
-          handleChange={handleChange}
-          saveCurrentReport={handleSave}
-          downloadPDF={handleDownload}
-          printReport={handlePrint}
-          saving={saving}
-          message={message}
-          isEditing={editingId !== null}
-        />
+        {/* FORM */}
+        <div>
+          <ReportForm
+            reportNo={reportNo}
+            formData={formData}
+            handleChange={handleChange}
+            saveCurrentReport={handleSave}
+            downloadPDF={handleDownload}
+            printReport={handlePrint}
+            saving={saving}
+            message={message}
+            isEditing={editingId !== null}
+          />
 
-        {/* Mobile Preview Button */}
-        <button
-          className="xl:hidden mt-5 w-full rounded-xl bg-brand-navy text-white py-3"
-          onClick={() => setShowPreview(true)}
-        >
-          Preview Report
-        </button>
-      </div>
-
-      {/* Desktop Preview */}
-      <div className="hidden xl:block">
-        <ReportPreview
-          reportNo={reportNo}
-          formData={formData}
-        />
-      </div>
-
-    </div>
-
-    {/* Mobile Preview Modal */}
-    {showPreview && (
-      <div className="fixed inset-0 z-50 bg-black/70">
-
-        <div className="absolute inset-0 overflow-auto p-4">
-
+          {/* Mobile Preview Button */}
           <button
-            onClick={() => setShowPreview(false)}
-            className="mb-4 rounded-lg bg-red-600 px-4 py-2 text-white"
+            className="xl:hidden mt-5 w-full rounded-xl bg-brand-navy text-white py-3"
+            onClick={() => setShowPreview(true)}
           >
-            Close Preview
+            Preview Report
           </button>
+        </div>
 
+        {/* Desktop Preview */}
+        <div className="hidden xl:block">
           <ReportPreview
             reportNo={reportNo}
             formData={formData}
           />
-
         </div>
 
       </div>
-    )}
-  </>
-);
+
+
+      {/* Mobile Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3">
+
+          <div className="bg-white rounded-2xl w-full h-full max-h-[95vh] flex flex-col">
+
+            {/* Header */}
+            <div className="flex items-center justify-between border-b px-4 py-3">
+              <h2 className="font-semibold text-lg">
+                Report Preview
+              </h2>
+
+              <button
+                onClick={() => setShowPreview(false)}
+                className="rounded-lg bg-red-600 hover:bg-red-700 px-4 py-2 text-white transition"
+              >
+                Close
+              </button>
+            </div>
+
+            {/* Preview */}
+            <div className="flex-1 overflow-auto p-3">
+              <ReportPreview
+                reportNo={reportNo}
+                formData={formData}
+              />
+            </div>
+
+          </div>
+
+        </div>
+      )}
+    </>
+  );
 }

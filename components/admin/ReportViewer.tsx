@@ -59,7 +59,8 @@ export default function ReportViewer({
     <div className="flex justify-center">
       <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-6">
 
-        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-7xl h-[95vh] flex flex-col">
+
+        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl h-[95vh] flex flex-col">
 
           {/* Header */}
 
