@@ -26,10 +26,10 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
 
         {/* Smart Tech Bento Grid Layout */}
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-12">
-          
+
           {/* Main Booking Hub - Glass Light Tech Card */}
-          <MotionReveal 
-            className="lg:col-span-7 flex flex-col justify-between rounded-3xl p-8 glass-light card-glow group" 
+          <MotionReveal
+            className="lg:col-span-7 flex flex-col justify-between rounded-3xl p-8 glass-light card-glow group"
             delay={0.1}
           >
             <div>
@@ -37,7 +37,7 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
                 <span className="flex h-2 w-2 rounded-full bg-brand-teal animate-pulse" />
                 Live Scheduling Sync
               </div>
-              
+
               <h3 className="text-3xl font-bold tracking-tight text-brand-navy mb-3">
                 Ready to Start Your Recovery?
               </h3>
@@ -54,7 +54,7 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
                 Book Appointment Now
                 <Calendar size={18} className="transition-transform group-hover/btn:scale-110" />
               </button>
-              
+
               <div className="mt-4 flex items-center gap-2 text-xs text-gray-500 font-medium">
                 <ShieldCheck size={14} className="text-brand-green" />
                 Secure & Encrypted Scheduling
@@ -63,12 +63,13 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
           </MotionReveal>
 
           {/* Interactive Map Box - Standard Light Tech Frame */}
-          <MotionReveal 
-            className="lg:col-span-5 h-[350px] lg:h-auto min-h-[300px] overflow-hidden rounded-3xl border border-gray-200/60 shadow-lg shadow-brand-navy/5 relative group" 
+          <MotionReveal
+            className="lg:col-span-5 h-[350px] lg:h-auto min-h-[300px] overflow-hidden rounded-3xl border border-gray-200/60 shadow-lg shadow-brand-navy/5 relative group"
             delay={0.2}
           >
-            {/* <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7906161117143!2d36.8920197!3d-1.3004863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f12494ca2bafb%3A0xf2b0bf96b7e33828!2sFedha%20Rd%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1719260000000!5m2!1sen!2ske"
+
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988!2d36.8961964!3d-1.3122836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zTVZRWCs zR0ogTmFpcm9iaQ!5e0!3m2!1sen!2ske!4v1720000000000!5m2!1sen!2ske"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -76,17 +77,7 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="relative z-0 scale-[1.01] transition-transform duration-500 group-hover:scale-100"
-            /> */}
-            <iframe
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988!2d36.8961964!3d-1.3122836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zTVZRWCs zR0ogTmFpcm9iaQ!5e0!3m2!1sen!2ske!4v1720000000000!5m2!1sen!2ske"
-  width="100%"
-  height="100%"
-  style={{ border: 0 }}
-  allowFullScreen
-  loading="lazy"
-  referrerPolicy="no-referrer-when-downgrade"
-  className="relative z-0 scale-[1.01] transition-transform duration-500 group-hover:scale-100"
-/>
+            />
           </MotionReveal>
 
           {/* Bottom Row - Micro-Grid Contact Nodes matching brand style rules */}
@@ -118,7 +109,7 @@ export default function ContactInfo({ onBookAppointment }: ContactInfoProps) {
               colorClass: "text-brand-navy bg-brand-navy/5",
             },
           ].map(({ icon: Icon, label, value, href, colorClass }, idx) => (
-            <MotionReveal 
+            <MotionReveal
               key={label}
               className="lg:col-span-3 md:col-span-1"
               delay={0.1 * (idx + 1)}

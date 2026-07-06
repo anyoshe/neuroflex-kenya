@@ -68,7 +68,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   // Validates current step fields before letting the client move forward
   const validateStep = (): boolean => {
     const fieldErrors: Partial<Record<keyof FormData, string>> = {};
-    
+
     if (step === 1) {
       if (form.name.length < 2) fieldErrors.name = "Full name is required";
       if (!form.age) fieldErrors.age = "Age is required";
@@ -120,6 +120,22 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     setSubmitting(true);
 
     try {
+      // Save inquiry to the database first
+      const inquiryResponse = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const inquiryData = await inquiryResponse.json();
+
+      if (!inquiryResponse.ok) {
+        throw new Error(
+          inquiryData.error || "Failed to save inquiry."
+        );
+      }
       if (submissionMethod === "email") {
         const response = await fetch("/api/send-email", {
           method: "POST",
@@ -131,10 +147,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         if (!response.ok) throw new Error(data.error || "Failed to send email");
 
         toast.success("Appointment request sent successfully!");
-     } else {
+
+      } else {
         const whatsappNumber = "254729213135";
-        const whatsappMessage = 
-          `*🟢 NEUROFLEX AND PHYSIO WELLNESS CENTER 🟢*%0A%0A` + 
+        const whatsappMessage =
+          `*🟢 NEUROFLEX AND PHYSIO WELLNESS CENTER 🟢*%0A%0A` +
           `👤 *Patient Name:* ${encodeURIComponent(form.name)}%0A` +
           `🎂 *Age:* ${form.age}    |    *Sex:* ${form.sex}%0A` +
           `📞 *Phone:* ${encodeURIComponent(form.phone)}%0A` +
@@ -148,8 +165,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           `────────────────%0A` +
           `Sent from Neuroflex Kenya Website`;
 
-        window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, "_blank");
-        toast.success("Opening WhatsApp...");
+        window.open(
+          `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`,
+          "_blank"
+        );
+
+        toast.success(
+          "Inquiry saved. Opening WhatsApp..."
+        );
       }
       setForm(initialForm);
       setStep(1);
@@ -211,7 +234,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           {/* Dynamic Card Container */}
           <div className="flex-1 overflow-y-auto p-6 md:p-8">
             <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-              
+
               {/* CARD 1: PERSONAL INFORMATION */}
               {step === 1 && (
                 <div className="space-y-5 animate-fadeIn">
@@ -264,7 +287,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               {step === 2 && (
                 <div className="space-y-5 animate-fadeIn">
                   <h3 className="text-lg font-bold text-brand-navy border-b pb-2">Step 2: Consultation Details</h3>
-                  
+
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-gray-700">Service Required <span className="text-red-500">*</span></label>
                     <select name="service" value={form.service} onChange={handleChange} className={inputClass}>
@@ -293,7 +316,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               {step === 3 && (
                 <div className="space-y-6 animate-fadeIn">
                   <h3 className="text-lg font-bold text-brand-navy border-b pb-2">Step 3: Scheduling & Preferences</h3>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="mb-1.5 block text-sm font-medium text-gray-700">Preferred Appointment Date <span className="text-red-500">*</span></label>

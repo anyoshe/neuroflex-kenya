@@ -34,11 +34,13 @@ type FormData = {
 
 type Props = {
   editingReport?: any;
+  prefillReport?: any;
   onUpdated?: () => void;
 };
 
 export default function ReportBuilder({
   editingReport,
+  prefillReport,
   onUpdated,
 }: Props) {
   const [saving, setSaving] = useState(false);
@@ -46,6 +48,9 @@ export default function ReportBuilder({
 
   const [reportNo, setReportNo] = useState("");
   const [editingId, setEditingId] =
+    useState<number | null>(null);
+
+  const [inquiryId, setInquiryId] =
     useState<number | null>(null);
 
   const [message, setMessage] =
@@ -75,25 +80,16 @@ export default function ReportBuilder({
   } = useReportPdf();
 
   useEffect(() => {
-    // Don't generate a new number while editing
+    // Existing report → keep its report number
     if (editingReport) return;
 
     async function loadNumber() {
-      try {
-        const number = await generateReportNumber();
-        setReportNo(number);
-      } catch (err) {
-        console.error(err);
-
-        setMessage({
-          type: "error",
-          text: "Failed to generate report number.",
-        });
-      }
+      const number = await generateReportNumber();
+      setReportNo(number);
     }
 
     loadNumber();
-  }, [editingReport]);
+  }, [editingReport, prefillReport]);
 
   useEffect(() => {
 
@@ -114,10 +110,12 @@ export default function ReportBuilder({
   useEffect(() => {
     if (!editingReport) {
       setEditingId(null);
+      setInquiryId(null);
       return;
     }
 
     setEditingId(editingReport.id);
+    setInquiryId(editingReport.inquiry_id ?? null);
 
     setReportNo(editingReport.report_no);
 
@@ -135,6 +133,28 @@ export default function ReportBuilder({
       review: editingReport.review ?? "",
     });
   }, [editingReport]);
+
+  useEffect(() => {
+    if (!prefillReport) return;
+
+    setEditingId(null);
+
+    setInquiryId(prefillReport.inquiry_id ?? null);
+
+    setFormData({
+      patientName: prefillReport.patient_name ?? "",
+      age: String(prefillReport.age ?? ""),
+      sex: prefillReport.sex ?? "",
+      residence: prefillReport.residence ?? "",
+      tel: prefillReport.tel ?? "",
+      reportingDate: prefillReport.reporting_date ?? "",
+      nextOfKin: prefillReport.next_of_kin ?? "",
+      presentingHistory: prefillReport.presenting_history ?? "",
+      assessmentFindings: "",
+      intervention: "",
+      review: "",
+    });
+  }, [prefillReport]);
 
   function handleChange(
     e:
@@ -211,13 +231,12 @@ export default function ReportBuilder({
         return;
       }
 
-      // ===========================
-      // CREATE NEW REPORT
-      // ===========================
       result = await saveReport({
         reportNo,
+        inquiryId,
         ...formData,
       });
+      console.log("Saving report with inquiryId:", inquiryId);
 
       if (!result.success) {
         setMessage({

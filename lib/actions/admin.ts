@@ -21,6 +21,7 @@ type ReportInput = {
   assessmentFindings?: string | null;
   intervention?: string | null;
   review?: string | null;
+  inquiryId?: number | null;
 };
 // ================== NEW: Inquiry / Booking Type ==================
 type InquiryInput = {
@@ -232,10 +233,11 @@ export async function saveReport(data: ReportInput) {
         assessment_findings,
         intervention,
         review,
+        inquiry_id,
         created_by
       )
       VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14
       )
       RETURNING *
       `,
@@ -252,10 +254,26 @@ export async function saveReport(data: ReportInput) {
         data.assessmentFindings || null,
         data.intervention || null,
         data.review || null,
+        data.inquiryId ?? null,
         "Dennis Masaki",
       ]
     );
-
+  if (data.inquiryId) {
+  await query(
+    `
+      UPDATE inquiries
+      SET
+        status = 'reported',
+        report_no = $1,
+        reported_at = NOW()
+      WHERE id = $2
+    `,
+    [
+      data.reportNo,
+      data.inquiryId,
+    ]
+  );
+}
     return {
       success: true,
       report: result[0],
