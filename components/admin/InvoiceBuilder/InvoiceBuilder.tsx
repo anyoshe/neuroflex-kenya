@@ -1,6 +1,18 @@
 "use client";
+import { useState, useEffect } from "react";
+import PatientDetails from "./PatientDetails";
+import Diagnosis from "./Diagnosis";
+import InvoiceItems from "./InvoiceItems";
+import CustomerInformation from "./CustomerInformation";
+import ServiceSelector from "./ServiceSelector";
+import { useServiceItems } from "./hooks/useServiceItems";
+import PaymentSummary from "./PaymentSummary";
+import PaymentInformation from "./PaymentInformation";
+import { useInvoiceTotals } from "./hooks/useInvoiceTotals";
+
 
 type Props = {
+
   open: boolean;
   report: any;
   onClose: () => void;
@@ -11,6 +23,69 @@ export default function InvoiceBuilder({
   report,
   onClose,
 }: Props) {
+
+  const [serviceId, setServiceId] = useState<number | null>(null);
+  const {
+    items,
+    setItems,
+    loading,
+  } = useServiceItems(serviceId);
+
+  const invoiceNo = "NINV-0001";
+
+
+  const [invoiceData, setInvoiceData] = useState({
+
+    diagnosis: "",
+
+    customerType: "PRIVATE",
+
+    organization: "",
+
+    contactPerson: "",
+
+    insuranceCompany: "",
+
+    policyNumber: "",
+
+    authorizationNumber: "",
+
+    billingType: "CASH",
+
+    paymentMethod: "Cash",
+
+    paymentTerms: "Immediate",
+
+    referenceNumber: "",
+
+    vatRate: 0,
+
+    amountPaid: 0,
+
+    discount: 0,
+
+    notes: "",
+
+  });
+  const {
+    subtotal,
+    discountAmount,
+    taxableAmount,
+    vatAmount,
+    grandTotal,
+  } = useInvoiceTotals({
+    items,
+    discount: invoiceData.discount,
+    vatRate: invoiceData.vatRate,
+  });
+  useEffect(() => {
+    if (!report) return;
+
+    setInvoiceData((prev) => ({
+      ...prev,
+      diagnosis: report.assessment_findings ?? "",
+    }));
+  }, [report]);
   if (!open || !report) return null;
 
   return (
@@ -49,62 +124,140 @@ export default function InvoiceBuilder({
 
           {/* Patient Information */}
 
-          <div>
+          <PatientDetails
+            report={report}
+            invoiceNo={invoiceNo}
+          />
+          <Diagnosis
+            diagnosis={invoiceData.diagnosis}
+            setDiagnosis={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                diagnosis: value,
+              }))
+            }
+          />
+          <ServiceSelector
+            value={serviceId}
+            onChange={setServiceId}
+          />
 
-            <h3 className="font-bold text-lg text-brand-navy mb-4">
-              Patient Details
-            </h3>
+          {/* Customer Information */}
+          <CustomerInformation
+            customerType={invoiceData.customerType}
+            setCustomerType={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                customerType: value,
+              }))
+            }
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            organization={invoiceData.organization}
+            setOrganization={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                organization: value,
+              }))
+            }
 
-              <Field
-                label="Patient Name"
-                value={report.patient_name}
-              />
+            contactPerson={invoiceData.contactPerson}
+            setContactPerson={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                contactPerson: value,
+              }))
+            }
 
-              <Field
-                label="Age"
-                value={report.age}
-              />
+            insuranceCompany={invoiceData.insuranceCompany}
+            setInsuranceCompany={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                insuranceCompany: value,
+              }))
+            }
 
-              <Field
-                label="Sex"
-                value={report.sex}
-              />
+            policyNumber={invoiceData.policyNumber}
+            setPolicyNumber={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                policyNumber: value,
+              }))
+            }
 
-              <Field
-                label="Telephone"
-                value={report.tel}
-              />
+            authorizationNumber={invoiceData.authorizationNumber}
+            setAuthorizationNumber={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                authorizationNumber: value,
+              }))
+            }
+          />
+          <InvoiceItems
+            items={items}
+            setItems={setItems}
+          />
 
-              <Field
-                label="Residence"
-                value={report.residence}
-              />
+          <PaymentSummary
+            items={items}
+            discount={invoiceData.discount}
+            setDiscount={(value) =>
+              setInvoiceData(prev => ({
+                ...prev,
+                discount: value,
+              }))
+            }
 
-              <Field
-                label="Report Number"
-                value={report.report_no}
-              />
+            vatRate={invoiceData.vatRate}
+            setVatRate={(value) =>
+              setInvoiceData(prev => ({
+                ...prev,
+                vatRate: value,
+              }))
+            }
+          />
+          <PaymentInformation
+            billingType={invoiceData.billingType}
+            setBillingType={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                billingType: value,
+              }))
+            }
 
-            </div>
+            paymentMethod={invoiceData.paymentMethod}
+            setPaymentMethod={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                paymentMethod: value,
+              }))
+            }
 
-          </div>
+            paymentTerms={invoiceData.paymentTerms}
+            setPaymentTerms={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                paymentTerms: value,
+              }))
+            }
 
-          {/* Invoice Items */}
+            referenceNumber={invoiceData.referenceNumber}
+            setReferenceNumber={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                referenceNumber: value,
+              }))
+            }
 
-          <div>
+            amountPaid={invoiceData.amountPaid}
+            setAmountPaid={(value) =>
+              setInvoiceData((prev) => ({
+                ...prev,
+                amountPaid: value,
+              }))
+            }
 
-            <h3 className="font-bold text-lg text-brand-navy mb-4">
-              Invoice Items
-            </h3>
-
-            <p className="text-gray-500">
-              Invoice table coming next...
-            </p>
-
-          </div>
-
+            total={grandTotal}
+          />
         </div>
 
       </div>

@@ -7,7 +7,7 @@ import {
   deleteReport,
 } from "@/lib/actions/admin";
 import ReportViewer from "./ReportViewer";
-import InvoiceBuilder from "./InvoiceBuilder";
+import InvoiceBuilder from "./InvoiceBuilder/InvoiceBuilder";
 
 import {
   Search,
