@@ -101,7 +101,8 @@ export default function InquiriesPanel({
     }
   };
   return (
-    <div className="space-y-6">
+    // <div className="space-y-6">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-3xl shadow-xl p-6 md:p-8">
         <div>
@@ -125,7 +126,8 @@ export default function InquiriesPanel({
 
       {/* Desktop Table */}
       <div className="hidden md:block bg-white rounded-3xl shadow-xl overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* <div className="overflow-x-auto"> */}
+        <div className="w-full">
           <table className="w-full">
             <thead className="bg-brand-navy text-white">
               <tr>

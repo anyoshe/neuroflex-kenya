@@ -47,18 +47,18 @@ export default function InvoiceItems({
   };
 
   const addItem = () => {
-    setItems((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        item_code: "CUSTOM",
-        description: "",
-        quantity: 1,
-        unitPrice: 0,
-        editable: true,
-      },
-    ]);
-  };
+  setItems((prev) => [
+    ...prev,
+    {
+      id: 0,
+      item_code: "CUSTOM",
+      description: "",
+      quantity: 1,
+      unitPrice: 0,
+      editable: true,
+    },
+  ]);
+};
 
   const subtotal = items.reduce(
     (sum, item) =>

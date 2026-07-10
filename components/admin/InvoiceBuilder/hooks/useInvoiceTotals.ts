@@ -5,12 +5,14 @@ type Props = {
   items: Item[];
   vatRate: number;
   discount: number;
+  amountPaid: number;
 };
 
 export function useInvoiceTotals({
   items,
   vatRate,
   discount,
+  amountPaid,
 }: Props) {
 
   const subtotal = items.reduce(
@@ -32,11 +34,15 @@ export function useInvoiceTotals({
   const grandTotal =
     taxableAmount + vatAmount;
 
-  return {
-    subtotal,
-    discountAmount,
-    taxableAmount,
-    vatAmount,
-    grandTotal,
-  };
+  const balance =
+  grandTotal - Number(amountPaid);
+
+ return {
+  subtotal,
+  discountAmount,
+  taxableAmount,
+  vatAmount,
+  grandTotal,
+  balance,
+};
 }

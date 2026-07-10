@@ -9,6 +9,7 @@ import { useServiceItems } from "./hooks/useServiceItems";
 import PaymentSummary from "./PaymentSummary";
 import PaymentInformation from "./PaymentInformation";
 import { useInvoiceTotals } from "./hooks/useInvoiceTotals";
+import SaveInvoiceButton from "./SaveInvoiceButton";
 
 
 type Props = {
@@ -25,6 +26,7 @@ export default function InvoiceBuilder({
 }: Props) {
 
   const [serviceId, setServiceId] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
   const {
     items,
     setItems,
@@ -68,16 +70,116 @@ export default function InvoiceBuilder({
 
   });
   const {
-    subtotal,
-    discountAmount,
-    taxableAmount,
-    vatAmount,
-    grandTotal,
-  } = useInvoiceTotals({
-    items,
-    discount: invoiceData.discount,
-    vatRate: invoiceData.vatRate,
-  });
+  subtotal,
+  discountAmount,
+  taxableAmount,
+  vatAmount,
+  grandTotal,
+  balance,
+} = useInvoiceTotals({
+  items,
+  discount: invoiceData.discount,
+  vatRate: invoiceData.vatRate,
+  amountPaid: invoiceData.amountPaid,
+});
+
+  async function saveInvoice() {
+
+  if (!serviceId) {
+
+    alert("Select a service.");
+
+    return;
+
+  }
+
+  setSaving(true);
+
+  try {
+
+    const res = await fetch("/api/invoices", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+
+        reportId: report.id,
+
+        serviceId,
+
+        customerType: invoiceData.customerType,
+
+        organization: invoiceData.organization,
+
+        contactPerson: invoiceData.contactPerson,
+
+        insuranceCompany: invoiceData.insuranceCompany,
+
+        policyNumber: invoiceData.policyNumber,
+
+        authorizationNumber: invoiceData.authorizationNumber,
+
+        billingType: invoiceData.billingType,
+
+        paymentMethod: invoiceData.paymentMethod,
+
+        paymentTerms: invoiceData.paymentTerms,
+
+        subtotal,
+
+        discount: invoiceData.discount,
+
+        vatRate: invoiceData.vatRate,
+
+        vatAmount,
+
+        total: grandTotal,
+
+        amountPaid: invoiceData.amountPaid,
+
+        balance,
+
+        diagnosis: invoiceData.diagnosis,
+
+        notes: invoiceData.notes,
+
+        createdBy: "Admin",
+
+        items,
+
+      }),
+
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+
+      throw new Error(data.message);
+
+    }
+
+    alert(`Invoice ${data.invoiceNo} created successfully.`);
+
+    onClose();
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert("Failed to save invoice.");
+
+  } finally {
+
+    setSaving(false);
+
+  }
+
+}
   useEffect(() => {
     if (!report) return;
 
@@ -258,6 +360,10 @@ export default function InvoiceBuilder({
 
             total={grandTotal}
           />
+          <SaveInvoiceButton
+    saving={saving}
+    onSave={saveInvoice}
+/>
         </div>
 
       </div>
