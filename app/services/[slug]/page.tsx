@@ -1,147 +1,178 @@
-"use client";
-
-import { useState, use } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, CheckCircle } from "lucide-react";
-import { services } from "@/lib/site-data";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ContactModal from "@/components/Contact";
+import ServiceSchema from "./ServiceSchema";
+import ServiceClient from "./ServiceClient";
+import { services } from "@/lib/site-data";
+import FaqSchema from "./FaqSchema";
+import BreadcrumbSchema from "./BreadcrumbSchema";
 
-export default function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  // Safe unwrapping of async params inside Client Components
-  const { slug } = use(params);
-  const service = services.find((s) => s.slug === slug);
+type Props = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+
+  const { slug } = await params;
+
+  const service = services.find(
+    (s) => s.slug === slug
+  );
+
+  if (!service) return {};
+
+  const url =
+    `https://www.neuroflexkenya.com/services/${service.slug}`;
+
+  return {
+
+    title: `${service.title} | Physiotherapy in Nairobi | Neuroflex Kenya`,
+
+    description: service.overview,
+
+    keywords: [
+      service.title,
+      "Physiotherapy Nairobi",
+      "Neurological Rehabilitation Kenya",
+      "Neuroflex Kenya",
+      service.bestFor,
+    ],
+
+    robots: {
+      index: true,
+      follow: true,
+    },
+    authors: [
+      {
+        name: "Neuroflex Kenya",
+      },
+    ],
+
+    category: "Healthcare",
+
+    alternates: {
+      canonical: url,
+    },
+
+    openGraph: {
+
+      title: `${service.title} | Neuroflex Kenya`,
+
+      description: service.overview,
+
+      url,
+
+      type: "article",
+
+      images: [
+        {
+          url: service.image,
+          width: 1200,
+          height: 630,
+          alt: service.title,
+        },
+      ],
+
+    },
+
+    twitter: {
+
+      card: "summary_large_image",
+
+      title: service.title,
+
+      description: service.overview,
+
+      images: [service.image],
+
+    },
+
+  };
+
+}
+
+export async function generateStaticParams() {
+  return services.map((service) => ({
+    slug: service.slug,
+  }));
+}
+
+export default async function Page({
+  params,
+}: Props) {
+
+  const { slug } = await params;
+
+  const service = services.find(
+    (s) => s.slug === slug
+  );
 
   if (!service) notFound();
 
+  const schema = {
+
+    "@context": "https://schema.org",
+
+    "@type": "MedicalTherapy",
+
+    name: service.title,
+
+    description: service.overview,
+
+    image:
+      `https://www.neuroflexkenya.com${service.image}`,
+
+    provider: {
+
+      "@type": "MedicalBusiness",
+
+      name: "Neuroflex Kenya",
+
+      telephone: "+254729213135",
+
+      address: {
+
+        "@type": "PostalAddress",
+
+        addressLocality: "Nairobi",
+
+        addressCountry: "KE",
+
+      },
+
+    },
+
+    areaServed: "Kenya",
+
+    url:
+      `https://www.neuroflexkenya.com/services/${service.slug}`,
+
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-6xl mx-auto px-6 pt-24 pb-20">
-        
-        {/* Back Button */}
-        <div className="mb-6">
-          <Link 
-            href="/#services" 
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green hover:text-emerald-700 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm transition-all hover:shadow-md"
-          >
-            <ArrowLeft size={16} />
-            Back to All Services
-          </Link>
-        </div>
 
-        {/* Hero Section */}
-        <div className="relative h-[350px] rounded-3xl overflow-hidden mb-12">
-          <Image
-            src={service.image}
-            alt={service.title}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30" />
-          <div className="absolute bottom-12 left-12 text-white pr-6">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4">{service.title}</h1>
-            <p className="text-sm sm:text-base md:text-xl max-w-xl">{service.desc}</p>
-          </div>
-        </div>
+    <>
 
-        {/* Gallery - Single Column on Mobile, Regular Grid on Desktop */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-semibold mb-8 text-center">Visual Journey</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {service.galleryImages?.map((img, i) => (
-              <div key={i} className="relative aspect-video md:aspect-square rounded-2xl overflow-hidden shadow-md">
-                <Image
-                  src={img}
-                  alt={`${service.title} ${i + 1}`}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(schema),
+        }}
+      />
 
-        <div className="grid lg:grid-cols-12 gap-12">
-          {/* Main Content */}
-          <div className="lg:col-span-8 space-y-14">
-            <div>
-              <h2 className="text-3xl font-semibold mb-6">What is {service.title}?</h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                {service.desc}
-              </p>
-            </div>
+      <>
+        <ServiceSchema service={service} />
+        <FaqSchema faq={service.faq} />
+        <BreadcrumbSchema service={service} />
+        <ServiceClient
+          params={Promise.resolve({ slug })}
+        />
+      </>
+    </>
 
-            <div>
-              <h2 className="text-3xl font-semibold mb-6">Key Benefits</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {service.benefits.map((benefit, i) => (
-                  <div key={i} className="flex gap-3 bg-white p-5 rounded-2xl">
-                    <CheckCircle className="text-emerald-600 mt-1 flex-shrink-0" size={24} />
-                    <span>{benefit}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-3xl font-semibold mb-6">What to Expect in a Session</h2>
-              <p className="text-gray-600 mb-6">Sessions are gentle, relaxing, and tailored to your needs.</p>
-              <ul className="space-y-4 text-gray-600">
-                <li className="flex gap-3"><span className="font-medium">•</span> Thorough initial assessment</li>
-                <li className="flex gap-3"><span className="font-medium">•</span> Personalized treatment plan</li>
-                <li className="flex gap-3"><span className="font-medium">•</span> One-on-one care with specialist</li>
-                <li className="flex gap-3"><span className="font-medium">•</span> Home care recommendations</li>
-              </ul>
-            </div>
-
-            <div>
-              <h2 className="text-3xl font-semibold mb-6">At-Home Care Tips</h2>
-              <p className="text-gray-600 leading-relaxed">
-                You can support your recovery between sessions with simple exercises, proper posture, and consistent movement as recommended by your therapist.
-              </p>
-            </div>
-          </div>
-
-          {/* Sidebar Info - Clean Original Aesthetic Layout */}
-          <div className="lg:col-span-4">
-            <div className="bg-white rounded-3xl p-8 sticky top-24 border shadow-sm">
-              <h3 className="text-2xl font-semibold mb-6">Service Details</h3>
-              <div className="space-y-6">
-                <div className="flex justify-between py-3 border-b">
-                  <span className="text-gray-600">Duration</span>
-                  <span className="font-medium">{service.duration}</span>
-                </div>
-                <div className="flex justify-between py-3 border-b">
-                  <span className="text-gray-600">Price Range</span>
-                  <span className="font-medium">{service.priceRange}</span>
-                </div>
-                <div className="flex justify-between py-3 border-b">
-                  <span className="text-gray-600">Best For</span>
-                  <span className="font-medium">{service.bestFor}</span>
-                </div>
-              </div>
-
-              <button 
-                onClick={() => setIsModalOpen(true)}
-                className="w-full mt-8 bg-brand-green text-white py-4 rounded-2xl font-semibold text-lg hover:bg-emerald-700 transition"
-              >
-                Book This Session
-              </button>
-
-              <p className="text-center text-sm text-gray-500 mt-6">
-                Call: <span className="font-medium">+254 729 213 135</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* Appointment Contact Modal Component */}
-      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>
   );
+
 }

@@ -25,29 +25,87 @@ export const stats = [
   { value: 10, suffix: "", label: "Specialty Programs" },
 ] as const;
 
+// export const services: {
+//   icon: LucideIcon;
+//   title: string;
+//   desc: string;
+//   featured?: boolean;
+//   image: string;
+//   slug: string;
+//   duration: string;
+//   priceRange: string;
+//   bestFor: string;
+//   benefits: string[];
+//   galleryImages: string[];
+// }[] = [
 export const services: {
   icon: LucideIcon;
   title: string;
   desc: string;
+
+  overview: string;
+
+  conditions: string[];
+
+  treatment: string;
+
   featured?: boolean;
+
   image: string;
+
   slug: string;
+
   duration: string;
+
   priceRange: string;
+
   bestFor: string;
+
   benefits: string[];
+
   galleryImages: string[];
+
+  faq: {
+    question: string;
+    answer: string;
+  }[];
 }[] = [
     {
       icon: Brain,
       title: "Neurological Rehabilitation",
-      desc: "Stroke recovery, Parkinson's, MS, and traumatic brain injury programs.",
-      image: "/images/services/neuroimage1.webp",
-      slug: "neurological-rehabilitation",
+
+      desc:
+        "Stroke recovery, Parkinson's, MS, and traumatic brain injury programs.",
+
+      overview:
+        "Neurological Rehabilitation at Neuroflex Kenya is a specialized physiotherapy service designed to help individuals recover movement, strength, balance and independence following neurological conditions. Our experienced physiotherapists develop personalized rehabilitation programs using evidence-based treatment techniques that promote neuroplasticity, restore functional mobility and improve quality of life. Whether you are recovering from a stroke, living with Parkinson's disease, multiple sclerosis or a traumatic brain injury, our goal is to help you regain confidence and return to everyday activities safely.",
+
+      conditions: [
+        "Stroke Rehabilitation",
+        "Parkinson's Disease",
+        "Multiple Sclerosis (MS)",
+        "Traumatic Brain Injury",
+        "Spinal Cord Injury",
+        "Bell's Palsy",
+        "Peripheral Nerve Disorders",
+        "Balance & Coordination Problems"
+      ],
+
+      treatment:
+        "Every rehabilitation journey begins with a comprehensive physiotherapy assessment where we evaluate muscle strength, balance, coordination, posture, walking ability and functional independence. Based on the assessment, we design an individualized treatment plan that may include gait training, balance retraining, muscle strengthening, stretching, functional task practice, neurodevelopmental techniques, electrical stimulation where appropriate and personalized home exercise programs. We continuously monitor your progress and adjust treatment to achieve the best possible recovery.",
+
       featured: true,
+
+      image: "/images/services/neuroimage1.webp",
+
+      slug: "neurological-rehabilitation",
+
       duration: "60 - 90 minutes",
+
       priceRange: "KSh 6,000 - 9,000",
-      bestFor: "Stroke, Parkinson’s, Brain Injury",
+
+      bestFor: "Stroke, Parkinson's, Brain Injury",
+
       benefits: [
         "Improves mobility and coordination",
         "Enhances cognitive function",
@@ -56,17 +114,88 @@ export const services: {
         "Restores independence in daily activities",
         "Supports long-term recovery"
       ],
+
       galleryImages: [
         "/images/services/physioimage1.webp",
         "/images/services/neuroimage2.webp",
-        "/images/services/physioimage6.webp",
+        "/images/services/physioimage6.webp"
+      ],
 
+      faq: [
+        {
+          question:
+            "Who can benefit from neurological rehabilitation?",
+          answer:
+            "Anyone recovering from stroke, traumatic brain injury, spinal cord injury, Parkinson's disease, multiple sclerosis or other neurological conditions affecting movement and independence can benefit from neurological rehabilitation."
+        },
+        {
+          question:
+            "How many therapy sessions will I need?",
+          answer:
+            "The number of sessions varies depending on the severity of the condition, recovery goals and your progress during treatment. Your physiotherapist will create a personalized treatment plan after assessment."
+        },
+        {
+          question:
+            "Can physiotherapy help after a stroke?",
+          answer:
+            "Yes. Early and consistent physiotherapy is one of the most effective ways to improve walking, balance, muscle strength and independence after stroke."
+        },
+        {
+          question:
+            "Do you provide home exercise programs?",
+          answer:
+            "Yes. Every patient receives individualized home exercises to complement in-clinic therapy and accelerate recovery."
+        }
       ]
     },
+
     {
       icon: Heart,
       title: "Cardiac & Pulmonary Rehab",
       desc: "Post-surgical recovery and respiratory condition management.",
+      overview:
+        "Cardiac and Pulmonary Rehabilitation at Neuroflex Kenya is a specialized physiotherapy program designed to improve heart and lung function, restore physical endurance and help patients safely return to everyday life after illness or surgery. Our rehabilitation programs are individually tailored for patients recovering from heart attacks, cardiac surgery, chronic respiratory diseases and other cardiovascular conditions. Through carefully supervised exercise, breathing techniques and lifestyle education, we help patients improve their quality of life while reducing the risk of future complications.",
+
+      conditions: [
+        "Heart Attack Recovery",
+        "Open Heart Surgery",
+        "Coronary Artery Disease",
+        "Chronic Obstructive Pulmonary Disease (COPD)",
+        "Asthma",
+        "Heart Failure",
+        "Post COVID Respiratory Recovery",
+        "Chronic Respiratory Conditions"
+      ],
+
+      treatment:
+        "Every patient undergoes a detailed cardiovascular and respiratory assessment before beginning treatment. Our physiotherapists design a personalized rehabilitation program that may include monitored exercise training, breathing exercises, endurance conditioning, posture correction, airway clearance techniques, education on lifestyle modification and long-term cardiac wellness strategies. Treatment progresses gradually according to your recovery and medical condition.",
+
+      faq: [
+        {
+          question:
+            "Who should undergo cardiac rehabilitation?",
+          answer:
+            "Cardiac rehabilitation is recommended for individuals recovering from heart attacks, heart surgery, angioplasty, heart failure and other cardiovascular conditions."
+        },
+        {
+          question:
+            "Can physiotherapy improve breathing problems?",
+          answer:
+            "Yes. Physiotherapy helps improve lung capacity, breathing efficiency and endurance for patients with COPD, asthma and other respiratory conditions."
+        },
+        {
+          question:
+            "Is exercise safe after heart surgery?",
+          answer:
+            "Yes. Under professional supervision, carefully planned exercises are safe and play an important role in recovery after cardiac surgery."
+        },
+        {
+          question:
+            "How long does pulmonary rehabilitation take?",
+          answer:
+            "The duration varies depending on the severity of the condition and individual recovery goals, but consistent participation produces the best outcomes."
+        }
+      ],
       image: "/images/services/cardiacimage.webp",
       slug: "cardiac-pulmonary-rehab",
       duration: "45 - 70 minutes",
@@ -89,6 +218,49 @@ export const services: {
       icon: UserCog,
       title: "Musculoskeletal Physiotherapy",
       desc: "Back pain, sports injuries, and joint replacement recovery.",
+      overview:
+        "Musculoskeletal Physiotherapy at Neuroflex Kenya focuses on diagnosing, treating and preventing conditions affecting muscles, joints, bones, ligaments and tendons. Whether your pain is caused by injury, poor posture, arthritis or surgery, our physiotherapists develop personalized treatment plans that relieve pain, restore movement and improve long-term physical function.",
+
+      conditions: [
+        "Lower Back Pain",
+        "Neck Pain",
+        "Shoulder Pain",
+        "Sports Injuries",
+        "Arthritis",
+        "Joint Replacement Recovery",
+        "Tendon Injuries",
+        "Workplace & Postural Injuries"
+      ],
+
+      treatment:
+        "Treatment begins with a comprehensive physical assessment to identify the source of pain and movement restrictions. Depending on your condition, therapy may include manual therapy, therapeutic exercises, posture correction, stretching, strengthening programs, joint mobilization, sports rehabilitation techniques and education to prevent future injuries.",
+
+      faq: [
+        {
+          question:
+            "What conditions does musculoskeletal physiotherapy treat?",
+          answer:
+            "We treat back pain, neck pain, joint injuries, sports injuries, arthritis, tendon disorders and post-surgical rehabilitation."
+        },
+        {
+          question:
+            "Do I need a doctor's referral?",
+          answer:
+            "No. You can book directly with our physiotherapists for assessment and treatment."
+        },
+        {
+          question:
+            "How quickly will I recover?",
+          answer:
+            "Recovery depends on the nature of your condition, but early physiotherapy often speeds healing and reduces long-term pain."
+        },
+        {
+          question:
+            "Can physiotherapy prevent surgery?",
+          answer:
+            "In many cases, physiotherapy significantly improves function and may reduce the need for surgical intervention."
+        }
+      ],
       image: "/images/services/muscularimage1.webp",
       slug: "musculoskeletal-physiotherapy",
       duration: "45 - 75 minutes",
@@ -112,6 +284,40 @@ export const services: {
       icon: Droplets,
       title: "Cryotherapy",
       desc: "Targeted cold therapy to reduce pain, inflammation, muscle soreness, and accelerate recovery after injury or surgery.",
+      overview:
+        "Cryotherapy at Neuroflex Kenya is a modern therapeutic treatment that uses controlled cold temperatures to reduce pain, inflammation and muscle soreness. It is widely used by athletes, post-surgical patients and individuals with chronic pain to accelerate healing, minimize swelling and improve physical recovery. Our physiotherapists carefully assess every patient before recommending cryotherapy as part of a comprehensive rehabilitation program.",
+
+      conditions: [
+        "Sports Injuries",
+        "Muscle Strains",
+        "Ligament Injuries",
+        "Joint Pain",
+        "Post-Surgical Recovery",
+        "Arthritis",
+        "Chronic Inflammation",
+        "Delayed Muscle Recovery"
+      ],
+
+      treatment:
+        "Cryotherapy sessions are carefully supervised and combined with physiotherapy where appropriate. Controlled cold application helps reduce inflammation, relieve pain and accelerate tissue healing while improving overall recovery outcomes.",
+
+      faq: [
+        {
+          question: "Is cryotherapy safe?",
+          answer:
+            "Yes. When performed by trained professionals, cryotherapy is a safe and effective treatment for pain and inflammation."
+        },
+        {
+          question: "Does cryotherapy hurt?",
+          answer:
+            "Patients usually experience intense cold for a short period followed by significant pain relief."
+        },
+        {
+          question: "Who benefits from cryotherapy?",
+          answer:
+            "Athletes, post-operative patients and individuals with chronic pain or inflammation often benefit from cryotherapy."
+        }
+      ],
       image: "/images/services/Whole-Body-Cryotherapy.webp",
       slug: "cryotherapy",
       duration: "20 - 45 minutes",
@@ -135,6 +341,37 @@ export const services: {
       icon: UserCog,
       title: "Kinesiology Taping Therapy",
       desc: "Supportive taping techniques to reduce pain, improve stability, enhance performance, and accelerate recovery.",
+      overview:
+        "Kinesiology Taping Therapy uses specially designed elastic therapeutic tape to support muscles and joints without limiting movement. At Neuroflex Kenya we use kinesiology taping to reduce pain, improve muscle performance, enhance circulation and support recovery from sports injuries and musculoskeletal conditions.",
+
+      conditions: [
+        "Sports Injuries",
+        "Muscle Strains",
+        "Joint Instability",
+        "Shoulder Pain",
+        "Knee Pain",
+        "Back Pain",
+        "Tendon Injuries",
+        "Postural Problems"
+      ],
+
+      treatment:
+        "Following assessment, specialized kinesiology tape is applied using clinically proven techniques to support affected muscles and joints. Taping is often combined with exercise therapy and rehabilitation to improve treatment outcomes.",
+
+      faq: [
+        {
+          question: "How long does kinesiology tape stay on?",
+          answer: "Most kinesiology tape remains effective for three to five days depending on activity and skin condition."
+        },
+        {
+          question: "Can I shower with kinesiology tape?",
+          answer: "Yes. The tape is water-resistant and designed for normal daily activities."
+        },
+        {
+          question: "Does kinesiology tape replace physiotherapy?",
+          answer: "No. It works best when combined with physiotherapy exercises and rehabilitation."
+        }
+      ],
       image: "/images/services/kinesologyimage1.webp",
       slug: "kinesiology-taping-therapy",
       duration: "30 - 60 minutes",
@@ -157,6 +394,37 @@ export const services: {
       icon: Baby,
       title: "Pediatric Physiotherapy",
       desc: "Developmental delays, cerebral palsy, and torticollis care.",
+      overview:
+        "Pediatric Physiotherapy helps infants and children achieve optimal movement, strength and physical development. At Neuroflex Kenya we provide compassionate, child-friendly physiotherapy programs that support children with developmental delays, neurological disorders, orthopedic conditions and physical disabilities while encouraging confidence and independence.",
+
+      conditions: [
+        "Developmental Delays",
+        "Cerebral Palsy",
+        "Torticollis",
+        "Delayed Walking",
+        "Poor Balance",
+        "Muscle Weakness",
+        "Genetic Disorders",
+        "Pediatric Neurological Conditions"
+      ],
+
+      treatment:
+        "Treatment includes play-based exercises, balance training, muscle strengthening, posture correction, developmental activities and caregiver education tailored to each child's needs and developmental stage.",
+
+      faq: [
+        {
+          question: "At what age can a child begin physiotherapy?",
+          answer: "Children can begin physiotherapy from infancy whenever developmental or physical concerns are identified."
+        },
+        {
+          question: "Do parents participate during sessions?",
+          answer: "Yes. Parents are encouraged to participate and continue recommended activities at home."
+        },
+        {
+          question: "How often should my child attend therapy?",
+          answer: "Frequency depends on the child's diagnosis and treatment goals established during assessment."
+        }
+      ],
       image: "/images/services/pedetric.webp",
       slug: "pediatric-physiotherapy",
       duration: "45 - 60 minutes",
@@ -179,6 +447,37 @@ export const services: {
       icon: Users,
       title: "Geriatric Care",
       desc: "Fall prevention and mobility training for seniors.",
+      overview:
+        "Our Geriatric Physiotherapy program is designed to help older adults maintain independence, improve mobility and reduce the risk of falls. We provide personalized treatment plans that address age-related conditions while promoting strength, balance and confidence in daily living.",
+
+      conditions: [
+        "Balance Problems",
+        "Falls Prevention",
+        "Arthritis",
+        "Osteoporosis",
+        "Mobility Limitations",
+        "Hip Replacement Recovery",
+        "Knee Replacement Recovery",
+        "Age-related Muscle Weakness"
+      ],
+
+      treatment:
+        "Treatment focuses on balance training, walking exercises, muscle strengthening, flexibility improvement, mobility practice and education that helps older adults remain independent and active.",
+
+      faq: [
+        {
+          question: "Can physiotherapy prevent falls?",
+          answer: "Yes. Balance training and strengthening exercises significantly reduce fall risk in older adults."
+        },
+        {
+          question: "Is physiotherapy safe for seniors?",
+          answer: "Yes. Programs are individually tailored according to each patient's medical condition and abilities."
+        },
+        {
+          question: "Can physiotherapy help arthritis?",
+          answer: "Yes. Physiotherapy reduces pain, improves joint mobility and maintains independence."
+        }
+      ],
       image: "/images/services/geriaticimage1.webp",
       slug: "geriatric-care",
       duration: "45 - 60 minutes",
@@ -201,6 +500,37 @@ export const services: {
       icon: Zap,
       title: "Wellness & Fitness",
       desc: "Corporate wellness, fitness training, and pain management.",
+      overview:
+        "Our Wellness and Fitness programs combine physiotherapy expertise with personalized exercise programs to improve overall health, physical performance and injury prevention. Whether your goal is weight management, improved mobility or enhanced fitness, we develop programs suited to your lifestyle.",
+
+      conditions: [
+        "General Fitness",
+        "Weight Management",
+        "Corporate Wellness",
+        "Lifestyle Diseases",
+        "Poor Posture",
+        "Reduced Flexibility",
+        "Physical Conditioning",
+        "Injury Prevention"
+      ],
+
+      treatment:
+        "Programs include fitness assessments, functional movement screening, personalized exercise plans, posture improvement, flexibility training and long-term wellness coaching.",
+
+      faq: [
+        {
+          question: "Can beginners join the wellness program?",
+          answer: "Absolutely. Programs are customized for every fitness level."
+        },
+        {
+          question: "Do you offer corporate wellness?",
+          answer: "Yes. We provide customized workplace wellness programs for organizations."
+        },
+        {
+          question: "Will physiotherapists supervise my exercises?",
+          answer: "Yes. All programs are designed and monitored by qualified professionals."
+        }
+      ],
       image: "/images/services/fitnessimage1.webp",
       slug: "wellness-fitness",
       duration: "45 - 75 minutes",
@@ -223,6 +553,37 @@ export const services: {
       icon: Droplets,
       title: "Lymphatic Drainage",
       desc: "Highly effective for reducing swelling (lymphedema) and aiding immune function.",
+      overview:
+        "Manual Lymphatic Drainage is a gentle therapeutic technique that stimulates the body's lymphatic system to reduce swelling, improve circulation and promote healing. It is especially beneficial following surgery, injury or conditions affecting lymphatic drainage.",
+
+      conditions: [
+        "Lymphedema",
+        "Post-Surgical Swelling",
+        "Fluid Retention",
+        "Sports Injuries",
+        "Chronic Swelling",
+        "Poor Circulation",
+        "Post Cosmetic Surgery Recovery",
+        "Immune Support"
+      ],
+
+      treatment:
+        "Gentle rhythmic massage techniques stimulate lymph flow, reduce swelling and encourage natural drainage while supporting healing and relaxation.",
+
+      faq: [
+        {
+          question: "Does lymphatic drainage hurt?",
+          answer: "No. It is a gentle, relaxing treatment."
+        },
+        {
+          question: "Who benefits from lymphatic drainage?",
+          answer: "Patients experiencing swelling after surgery, injury or lymphatic disorders."
+        },
+        {
+          question: "How many sessions are required?",
+          answer: "The number of sessions depends on your condition and treatment goals."
+        }
+      ],
       image: "/images/services/lympaticimage1.webp",
       slug: "lymphatic-drainage",
       duration: "45 - 75 minutes",
@@ -249,6 +610,37 @@ export const services: {
       icon: Wind,
       title: "Carminative Management",
       desc: "Comprehensive assessment and management of flatulence and gastric discomfort.",
+      overview:
+        "Carminative Management at Neuroflex Kenya focuses on relieving abdominal bloating, excessive gas and digestive discomfort through specialized physiotherapy techniques, abdominal therapy and lifestyle education. Treatment is individualized to improve digestive function naturally.",
+
+      conditions: [
+        "Abdominal Bloating",
+        "Flatulence",
+        "Digestive Discomfort",
+        "Post-Abdominal Surgery",
+        "Poor Gut Motility",
+        "Abdominal Tightness",
+        "Constipation",
+        "Functional Digestive Disorders"
+      ],
+
+      treatment:
+        "Treatment may include abdominal physiotherapy techniques, breathing exercises, gentle manual therapy, posture correction, movement education and lifestyle recommendations that promote healthy digestion.",
+
+      faq: [
+        {
+          question: "Can physiotherapy help digestive discomfort?",
+          answer: "Yes. Certain physiotherapy techniques help improve abdominal mobility and digestive function."
+        },
+        {
+          question: "Is treatment painful?",
+          answer: "No. Treatment is gentle and designed for patient comfort."
+        },
+        {
+          question: "Will I receive home care advice?",
+          answer: "Yes. Patients receive exercises and lifestyle recommendations to support long-term digestive health."
+        }
+      ],
       image: "/images/services/carminativeimage.webp",
       slug: "carminative-management",
       duration: "40 - 60 minutes",

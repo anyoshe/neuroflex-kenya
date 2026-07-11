@@ -30,9 +30,9 @@ const trustBadges = [
 ];
 
 const careSignals = [
-  { label: "Neuro Rehab", value: "Stroke, TBI, Parkinson's" },
-  { label: "Mobility Lab", value: "Balance, gait, strength" },
-  { label: "Pain Recovery", value: "Back pain, injury rehab" },
+  { label: "Neuro Rehab", value: "Stroke • Parkinson's • Brain Injury" },
+  { label: "Mobility Lab", value: "Mobility • Balance • Strength" },
+  { label: "Pain Recovery", value: "Pain • Sports Injuries • Arthritis" },
 ];
 
 const recoveryPlan = [
@@ -82,7 +82,7 @@ export default function Hero({ onBookAppointment }: HeroProps) {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-teal" />
               </span>
               <span className="text-sm font-medium text-white/90">
-                Nairobi’s trusted neuro-rehabilitation and physiotherapy facility
+                Trusted Neurological Rehabilitation & Physiotherapy Centre in Nairobi
               </span>
             </motion.div>
 
@@ -92,8 +92,10 @@ export default function Hero({ onBookAppointment }: HeroProps) {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl"
             >
-              Regain movement, independence & confidence with{" "}
-              <span className="text-gradient">expert neurorehab.</span>
+             Regain Movement &
+<span className="text-gradient">
+  Restore Independence
+</span>
             </motion.h1>
 
             <motion.p
@@ -102,8 +104,8 @@ export default function Hero({ onBookAppointment }: HeroProps) {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-200"
             >
-              If you or a loved one is recovering from stroke, injury, or chronic pain,
-              we provide structured therapy that focuses on real, measurable recovery — not guesswork.
+            Neuroflex Kenya provides expert neurological rehabilitation and physiotherapy in Nairobi,
+            helping children and adults regain movement, independence, and confidence.
             </motion.p>
 
             {/* CTAs - Improved */}
@@ -141,6 +143,44 @@ export default function Hero({ onBookAppointment }: HeroProps) {
                 Call Now
               </a>
             </motion.div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+
+              <Link
+                href="/services/neurological-rehabilitation"
+                className="text-brand-teal hover:underline text-sm font-medium"
+              >
+                Neurological Rehabilitation
+              </Link>
+
+              <span className="text-white/30">•</span>
+
+              <Link
+                href="/services/pediatric-physiotherapy"
+                className="text-brand-teal hover:underline text-sm font-medium"
+              >
+                Pediatric Physiotherapy
+              </Link>
+
+              <span className="text-white/30">•</span>
+
+              <Link
+                href="/services/musculoskeletal-physiotherapy"
+                className="text-brand-teal hover:underline text-sm font-medium"
+              >
+                Pain Management
+              </Link>
+
+              <span className="text-white/30">•</span>``
+
+              <Link
+                href="/services/geriatric-care"
+                className="text-brand-teal hover:underline text-sm font-medium"
+              >
+                Home Physiotherapy
+              </Link>
+
+            </div>
 
             {/* Care Signals */}
             <motion.div
@@ -221,8 +261,8 @@ export default function Hero({ onBookAppointment }: HeroProps) {
                   <div
                     key={stat.label}
                     className={`rounded-2xl border border-white/10 p-4 transition-all ${i === 0
-                        ? "bg-white text-brand-navy"
-                        : "bg-white/[0.08] text-white hover:bg-white/[0.12]"
+                      ? "bg-white text-brand-navy"
+                      : "bg-white/[0.08] text-white hover:bg-white/[0.12]"
                       }`}
                   >
                     <div className="text-3xl font-bold tabular-nums">

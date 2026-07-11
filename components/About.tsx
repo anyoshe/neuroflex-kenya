@@ -7,10 +7,10 @@ import { MotionReveal } from "@/components/ui/MotionReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const highlights = [
-  { text: "Stroke & neurological recovery specialists", icon: HeartPulse },
-  { text: "Personalized, evidence-based treatment plans", icon: ShieldCheck },
-  { text: "State-of-the-art rehabilitation techniques", icon: Zap },
-  { text: "Multidisciplinary care team", icon: Activity },
+  { text: "Stroke, neurological & spinal rehabilitation", icon: HeartPulse },
+  { text: "Personalized physiotherapy treatment plans", icon: ShieldCheck },
+  { text: "Modern neurological rehabilitation techniques", icon: Zap },
+  { text: "Experienced physiotherapy specialists", icon: Activity },
 ];
 
 export default function About() {
@@ -18,18 +18,20 @@ export default function About() {
     <section id="about" className="section-padding bg-gray-50/50 relative overflow-hidden">
       {/* Premium techy glow pattern */}
       <div className="absolute top-0 right-0 -z-10 h-[500px] w-[500px] rounded-full bg-brand-teal/5 blur-3xl" />
-      
+
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          badge="About Us"
-          title="Compassionate Care. Proven Results."
-          subtitle="Neuroflex and Physio Wellness Centre is Nairobi's premier rehabilitation facility — restoring independence through expert, human-centered therapy."
+          badge="About Neuroflex Kenya"
+
+          title="Neurological Rehabilitation & Physiotherapy in Nairobi"
+
+          subtitle="Neuroflex Kenya helps children and adults recover movement, reduce pain and regain independence through evidence-based neurological rehabilitation and physiotherapy."
           align="left"
         />
-        
+
         {/* Changed items-center to items-stretch for equal-height columns */}
         <div className="grid gap-8 lg:grid-cols-2 lg:items-stretch mt-12">
-          
+
           {/* LEFT SIDE: Highlights & Stats */}
           <MotionReveal delay={0.1} className="h-full">
             <div className="flex h-full flex-col justify-between gap-8">
@@ -74,11 +76,11 @@ export default function About() {
           {/* RIGHT SIDE: Perfectly balanced Hero Image + Overlay Card */}
           <MotionReveal delay={0.2} className="h-full">
             <div className="relative h-full overflow-hidden rounded-3xl border border-gray-200 shadow-xl flex items-end p-6 sm:p-8 min-h-[450px] lg:min-h-0">
-              
+
               {/* 1. Background Hero Image */}
               <Image
-                src="/images/services/physioimage5.webp" 
-                alt="Neuroflex Rehabilitation Facility"
+                src="/images/services/physioimage5.webp"
+                alt="Patient receiving neurological rehabilitation at Neuroflex Kenya in Nairobi"
                 fill
                 className="object-cover transition-transform duration-1000 hover:scale-102"
                 priority
@@ -93,16 +95,16 @@ export default function About() {
                   <div className="relative h-10 w-36">
                     <Image
                       src="/assets/logos/logo3cropped.jpeg"
-                      alt="Neuroflex Logo"
+                      alt="Neuroflex Kenya Physiotherapy and Rehabilitation Centre"
                       fill
-                      className="object-contain mix-blend-multiply" 
+                      className="object-contain mix-blend-multiply"
                     />
                   </div>
                   <span className="inline-flex items-center rounded-md bg-brand-green/10 px-2.5 py-0.5 text-xs font-medium text-brand-green ring-1 ring-inset ring-brand-green/20">
                     Est. 2024
                   </span>
                 </div>
-                
+
                 <div className="mt-4 flex items-center gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-navy text-brand-teal shadow-inner">
                     <Activity size={20} className="animate-pulse" />
@@ -110,7 +112,8 @@ export default function About() {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">Our Core Mission</h4>
                     <p className="text-sm font-semibold text-brand-navy mt-0.5">
-                      Restore independence &amp; improve quality of life
+                      Helping patients recover movement,
+                      reduce pain and restore independence.
                     </p>
                   </div>
                 </div>
@@ -118,7 +121,7 @@ export default function About() {
 
             </div>
           </MotionReveal>
-          
+
         </div>
       </div>
     </section>

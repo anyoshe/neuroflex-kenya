@@ -5,8 +5,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/admin/", "/_next/"],
+      disallow: [
+        "/api/",
+        "/admin/",
+      ],
     },
-    sitemap: "https://www.neuroflexkenya.com/sitemap.xml",
+
+    sitemap:
+      "https://www.neuroflexkenya.com/sitemap.xml",
   };
 }
