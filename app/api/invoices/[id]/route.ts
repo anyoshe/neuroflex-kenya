@@ -64,12 +64,35 @@ export async function GET(
       `,
       [id]
     );
+    const payments = await query(
+  `
+  SELECT
+    id,
+    receipt_id,
+    payment_date,
+    amount,
+    payment_method,
+    reference_no,
+    notes,
+    received_by,
+    created_at
 
-    return NextResponse.json({
-      success: true,
-      invoice: invoice[0],
-      items,
-    });
+  FROM invoice_payments
+
+  WHERE invoice_id = $1
+
+  ORDER BY payment_date DESC, id DESC
+  `,
+  [id]
+);
+
+
+   return NextResponse.json({
+  success: true,
+  invoice: invoice[0],
+  items,
+  payments,
+});
 
   } catch (err) {
 

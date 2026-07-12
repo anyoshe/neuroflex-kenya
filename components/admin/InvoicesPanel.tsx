@@ -11,13 +11,18 @@ import {
 } from "lucide-react";
 import InvoicePreview from "./invoices/InvoicePreview";
 import InvoiceView from "./invoices/InvoiceView";
+import RecordPaymentModal from "./invoices/RecordPaymentModal";
 
 type Invoice = {
   id: number;
   invoice_no: string;
   created_at: string;
+
+  patient_name: string;
+
   customer_type: string;
   organization: string;
+
   total: string;
   amount_paid: string;
   balance: string;
@@ -38,6 +43,10 @@ export default function InvoicesPanel() {
   const [viewInvoiceId, setViewInvoiceId] =
     useState<number | null>(null);
 
+  const [paymentOpen, setPaymentOpen] = useState(false);
+
+  const [paymentInvoiceId, setPaymentInvoiceId] =
+    useState<number | null>(null);
   async function loadInvoices() {
     try {
       setLoading(true);
@@ -67,7 +76,8 @@ export default function InvoicesPanel() {
 
     return (
       invoice.invoice_no.toLowerCase().includes(term) ||
-      (invoice.organization || "Private Patient")
+      invoice.patient_name.toLowerCase().includes(term) ||
+      (invoice.organization || "")
         .toLowerCase()
         .includes(term)
     );
@@ -179,6 +189,7 @@ export default function InvoicesPanel() {
 
                 <th className="text-left p-4">Invoice No</th>
                 <th className="text-left p-4">Date</th>
+                <th className="text-left p-4">Patient</th>
                 <th className="text-left p-4">Customer</th>
                 <th className="text-right p-4">Total</th>
                 <th className="text-right p-4">Paid</th>
@@ -209,9 +220,16 @@ export default function InvoicesPanel() {
                       .toLocaleDateString()}
                   </td>
 
-                  <td className="p-4">
-                    {invoice.organization || "Private Patient"}
+                  <td className="p-4 font-medium">
+                    {invoice.patient_name}
                   </td>
+
+                  <td className="p-4">
+                    {invoice.customer_type === "PRIVATE"
+                      ? "Private"
+                      : invoice.organization}
+                  </td>
+
 
                   <td className="p-4 text-right">
                     KSh {Number(invoice.total).toLocaleString()}
@@ -273,19 +291,24 @@ export default function InvoicesPanel() {
                       </button>
 
                       <button
-                        className="p-2 rounded-lg hover:bg-yellow-100"
-                        title="Edit Invoice"
-                      >
-                        <Pencil size={18} />
-                      </button>
-
-                      <button
-                        className="p-2 rounded-lg hover:bg-purple-100"
-                        title="Record Payment"
+                        disabled={Number(invoice.balance) <= 0}
+                        onClick={() => {
+                          setPaymentInvoiceId(invoice.id);
+                          setPaymentOpen(true);
+                        }}
+                        className={`p-2 rounded-lg
+        ${Number(invoice.balance) <= 0
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "hover:bg-purple-100"
+                          }`}
+                        title={
+                          Number(invoice.balance) <= 0
+                            ? "Invoice fully paid"
+                            : "Record Payment"
+                        }
                       >
                         <CreditCard size={18} />
                       </button>
-
                     </div>
 
                   </td>
@@ -327,7 +350,7 @@ export default function InvoicesPanel() {
 
               <span
                 className={`px-3 py-1 rounded-full text-xs font-semibold
-${invoice.status === "PAID"
+                    ${invoice.status === "PAID"
                     ? "bg-green-100 text-green-700"
 
                     : invoice.status === "PARTIALLY PAID"
@@ -413,12 +436,24 @@ ${invoice.status === "PAID"
                 <Printer size={20} />
               </button>
 
-              <button className="p-2 rounded-xl hover:bg-yellow-100">
-                <Pencil size={20} />
-              </button>
-
-              <button className="p-2 rounded-xl hover:bg-purple-100">
-                <CreditCard size={20} />
+              <button
+                disabled={Number(invoice.balance) <= 0}
+                onClick={() => {
+                  setPaymentInvoiceId(invoice.id);
+                  setPaymentOpen(true);
+                }}
+                className={`p-2 rounded-lg
+        ${Number(invoice.balance) <= 0
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "hover:bg-purple-100"
+                  }`}
+                title={
+                  Number(invoice.balance) <= 0
+                    ? "Invoice fully paid"
+                    : "Record Payment"
+                }
+              >
+                <CreditCard size={18} />
               </button>
 
             </div>
@@ -446,6 +481,17 @@ ${invoice.status === "PAID"
         }}
       />
 
+      <RecordPaymentModal
+        open={paymentOpen}
+        invoiceId={paymentInvoiceId}
+        onClose={() => {
+          setPaymentOpen(false);
+          setPaymentInvoiceId(null);
+        }}
+        onSaved={() => {
+          loadInvoices();
+        }}
+      />
     </div>
   );
 }

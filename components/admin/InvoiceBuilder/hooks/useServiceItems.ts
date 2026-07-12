@@ -11,50 +11,53 @@ export type InvoiceItem = {
   editable: boolean;
 };
 
-export function useServiceItems(serviceId: number | null) {
+  export function useServiceItems(serviceIds: number[]) {
   const [items, setItems] = useState<InvoiceItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!serviceId) {
-      setItems([]);
-      return;
-    }
-
-    loadItems();
-  }, [serviceId]);
-
-  async function loadItems() {
-    setLoading(true);
-
-    try {
-      const res = await fetch(
-        `/api/service-items/${serviceId}`
-      );
-
-      const data = await res.json();
-
-      const invoiceItems: InvoiceItem[] = data.map((item: any) => ({
-        id: item.id,
-        item_code: item.item_code,
-        description: item.description,
-
-        quantity: Number(item.default_quantity),
-
-        unitPrice: Number(item.unit_price),
-
-        editable: item.editable,
-      }));
-
-      setItems(invoiceItems);
-
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  if (serviceIds.length === 0) {
+    setItems([]);
+    return;
   }
 
+  loadItems();
+}, [serviceIds]);
+
+async function loadItems() {
+  setLoading(true);
+
+  try {
+    const responses = await Promise.all(
+      serviceIds.map((id) =>
+        fetch(`/api/service-items/${id}`).then((res) => res.json())
+      )
+    );
+
+    // Flatten all service items
+    const allItems = responses.flat();
+
+    // Remove duplicates (optional but recommended)
+    const uniqueItems = Array.from(
+      new Map(allItems.map((item: any) => [item.id, item])).values()
+    );
+
+    const invoiceItems: InvoiceItem[] = uniqueItems.map((item: any) => ({
+      id: item.id,
+      item_code: item.item_code,
+      description: item.description,
+      quantity: Number(item.default_quantity),
+      unitPrice: Number(item.unit_price),
+      editable: item.editable,
+    }));
+
+    setItems(invoiceItems);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+}
   return {
     items,
     setItems,

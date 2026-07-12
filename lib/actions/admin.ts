@@ -301,7 +301,11 @@ export async function getReports() {
         age,
         sex,
         reporting_date,
-        created_at
+        created_at,
+
+        invoiced,
+        invoice_id
+
       FROM reports
       ORDER BY created_at DESC
       `
@@ -317,6 +321,31 @@ export async function getReports() {
 
 export async function deleteReport(id: number) {
   try {
+    // Check first
+    const report = await query<{ invoiced: boolean }>(
+      `
+      SELECT invoiced
+      FROM reports
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    if (report.length === 0) {
+      return {
+        success: false,
+        message: "Report not found.",
+      };
+    }
+
+    if (report[0].invoiced) {
+      return {
+        success: false,
+        message: "This report has already been invoiced and cannot be deleted.",
+      };
+    }
+
+    // Only delete if not invoiced
     await execute(
       `
       DELETE FROM reports
@@ -328,6 +357,7 @@ export async function deleteReport(id: number) {
     return {
       success: true,
     };
+
   } catch (error) {
     console.error(error);
 
@@ -342,22 +372,25 @@ export async function deleteReport(id: number) {
 
 export async function getReport(id: number) {
   try {
-    const rows = await query<{
-      id: number;
-      report_no: string;
-      patient_name: string;
-      age: number;
-      sex: string;
-      residence: string | null;
-      tel: string | null;
-      reporting_date: string;
-      next_of_kin: string | null;
-      presenting_history: string | null;
-      assessment_findings: string | null;
-      intervention: string | null;
-      review: string | null;
-      created_at: string;
-    }>(
+const rows = await query<{
+  id: number;
+  report_no: string;
+  patient_name: string;
+  age: number;
+  sex: string;
+  residence: string | null;
+  tel: string |null;
+  reporting_date: string;
+  next_of_kin: string | null;
+  presenting_history: string | null;
+  assessment_findings: string | null;
+  intervention: string | null;
+  review: string | null;
+  created_at: string;
+
+  invoiced: boolean;
+  invoice_id: number | null;
+}>(
       `
       SELECT *
       FROM reports
@@ -380,6 +413,30 @@ export async function updateReport(
   data: ReportInput
 ) {
   try {
+
+    const report = await query<{ invoiced: boolean }>(
+      `
+      SELECT invoiced
+      FROM reports
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    if (report.length === 0) {
+      return {
+        success: false,
+        message: "Report not found.",
+      };
+    }
+
+    if (report[0].invoiced) {
+      return {
+        success: false,
+        message: "This report has already been invoiced and cannot be edited.",
+      };
+    }
+
     await execute(
       `
       UPDATE reports
@@ -416,6 +473,7 @@ export async function updateReport(
     return {
       success: true,
     };
+
   } catch (error) {
     console.error(error);
 
@@ -425,7 +483,6 @@ export async function updateReport(
     };
   }
 }
-
 
 // ================== INQUIRIES / BOOKINGS ==================
 

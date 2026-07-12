@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import RecordPaymentModal from "./RecordPaymentModal";
+import ReceiptPreview from "./ReceiptPreview";
 
 type Props = {
     open: boolean;
@@ -13,48 +15,53 @@ export default function InvoiceView({
     invoiceId,
     onClose,
 }: Props) {
- const [loading, setLoading] = useState(false);
-const [invoice, setInvoice] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
+    const [invoice, setInvoice] = useState<any>(null);
+    const [paymentOpen, setPaymentOpen] = useState(false);
+    const [receiptOpen, setReceiptOpen] = useState(false);
 
-useEffect(() => {
-    if (!open || !invoiceId) return;
+const [receiptId, setReceiptId] = useState<number | null>(null);
 
-    loadInvoice();
-}, [open, invoiceId]);
+    useEffect(() => {
+        if (!open || !invoiceId) return;
 
-async function loadInvoice() {
-    try {
-        setLoading(true);
+        loadInvoice();
+    }, [open, invoiceId]);
 
-        const res = await fetch(`/api/invoices/${invoiceId}`);
+    async function loadInvoice() {
+        try {
+            setLoading(true);
 
-        const data = await res.json();
+            const res = await fetch(`/api/invoices/${invoiceId}`);
 
-        setInvoice(data.invoice);
+            const data = await res.json();
 
-        // merge the items so the rest of your component doesn't change
-        setInvoice({
-            ...data.invoice,
-            items: data.items,
-        });
+            setInvoice(data.invoice);
 
-    } finally {
-        setLoading(false);
+            // merge the items so the rest of your component doesn't change
+            setInvoice({
+                ...data.invoice,
+                items: data.items,
+                payments: data.payments,
+            });
+
+        } finally {
+            setLoading(false);
+        }
     }
-}
-   if (!open) return null;
+    if (!open) return null;
 
-if (loading) {
-    return (
-        <div className="fixed inset-0 z-[999] bg-black/60 flex items-center justify-center">
-            <div className="bg-white rounded-xl p-8">
-                Loading invoice...
+    if (loading) {
+        return (
+            <div className="fixed inset-0 z-[999] bg-black/60 flex items-center justify-center">
+                <div className="bg-white rounded-xl p-8">
+                    Loading invoice...
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
 
-if (!invoice) return null;
+    if (!invoice) return null;
 
     return (
         <div className="fixed inset-0 z-[999] bg-black/60 flex justify-center items-center p-4">
@@ -400,12 +407,88 @@ if (!invoice) return null;
 
                     </div>
 
+                    <div className="bg-white rounded-2xl border p-6">
+
+                        <h3 className="text-lg font-bold text-brand-navy mb-5">
+                            Payment History
+                        </h3>
+
+
+                        {invoice.payments?.length === 0 ? (
+
+                            <p className="text-gray-500 italic">
+                                No payments recorded.
+                            </p>
+
+                        ) : (
+
+                            <div className="space-y-4">
+
+                                {invoice.payments.map((payment: any) => (
+
+                                    <div
+                                        key={payment.id}
+                                        className="border rounded-xl p-4 flex flex-col md:flex-row md:justify-between gap-3"
+                                    >
+
+                                        <div>
+
+                                            <p className="font-semibold">
+                                                {payment.payment_method}
+                                            </p>
+
+                                            <p className="text-sm text-gray-500">
+                                                {new Date(payment.payment_date)
+                                                    .toLocaleDateString()}
+                                            </p>
+
+                                            {payment.reference_no && (
+                                                <p className="text-sm">
+                                                    Ref: {payment.reference_no}
+                                                </p>
+                                            )}
+
+                                        </div>
+
+
+                                      
+                                        <div className="text-right space-y-2">
+
+    <p className="font-bold text-green-600">
+        KSh {Number(payment.amount).toLocaleString()}
+    </p>
+
+    <p className="text-sm text-gray-500">
+        Received by: {payment.received_by}
+    </p>
+
+    <button
+        onClick={() => setReceiptId(payment.receipt_id)}
+        className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-100"
+    >
+        View Receipt
+    </button>
+
+</div>
+
+
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        )}
+
+                    </div>
+
 
                 </div>
                 {/* Sticky Footer */}
 
                 {/* <div className="border-t bg-white px-6 py-4"> */}
-                    <div className="border-t bg-white px-6 py-4 rounded-b-3xl shrink-0">
+                <div className="border-t bg-white px-6 py-4 rounded-b-3xl shrink-0">
 
                     <div className="flex flex-wrap gap-3 justify-end">
 
@@ -421,10 +504,18 @@ if (!invoice) return null;
 
                         </button>
 
-                        <button className="px-5 py-3 rounded-xl bg-brand-green text-white hover:opacity-90">
-
-                            Record Payment
-
+                        <button
+                            onClick={() => setPaymentOpen(true)}
+                            disabled={Number(invoice.balance) <= 0}
+                            className={`px-5 py-3 rounded-xl text-white transition
+        ${Number(invoice.balance) <= 0
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-brand-green hover:opacity-90"
+                                }`}
+                        >
+                            {Number(invoice.balance) <= 0
+                                ? "Invoice Fully Paid"
+                                : "Record Payment"}
                         </button>
 
                     </div>
@@ -433,10 +524,34 @@ if (!invoice) return null;
 
             </div>
 
+            <RecordPaymentModal
+                open={paymentOpen}
+                invoiceId={invoice.id}
+                onClose={() => setPaymentOpen(false)}
+                onSaved={(receiptId) => {
+
+    setPaymentOpen(false);
+
+    loadInvoice();
+
+    setReceiptId(receiptId);
+
+    setReceiptOpen(true);
+
+}}
+            />
+
+            <ReceiptPreview
+    open={receiptOpen}
+    receiptId={receiptId}
+    onClose={() => setReceiptOpen(false)}
+/>
+
         </div>
 
 
     );
+
 
 }
 function Info({

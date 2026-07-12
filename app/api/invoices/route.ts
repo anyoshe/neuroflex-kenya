@@ -29,7 +29,11 @@ export async function POST(req: NextRequest) {
             createdBy,
             items,
         } = body;
+        const invoiceTotal = Number(total);
 
+        const paidAmount = Number(amountPaid || 0);
+
+        const invoiceBalance = invoiceTotal - paidAmount;
         // ------------------------------------------------
         // Generate next invoice number
         // ------------------------------------------------
@@ -75,9 +79,9 @@ export async function POST(req: NextRequest) {
         discount,
         vat_rate,
         vat_amount,
-        total,
-        amount_paid,
-        balance,
+        invoiceTotal,
+paidAmount,
+invoiceBalance,
         diagnosis,
         notes,
         status,
@@ -153,6 +157,53 @@ export async function POST(req: NextRequest) {
                 ]
             );
         }
+        // ---------------------------------------
+        // Save initial payment if one was made
+        // ---------------------------------------
+
+        if (Number(amountPaid) > 0) {
+            await execute(
+                `
+    INSERT INTO invoice_payments
+    (
+      invoice_id,
+      payment_date,
+      amount,
+      payment_method,
+      reference_no,
+      notes,
+      received_by
+    )
+    VALUES
+    (
+      $1,$2,$3,$4,$5,$6,$7
+    )
+    `,
+                [
+                    invoiceId,
+                    new Date(),
+                    amountPaid,
+                    paymentMethod,
+                    null,
+                    "Initial payment during invoice creation",
+                    createdBy,
+                ]
+            );
+        }
+        // ------------------------------------------------
+        // Mark report as invoiced
+        // ------------------------------------------------
+
+        await execute(
+            `
+  UPDATE reports
+  SET
+    invoiced = TRUE,
+    invoice_id = $1
+  WHERE id = $2
+  `,
+            [invoiceId, reportId]
+        );
 
         return NextResponse.json({
             success: true,
@@ -178,21 +229,51 @@ export async function POST(req: NextRequest) {
 export async function GET() {
     try {
 
+
         const invoices = await query(
             `
-      SELECT
-        id,
-        invoice_no,
-        created_at,
-        customer_type,
-        organization,
-        total,
-        amount_paid,
-        balance,
-        status
-      FROM invoices
-      ORDER BY id DESC
-      `
+SELECT
+    i.id,
+    i.invoice_no,
+    i.created_at,
+
+    r.patient_name,
+
+    i.customer_type,
+    i.organization,
+
+    i.total,
+
+    COALESCE(p.total_paid,0) AS amount_paid,
+
+    i.total - COALESCE(p.total_paid,0) AS balance,
+
+    CASE
+        WHEN i.total - COALESCE(p.total_paid,0) <= 0
+            THEN 'PAID'
+
+        WHEN COALESCE(p.total_paid,0) > 0
+            THEN 'PARTIALLY PAID'
+
+        ELSE 'UNPAID'
+    END AS status
+
+FROM invoices i
+
+LEFT JOIN reports r
+ON r.id = i.report_id
+
+LEFT JOIN
+(
+    SELECT
+        invoice_id,
+        SUM(amount) AS total_paid
+    FROM invoice_payments
+    GROUP BY invoice_id
+) p
+ON p.invoice_id = i.id
+
+ORDER BY i.id DESC; `
         );
 
         return NextResponse.json(invoices);

@@ -9,10 +9,9 @@ type Service = {
 };
 
 type Props = {
-  value: number | null;
-  onChange: (id: number) => void;
+  value: number[];
+  onChange: (ids: number[]) => void;
 };
-
 export default function ServiceSelector({
   value,
   onChange,
@@ -47,33 +46,40 @@ export default function ServiceSelector({
 
   return (
     <div>
+  <label className="block text-sm font-semibold mb-3">
+    Services
+  </label>
 
-      <label className="block text-sm font-semibold mb-2">
-        Service
-      </label>
+  <div className="space-y-2 rounded-xl border p-4 max-h-72 overflow-y-auto">
 
-      <select
-        value={value ?? ""}
-        onChange={(e) =>
-          onChange(Number(e.target.value))
-        }
-        className="w-full rounded-xl border px-4 py-3"
-      >
-        <option value="">
-          Select Service
-        </option>
+    {services.map((service) => {
+      const checked = value.includes(service.id);
 
-        {services.map((service) => (
-          <option
-            key={service.id}
-            value={service.id}
-          >
-            {service.service_name}
-          </option>
-        ))}
+      return (
+        <label
+          key={service.id}
+          className="flex items-center gap-3 cursor-pointer"
+        >
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => {
+              if (e.target.checked) {
+                onChange([...value, service.id]);
+              } else {
+                onChange(
+                  value.filter((id) => id !== service.id)
+                );
+              }
+            }}
+          />
 
-      </select>
+          <span>{service.service_name}</span>
+        </label>
+      );
+    })}
 
-    </div>
+  </div>
+</div>
   );
 }

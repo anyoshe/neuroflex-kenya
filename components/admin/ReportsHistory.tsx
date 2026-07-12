@@ -34,7 +34,8 @@ type Report = {
   intervention: string | null;
   review: string | null;
   created_at: string;
-  // inquiry_id?: number | null;
+  invoiced: boolean;
+  invoice_id: number | null;
 };
 
 type Props = {
@@ -87,13 +88,13 @@ export default function ReportsHistory({
     }
   };
   const handleInvoice = async (id: number) => {
-  const report = await getReport(id);
+    const report = await getReport(id);
 
-  if (!report) return;
+    if (!report) return;
 
-  setInvoiceReport(report);
-  setInvoiceOpen(true);
-};
+    setInvoiceReport(report);
+    setInvoiceOpen(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -137,6 +138,7 @@ export default function ReportsHistory({
       {/* Desktop Table */}
       <div className="hidden md:block bg-white rounded-3xl shadow-xl overflow-hidden">
         <table className="w-full">
+
           <thead className="bg-brand-navy text-white">
             <tr>
               <th className="p-5 text-left font-semibold">Report No</th>
@@ -144,6 +146,7 @@ export default function ReportsHistory({
               <th className="p-5 text-center font-semibold">Age</th>
               <th className="p-5 text-center font-semibold">Sex</th>
               <th className="p-5 text-left font-semibold">Date</th>
+              <th className="p-5 text-center font-semibold">Invoice</th>
               <th className="p-5 text-center font-semibold">Actions</th>
             </tr>
           </thead>
@@ -166,6 +169,18 @@ export default function ReportsHistory({
                 <td className="p-5 text-gray-600">
                   {new Date(report.reporting_date).toLocaleDateString()}
                 </td>
+                <td className="p-5 text-center">
+                  {report.invoiced ? (
+                    <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                      Invoiced
+                    </span>
+                  ) : (
+                    <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">
+                      Pending
+                    </span>
+                  )}
+                </td>
+
                 <td className="p-5">
                   <div className="flex items-center justify-center gap-2">
                     <button
@@ -176,25 +191,64 @@ export default function ReportsHistory({
                       <Eye size={20} className="text-brand-navy" />
                     </button>
                     <button
+                      disabled={report.invoiced}
                       onClick={() => handleInvoice(report.id)}
-                      className="p-3 hover:bg-emerald-100 rounded-2xl transition-colors"
-                      title="Create Invoice"
+                      className={`p-3 rounded-2xl transition-colors ${report.invoiced
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : "hover:bg-emerald-100"
+                        }`}
+                      title={report.invoiced ? "Invoice already created" : "Create Invoice"}
                     >
-                      <Receipt size={20} className="text-emerald-600" />
+                      <Receipt
+                        size={20}
+                        className={
+                          report.invoiced ? "text-gray-400" : "text-emerald-600"
+                        }
+                      />
                     </button>
                     <button
+                      disabled={report.invoiced}
                       onClick={() => handleEdit(report.id)}
-                      className="p-3 hover:bg-amber-100 rounded-2xl transition-colors"
-                      title="Edit"
+                      className={`p-3 rounded-2xl transition-colors ${report.invoiced
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : "hover:bg-amber-100"
+                        }`}
+                      title={
+                        report.invoiced
+                          ? "Cannot edit an invoiced report"
+                          : "Edit"
+                      }
                     >
-                      <Pencil size={20} className="text-amber-600" />
+                      <Pencil
+                        size={20}
+                        className={
+                          report.invoiced
+                            ? "text-gray-400"
+                            : "text-amber-600"
+                        }
+                      />
                     </button>
                     <button
+                      disabled={report.invoiced}
                       onClick={() => handleDelete(report.id)}
-                      className="p-3 hover:bg-red-100 rounded-2xl transition-colors"
-                      title="Delete"
+                      className={`p-3 rounded-2xl transition-colors ${report.invoiced
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : "hover:bg-red-100"
+                        }`}
+                      title={
+                        report.invoiced
+                          ? "Cannot delete an invoiced report"
+                          : "Delete"
+                      }
                     >
-                      <Trash2 size={20} className="text-red-600" />
+                      <Trash2
+                        size={20}
+                        className={
+                          report.invoiced
+                            ? "text-gray-400"
+                            : "text-red-600"
+                        }
+                      />
                     </button>
                   </div>
                 </td>
@@ -234,6 +288,17 @@ export default function ReportsHistory({
             <div className="text-sm text-gray-600 mb-5">
               Reported: {new Date(report.reporting_date).toLocaleDateString()}
             </div>
+            <div className="mb-5">
+              {report.invoiced ? (
+                <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                  Invoiced
+                </span>
+              ) : (
+                <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">
+                  Pending
+                </span>
+              )}
+            </div>
 
             <div className="flex gap-3">
               <button
@@ -245,25 +310,65 @@ export default function ReportsHistory({
               </button>
 
               <button
+                disabled={report.invoiced}
                 onClick={() => handleEdit(report.id)}
-                className="flex-1 flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50 py-3.5 rounded-2xl transition-all"
+                className={`p-3 rounded-2xl transition-colors ${report.invoiced
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : "hover:bg-amber-100"
+                  }`}
+                title={
+                  report.invoiced
+                    ? "Cannot edit an invoiced report"
+                    : "Edit"
+                }
               >
-                <Pencil size={18} />
-                Edit
+                <Pencil
+                  size={20}
+                  className={
+                    report.invoiced
+                      ? "text-gray-400"
+                      : "text-amber-600"
+                  }
+                />
               </button>
               <button
+                disabled={report.invoiced}
                 onClick={() => handleInvoice(report.id)}
-                className="flex-1 flex items-center justify-center gap-2 border border-emerald-300 text-emerald-600 hover:bg-emerald-50 py-3.5 rounded-2xl transition-all"
+                className={`p-3 rounded-2xl transition-colors ${report.invoiced
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : "hover:bg-emerald-100"
+                  }`}
+                title={report.invoiced ? "Invoice already created" : "Create Invoice"}
               >
-                <Receipt size={18} />
-                Invoice
+                <Receipt
+                  size={20}
+                  className={
+                    report.invoiced ? "text-gray-400" : "text-emerald-600"
+                  }
+                />
               </button>
 
               <button
+                disabled={report.invoiced}
                 onClick={() => handleDelete(report.id)}
-                className="p-3.5 border border-red-200 text-red-600 hover:bg-red-50 rounded-2xl transition-all"
+                className={`p-3 rounded-2xl transition-colors ${report.invoiced
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : "hover:bg-red-100"
+                  }`}
+                title={
+                  report.invoiced
+                    ? "Cannot delete an invoiced report"
+                    : "Delete"
+                }
               >
-                <Trash2 size={20} />
+                <Trash2
+                  size={20}
+                  className={
+                    report.invoiced
+                      ? "text-gray-400"
+                      : "text-red-600"
+                  }
+                />
               </button>
             </div>
           </div>
@@ -286,13 +391,13 @@ export default function ReportsHistory({
         }}
       />
       <InvoiceBuilder
-  open={invoiceOpen}
-  report={invoiceReport}
-  onClose={() => {
-    setInvoiceOpen(false);
-    setInvoiceReport(null);
-  }}
-/>
+        open={invoiceOpen}
+        report={invoiceReport}
+        onClose={() => {
+          setInvoiceOpen(false);
+          setInvoiceReport(null);
+        }}
+      />
     </div>
   );
 }

@@ -25,13 +25,13 @@ export default function InvoiceBuilder({
   onClose,
 }: Props) {
 
-  const [serviceId, setServiceId] = useState<number | null>(null);
+  const [serviceIds, setServiceIds] = useState<number[]>([]);
   const [saving, setSaving] = useState(false);
   const {
     items,
     setItems,
     loading,
-  } = useServiceItems(serviceId);
+  } = useServiceItems(serviceIds);
 
   const invoiceNo = "NINV-0001";
 
@@ -70,116 +70,113 @@ export default function InvoiceBuilder({
 
   });
   const {
-  subtotal,
-  discountAmount,
-  taxableAmount,
-  vatAmount,
-  grandTotal,
-  balance,
-} = useInvoiceTotals({
-  items,
-  discount: invoiceData.discount,
-  vatRate: invoiceData.vatRate,
-  amountPaid: invoiceData.amountPaid,
-});
+    subtotal,
+    discountAmount,
+    taxableAmount,
+    vatAmount,
+    grandTotal,
+    balance,
+  } = useInvoiceTotals({
+    items,
+    discount: invoiceData.discount,
+    vatRate: invoiceData.vatRate,
+    amountPaid: invoiceData.amountPaid,
+  });
 
   async function saveInvoice() {
 
-  if (!serviceId) {
+    if (serviceIds.length === 0) {
+      alert("Select at least one service.");
+      return;
+    }
 
-    alert("Select a service.");
+    setSaving(true);
 
-    return;
+    try {
 
-  }
+      const res = await fetch("/api/invoices", {
 
-  setSaving(true);
+        method: "POST",
 
-  try {
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-    const res = await fetch("/api/invoices", {
+        body: JSON.stringify({
 
-      method: "POST",
+          reportId: report.id,
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+          serviceIds,
 
-      body: JSON.stringify({
+          customerType: invoiceData.customerType,
 
-        reportId: report.id,
+          organization: invoiceData.organization,
 
-        serviceId,
+          contactPerson: invoiceData.contactPerson,
 
-        customerType: invoiceData.customerType,
+          insuranceCompany: invoiceData.insuranceCompany,
 
-        organization: invoiceData.organization,
+          policyNumber: invoiceData.policyNumber,
 
-        contactPerson: invoiceData.contactPerson,
+          authorizationNumber: invoiceData.authorizationNumber,
 
-        insuranceCompany: invoiceData.insuranceCompany,
+          billingType: invoiceData.billingType,
 
-        policyNumber: invoiceData.policyNumber,
+          paymentMethod: invoiceData.paymentMethod,
 
-        authorizationNumber: invoiceData.authorizationNumber,
+          paymentTerms: invoiceData.paymentTerms,
 
-        billingType: invoiceData.billingType,
+          subtotal,
 
-        paymentMethod: invoiceData.paymentMethod,
+          discount: invoiceData.discount,
 
-        paymentTerms: invoiceData.paymentTerms,
+          vatRate: invoiceData.vatRate,
 
-        subtotal,
+          vatAmount,
 
-        discount: invoiceData.discount,
+          total: grandTotal,
 
-        vatRate: invoiceData.vatRate,
+          amountPaid: invoiceData.amountPaid,
 
-        vatAmount,
+          balance,
 
-        total: grandTotal,
+          diagnosis: invoiceData.diagnosis,
 
-        amountPaid: invoiceData.amountPaid,
+          notes: invoiceData.notes,
 
-        balance,
+          createdBy: "Admin",
 
-        diagnosis: invoiceData.diagnosis,
+          items,
 
-        notes: invoiceData.notes,
+        }),
 
-        createdBy: "Admin",
+      });
 
-        items,
+      const data = await res.json();
 
-      }),
+      if (!data.success) {
 
-    });
+        throw new Error(data.message);
 
-    const data = await res.json();
+      }
 
-    if (!data.success) {
+      alert(`Invoice ${data.invoiceNo} created successfully.`);
 
-      throw new Error(data.message);
+      onClose();
+
+    } catch (err) {
+
+      console.error(err);
+
+      alert("Failed to save invoice.");
+
+    } finally {
+
+      setSaving(false);
 
     }
 
-    alert(`Invoice ${data.invoiceNo} created successfully.`);
-
-    onClose();
-
-  } catch (err) {
-
-    console.error(err);
-
-    alert("Failed to save invoice.");
-
-  } finally {
-
-    setSaving(false);
-
   }
-
-}
   useEffect(() => {
     if (!report) return;
 
@@ -240,8 +237,8 @@ export default function InvoiceBuilder({
             }
           />
           <ServiceSelector
-            value={serviceId}
-            onChange={setServiceId}
+            value={serviceIds}
+            onChange={setServiceIds}
           />
 
           {/* Customer Information */}
@@ -361,9 +358,9 @@ export default function InvoiceBuilder({
             total={grandTotal}
           />
           <SaveInvoiceButton
-    saving={saving}
-    onSave={saveInvoice}
-/>
+            saving={saving}
+            onSave={saveInvoice}
+          />
         </div>
 
       </div>
