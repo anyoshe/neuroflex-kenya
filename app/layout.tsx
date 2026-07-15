@@ -5,7 +5,7 @@ import ManifestLink from "@/components/ManifestLink";
 import SchemaMarkup from "@/components/SchemaMarkup"; // 1. Import it here
 import { Toaster } from "react-hot-toast";
 import "./report-preview.css";
-import LayoutWrapper from "@/components/LayoutWrapper";
+import AdminAwareLayout from "@/components/AdminAwareLayout";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -59,6 +59,26 @@ export const metadata: Metadata = {
   },
 };
 
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en">
+//       <body className={`${inter.className} min-h-screen flex flex-col`}>
+//         <SchemaMarkup />
+//         <ManifestLink />
+
+//         <LayoutWrapper>
+//           {children}
+//         </LayoutWrapper>
+
+//         <Toaster position="top-center" />
+//       </body>
+//     </html>
+//   );
+// }
 export default function RootLayout({
   children,
 }: {
@@ -70,9 +90,10 @@ export default function RootLayout({
         <SchemaMarkup />
         <ManifestLink />
 
-        <LayoutWrapper>
+        {/* Smart Wrapper - skips LayoutWrapper for admin pages */}
+        <AdminAwareLayout>
           {children}
-        </LayoutWrapper>
+        </AdminAwareLayout>
 
         <Toaster position="top-center" />
       </body>

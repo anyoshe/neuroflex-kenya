@@ -37,21 +37,15 @@
 // }
 
 // components/LayoutWrapper.tsx
-// ← NO "use client" here (Server Component)
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingBookingWidget from "@/components/FloatingBookingWidget";
 
-type Props = {
+export default function LayoutWrapper({
+  children,
+}: {
   children: React.ReactNode;
-  // We will pass the pathname from a client component only when needed
-};
-
-export default function LayoutWrapper({ children }: Props) {
-  // For now, we will always show navbar/footer
-  // We will handle admin pages differently (better for SEO)
-
+}) {
   return (
     <>
       <Navbar />
