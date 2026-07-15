@@ -12,6 +12,6 @@ export default function robots(): MetadataRoute.Robots {
     },
 
     sitemap:
-      "https://www.neuroflexkenya.com/sitemap.xml",
+      "https://neuroflexkenya.com/sitemap.xml",
   };
 }

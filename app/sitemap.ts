@@ -1,16 +1,54 @@
+// import { MetadataRoute } from "next";
+// import { services } from "@/lib/site-data";
+// import { conditions } from "@/lib/conditions-data";
+
+// export default function sitemap(): MetadataRoute.Sitemap {
+//   const baseUrl = "https://neuroflexkenya.com";
+
+//   return [
+//     // Homepage
+//     {
+//       url: baseUrl,
+//       lastModified: new Date(),
+//       changeFrequency: "weekly",
+//       priority: 1.0,
+//     },
+
+//     // Conditions Hub
+//     {
+//       url: `${baseUrl}/conditions`,
+//       lastModified: new Date(),
+//       changeFrequency: "weekly",
+//       priority: 0.95,
+//     },
+
 import { MetadataRoute } from "next";
 import { services } from "@/lib/site-data";
 import { conditions } from "@/lib/conditions-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://neuroflexkenya.com";
+  const baseUrl = "https://neuroflexkenya.com"; // Ensure this matches your canonical domain
+
+  const servicePages = services.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.9,
+  }));
+
+  const conditionPages = conditions.map((condition) => ({
+    url: `${baseUrl}/conditions/${condition.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
 
   return [
     // Homepage
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: "weekly" as const,
       priority: 1.0,
     },
 
@@ -18,7 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/conditions`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: "weekly" as const,
       priority: 0.95,
     },
 
