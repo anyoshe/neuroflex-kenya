@@ -11,22 +11,22 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const siteUrl = "https://neuroflexkenya.com";
 
-export const metadata: Metadata = {
+  export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Neuroflex Kenya | Physio & Wellness Centre",
-  description:
-    "Expert neurological rehabilitation and physiotherapy in Nairobi. Stroke recovery, pediatric care, and wellness programs led by NRPT Dennis Masaki.",
-     verification: {
-    google: "KgPlqn8f_qdNZ2T_KwoYRgyw5x9cK0SLG0nAXoTibco",
+  title: {
+    default: "Neuroflex Kenya | Physio & Wellness Centre",
+    template: "%s | Neuroflex Kenya"
   },
-
+  description: "Nairobi's trusted neurological physiotherapy centre. Expert stroke recovery, Parkinson's, pediatric physio & pain management by NRPT Dennis Masaki in Embakasi.",
+  
   keywords: [
-    "physiotherapy Nairobi",
-    "neurological rehabilitation Kenya",
-    "stroke recovery Nairobi",
-    "Neuroflex Kenya",
-    "Dennis Masaki physiotherapist",
-    "physical therapy Kenya",
+    "neuroflex kenya",
+    "physiotherapy nairobi",
+    "neurological rehabilitation nairobi",
+    "stroke recovery nairobi",
+    "pediatric physiotherapy kenya",
+    "physiotherapist embakasi",
+    "dennis masaki physiotherapist",
   ],
   authors: [{ name: "NRPT Dennis Masaki" }],
   alternates: {
