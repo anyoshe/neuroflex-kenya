@@ -6,6 +6,7 @@ import { Send, X, Mail, MessageCircle, Calendar, Clock, User, FileText, CheckCir
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { MotionReveal } from "@/components/ui/MotionReveal";
+import { services } from "@/lib/site-data"; // adjust the path
 
 const formSchema = z.object({
   name: z.string().min(2, "Full name is required"),
@@ -23,15 +24,6 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const serviceOptions = [
-  "Neurological Rehabilitation",
-  "Cardiac & Pulmonary Rehab",
-  "Musculoskeletal Physiotherapy",
-  "Pediatric Physiotherapy",
-  "Geriatric Care",
-  "Wellness & Fitness",
-  "General Inquiry",
-];
 
 const initialForm: FormData = {
   name: "",
@@ -116,7 +108,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       toast.error("Please fill all required fields");
       return;
     }
+   const selectedService = services.find(
+  (service) => service.slug === form.service
+);
 
+const serviceName =
+  selectedService?.title ?? "General Inquiry";
     setSubmitting(true);
 
     try {
@@ -157,7 +154,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           `📞 *Phone:* ${encodeURIComponent(form.phone)}%0A` +
           `📍 *Residence:* ${encodeURIComponent(form.residence)}%0A` +
           `✉️ *Email:* ${encodeURIComponent(form.email || "Not provided")}%0A` +
-          `🛠️ *Service:* ${encodeURIComponent(form.service)}%0A` +
+         `🛠️ *Service:* ${encodeURIComponent(serviceName)}%0A` +
           `📅 *Preferred Date:* ${form.preferredDate}%0A` +
           `⏰ *Preferred Time:* ${form.preferredTime}%0A%0A` +
           `📝 *Condition / Reason:*%0A${encodeURIComponent(form.conditionCause)}%0A%0A` +
@@ -290,12 +287,23 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-gray-700">Service Required <span className="text-red-500">*</span></label>
-                    <select name="service" value={form.service} onChange={handleChange} className={inputClass}>
-                      <option value="">Select Service</option>
-                      {serviceOptions.map((opt) => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
+                   <select
+  name="service"
+  value={form.service}
+  onChange={handleChange}
+  className={inputClass}
+>
+  <option value="">Select Service</option>
+{services.map((service) => (
+  <option key={service.slug} value={service.slug}>
+    {service.title}
+  </option>
+))}
+
+<option value="general-inquiry">
+  General Inquiry
+</option>
+</select>
                     {errors.service && <p className="mt-1 text-xs text-red-500">{errors.service}</p>}
                   </div>
 
