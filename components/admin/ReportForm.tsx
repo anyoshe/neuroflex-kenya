@@ -207,7 +207,7 @@ export default function ReportForm({
           </label>
 
           <textarea
-            rows={5}
+            rows={4}
             name="presentingHistory"
             value={formData.presentingHistory}
             onChange={handleChange}
@@ -225,7 +225,7 @@ export default function ReportForm({
           </label>
 
           <textarea
-            rows={5}
+            rows={4}
             name="assessmentFindings"
             value={formData.assessmentFindings}
             onChange={handleChange}
@@ -243,7 +243,7 @@ export default function ReportForm({
           </label>
 
           <textarea
-            rows={5}
+            rows={4}
             name="intervention"
             value={formData.intervention}
             onChange={handleChange}
@@ -261,7 +261,7 @@ export default function ReportForm({
           </label>
 
           <textarea
-            rows={5}
+            rows={3}
             name="review"
             value={formData.review}
             onChange={handleChange}
@@ -280,7 +280,7 @@ export default function ReportForm({
           type="button"
           disabled={saving}
           onClick={saveCurrentReport}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-4 flex items-center justify-center gap-1 font-semibold"
         >
           {saving ? (
             <Loader2 className="animate-spin" />
@@ -301,7 +301,7 @@ export default function ReportForm({
 
           disabled={saving}
           onClick={downloadPDF}
-          className="border rounded-xl py-4 flex justify-center items-center gap-2 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100"
+          className="border rounded-xl py-4 flex justify-center items-center gap-1 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100"
         >
           <Download size={18} />
           PDF
@@ -311,7 +311,7 @@ export default function ReportForm({
           disabled={saving}
           onClick={printReport}
 
-          className="border rounded-xl py-4 flex justify-center items-center gap-2 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100"
+          className="border rounded-xl py-4 flex justify-center items-center gap-1 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100"
         >
           <Printer size={18} />
           Print

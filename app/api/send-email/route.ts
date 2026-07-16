@@ -3,50 +3,50 @@ import { getEmailErrorMessage, sendBookingEmails, verifyMailConnection } from "@
 import { services } from "@/lib/site-data";
 export async function POST(request: NextRequest) {
   try {
-  const body = await request.json();
-   
-   const { 
-  name, 
-  age, 
-  sex, 
-  phone, 
-  residence, 
-  email, 
-  service,   
-  conditionCause, 
-  preferredDate, 
-  preferredTime,
-  message 
-} = body;
+    const body = await request.json();
 
-const selectedService = services.find(
-  (s) => s.slug === service
-);
+    const {
+      name,
+      age,
+      sex,
+      phone,
+      residence,
+      email,
+      service,
+      conditionCause,
+      preferredDate,
+      preferredTime,
+      message
+    } = body;
 
-const serviceName = selectedService?.title ?? "General Inquiry";
+    const selectedService = services.find(
+      (s) => s.slug === service
+    );
+
+    const serviceName = selectedService?.title ?? "General Inquiry";
     // Validation
     if (!name || !phone || !service || !conditionCause || !preferredDate || !preferredTime) {
-      return NextResponse.json({ 
-        error: "Missing required fields. Please fill all mandatory fields." 
+      return NextResponse.json({
+        error: "Missing required fields. Please fill all mandatory fields."
       }, { status: 400 });
     }
 
     // === SEND EMAILS ===
     await verifyMailConnection();
- await sendBookingEmails({
-  name,
-  age,
-  sex,
-  phone,
-  residence,
-  email: email || "",
-  service: serviceName,
-  conditionCause,
-  preferredDate,
-  preferredTime,
-  message: message || "",
-});
-    return NextResponse.json({ 
+    await sendBookingEmails({
+      name,
+      age,
+      sex,
+      phone,
+      residence,
+      email: email || "",
+      service: serviceName,
+      conditionCause,
+      preferredDate,
+      preferredTime,
+      message: message || "",
+    });
+    return NextResponse.json({
       success: true,
       message: "Appointment request received successfully"
     }, { status: 200 });

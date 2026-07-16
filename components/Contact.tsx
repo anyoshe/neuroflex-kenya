@@ -108,12 +108,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       toast.error("Please fill all required fields");
       return;
     }
-   const selectedService = services.find(
-  (service) => service.slug === form.service
-);
+    const selectedService = services.find(
+      (service) => service.slug === form.service
+    );
 
-const serviceName =
-  selectedService?.title ?? "General Inquiry";
+    const serviceName =
+      selectedService?.title ?? "General Inquiry";
     setSubmitting(true);
 
     try {
@@ -154,7 +154,7 @@ const serviceName =
           `📞 *Phone:* ${encodeURIComponent(form.phone)}%0A` +
           `📍 *Residence:* ${encodeURIComponent(form.residence)}%0A` +
           `✉️ *Email:* ${encodeURIComponent(form.email || "Not provided")}%0A` +
-         `🛠️ *Service:* ${encodeURIComponent(serviceName)}%0A` +
+          `🛠️ *Service:* ${encodeURIComponent(serviceName)}%0A` +
           `📅 *Preferred Date:* ${form.preferredDate}%0A` +
           `⏰ *Preferred Time:* ${form.preferredTime}%0A%0A` +
           `📝 *Condition / Reason:*%0A${encodeURIComponent(form.conditionCause)}%0A%0A` +
@@ -287,23 +287,23 @@ const serviceName =
 
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-gray-700">Service Required <span className="text-red-500">*</span></label>
-                   <select
-  name="service"
-  value={form.service}
-  onChange={handleChange}
-  className={inputClass}
->
-  <option value="">Select Service</option>
-{services.map((service) => (
-  <option key={service.slug} value={service.slug}>
-    {service.title}
-  </option>
-))}
+                    <select
+                      name="service"
+                      value={form.service}
+                      onChange={handleChange}
+                      className={inputClass}
+                    >
+                      <option value="">Select Service</option>
+                      {services.map((service) => (
+                        <option key={service.slug} value={service.slug}>
+                          {service.title}
+                        </option>
+                      ))}
 
-<option value="general-inquiry">
-  General Inquiry
-</option>
-</select>
+                      <option value="general-inquiry">
+                        General Inquiry
+                      </option>
+                    </select>
                     {errors.service && <p className="mt-1 text-xs text-red-500">{errors.service}</p>}
                   </div>
 

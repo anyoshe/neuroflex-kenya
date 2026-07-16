@@ -5,6 +5,7 @@ import { Menu, X, LogOut, Home, FileText, PlusCircle, Users, Receipt, Bell } fro
 import Link from "next/link";
 import Logo from "../Logo";
 import { getReports } from "@/lib/actions/admin";
+import { getInquiries } from "@/lib/actions/admin";
 
 import InquiriesPanel from "./InquiriesPanel";
 import ReportBuilder from "./ReportBuilder";
@@ -46,6 +47,9 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [prefillReport, setPrefillReport] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pendingInquiries, setPendingInquiries] = useState(0);
+  const [invoiceCount, setInvoiceCount] = useState(0);
+  const [monthlyReports, setMonthlyReports] = useState(0);
 
   const handleGenerateReportFromInquiry = (inquiry: any) => {
     setPrefillReport({
@@ -71,6 +75,28 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
       setLoading(true);
       const data = await getReports();
       setReports(data as Report[]);
+      const reportsData = data as Report[];
+
+      setReports(reportsData);
+
+      // invoices
+      setInvoiceCount(
+        reportsData.filter((r) => r.invoiced).length
+      );
+
+      // reports this month
+      const now = new Date();
+
+      setMonthlyReports(
+        reportsData.filter((r) => {
+          const d = new Date(r.created_at);
+
+          return (
+            d.getMonth() === now.getMonth() &&
+            d.getFullYear() === now.getFullYear()
+          );
+        }).length
+      );
     } catch (err) {
       console.error(err);
     } finally {
@@ -78,8 +104,23 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     }
   }
 
+  async function loadDashboardStats() {
+    try {
+      const inquiries = await getInquiries();
+
+      setPendingInquiries(
+        inquiries.filter((i: any) => i.status === "pending").length
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
+
     loadReports();
+    loadDashboardStats();
+
   }, []);
 
   const navItems = [
@@ -102,16 +143,17 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-        md:translate-x-0 fixed md:static inset-y-0 left-0 z-50 w-[280px]
-shrink-0 bg-white border-r shadow-xl 
-        transition-transform duration-300 flex flex-col`}>
+      <div
+        className={`${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    md:translate-x-0 fixed inset-y-0 left-0 z-50 w-[280px]
+    bg-white border-r shadow-xl
+    transition-transform duration-300 flex flex-col`}
+      >
 
-        <div className="p-6 border-b flex items-center gap-3">
+        <div className="h-[73.5px] px-5 border-b flex items-center gap-3">
           <Link href="#" aria-label="Neuroflex Kenya Admin">
             <Logo size="small" />
           </Link>
-          <span className="font-semibold text-xl tracking-tight text-brand-navy"></span>
         </div>
 
         <nav className="flex-1 px-3 py-6 space-y-1">
@@ -145,10 +187,10 @@ shrink-0 bg-white border-r shadow-xl
       </div>
 
       {/* Main Area */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen md:ml-[280px] min-w-0">
         {/* Top Bar */}
         <header className="bg-white border-b sticky top-0 z-40 shadow-sm">
-          <div className="max-w-screen-2xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+          <div className="max-w-screen-2xl mx-auto h-[73px] px-4 md:px-8 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -203,33 +245,53 @@ shrink-0 bg-white border-r shadow-xl
         </header>
 
         {/* Content Area */}
-        {/* <main className="flex-1 max-w-screen-2xl mx-auto w-full px-4 md:px-8 py-8 overflow-auto"> */}
         <main className="flex-1 min-w-0 px-6 lg:px-8 py-8 overflow-y-auto">
           {activeTab === "dashboard" && (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Quick Stats Cards */}
                 <div className="bg-white p-6 rounded-3xl shadow-sm border">
-                  <p className="text-gray-500 text-sm">Total Reports</p>
-                  <p className="text-4xl font-semibold mt-2 text-brand-navy">{reports.length}</p>
+                  <p className="text-gray-500 text-sm">
+                    Total Reports
+                  </p>
+
+                  <p className="text-4xl font-semibold mt-2 text-brand-navy">
+                    {reports.length}
+                  </p>
                 </div>
                 <div className="bg-white p-6 rounded-3xl shadow-sm border">
-                  <p className="text-gray-500 text-sm">Pending Inquiries</p>
-                  <p className="text-4xl font-semibold mt-2 text-amber-600">12</p>
+                  <p className="text-gray-500 text-sm">
+                    Pending Inquiries
+                  </p>
+
+                  <p className="text-4xl font-semibold mt-2 text-amber-600">
+                    {pendingInquiries}
+                  </p>
                 </div>
                 <div className="bg-white p-6 rounded-3xl shadow-sm border">
-                  <p className="text-gray-500 text-sm">This Month</p>
-                  <p className="text-4xl font-semibold mt-2 text-emerald-600">28</p>
+                  <p className="text-gray-500 text-sm">
+                    Invoices Issued
+                  </p>
+
+                  <p className="text-4xl font-semibold mt-2 text-blue-600">
+                    {invoiceCount}
+                  </p>
                 </div>
                 <div className="bg-white p-6 rounded-3xl shadow-sm border">
-                  <p className="text-gray-500 text-sm">Avg. Response Time</p>
-                  <p className="text-4xl font-semibold mt-2">2.4d</p>
+                  <p className="text-gray-500 text-sm">
+                    Reports This Month
+                  </p>
+
+                  <p className="text-4xl font-semibold mt-2 text-emerald-600">
+                    {monthlyReports}
+                  </p>
                 </div>
+
               </div>
 
               <div className="bg-white rounded-3xl p-8 shadow-sm border">
                 <h2 className="text-xl font-semibold mb-6">Quick Actions</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                   <button
                     onClick={() => handleTabClick("new-report")}
                     className="p-8 border-2 border-dashed border-gray-200 hover:border-brand-navy rounded-3xl flex flex-col items-center justify-center hover:bg-gray-50 transition-all group"
@@ -252,6 +314,17 @@ shrink-0 bg-white border-r shadow-xl
                   >
                     <FileText size={48} className="text-brand-navy mb-4 group-hover:scale-110 transition-transform" />
                     <p className="font-medium">Browse Reports</p>
+                  </button>
+
+                  <button
+                    onClick={() => handleTabClick("invoices")}
+                    className="p-8 border-2 border-dashed border-gray-200 hover:border-brand-navy rounded-3xl flex flex-col items-center justify-center hover:bg-gray-50 transition-all group"
+                  >
+                    <Receipt
+                      size={48}
+                      className="text-brand-navy mb-4 group-hover:scale-110 transition-transform"
+                    />
+                    <p className="font-medium">Invoices</p>
                   </button>
                 </div>
               </div>

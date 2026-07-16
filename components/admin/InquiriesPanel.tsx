@@ -101,7 +101,6 @@ export default function InquiriesPanel({
     }
   };
   return (
-    // <div className="space-y-6">
     <div className="w-full space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-3xl shadow-xl p-6 md:p-8">
@@ -125,100 +124,161 @@ export default function InquiriesPanel({
       </div>
 
       {/* Desktop Table */}
-      <div className="hidden md:block bg-white rounded-3xl shadow-xl overflow-hidden">
-        {/* <div className="overflow-x-auto"> */}
-        <div className="w-full">
-          <table className="w-full">
-            <thead className="bg-brand-navy text-white">
-              <tr>
-                <th className="px-6 py-5 text-left font-semibold">Date</th>
-                <th className="px-6 py-5 text-left font-semibold">Patient</th>
-                <th className="px-6 py-5 text-left font-semibold">Contact</th>
-                <th className="px-6 py-5 text-left font-semibold">Service</th>
-                <th className="px-6 py-5 text-left font-semibold">Preferred</th>
-                <th className="px-6 py-5 text-left font-semibold">Condition</th>
-                <th className="px-6 py-5 text-left font-semibold">Status</th>
-                <th className="px-6 py-5 text-center font-semibold">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {inquiries.map((inq) => (
-                <tr key={inq.id} className="hover:bg-brand-teal/5 transition-colors">
-                  <td className="px-6 py-5 text-sm whitespace-nowrap text-gray-600">
-                    {inq.createdAt ? new Date(inq.createdAt).toLocaleDateString() : "—"}
-                  </td>
-                  <td className="px-6 py-5">
-                    <div className="font-semibold text-gray-900">{inq.name}</div>
-                    {inq.age && (
-                      <div className="text-sm text-gray-500">
-                        {inq.age} years • {inq.sex}
+      <div className="hidden lg:block bg-white rounded-3xl shadow-xl overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-brand-navy text-white">
+            <tr>
+              <th className="px-4 py-4 text-left">Date</th>
+              <th className="px-4 py-4 text-left">Patient</th>
+              <th className="px-4 py-4 text-left">Contact</th>
+              <th className="px-4 py-4 text-left">Appointment</th>
+              <th className="px-4 py-4 text-left">Condition</th>
+              <th className="px-4 py-4 text-center">Workflow</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y">
+            {inquiries.map((inq) => (
+              <tr
+                key={inq.id}
+                className="hover:bg-brand-teal/5 align-top"
+              >
+                {/* DATE */}
+                <td className="px-4 py-5 text-sm whitespace-nowrap">
+                  {inq.createdAt && (
+                    <>
+                      <div>
+                        {new Date(inq.createdAt).toLocaleDateString()}
                       </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-5 text-sm">
-                    <a href={`tel:${inq.phone}`} className="hover:text-brand-teal font-medium">
-                      {inq.phone}
+
+                      <div className="text-xs text-gray-500 mt-1">
+                        {new Date(inq.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                    </>
+                  )}
+                </td>
+
+                {/* PATIENT */}
+                <td className="px-4 py-5">
+                  <div className="font-semibold text-gray-900">
+                    {inq.name}
+                  </div>
+
+                  <div className="text-sm text-gray-500 mt-1">
+                    {inq.age ?? "—"} yrs • {inq.sex ?? "—"}
+                  </div>
+
+                  {inq.service && (
+                    <div className="mt-2 inline-block rounded-full bg-brand-teal/10 px-3 py-1 text-xs font-medium text-brand-teal">
+                      {inq.service}
+                    </div>
+                  )}
+
+                  {inq.residence && (
+                    <div className="text-xs text-gray-500 mt-2">
+                      {inq.residence}
+                    </div>
+                  )}
+                </td>
+
+                {/* CONTACT */}
+                <td className="px-4 py-5">
+                  <a
+                    href={`tel:${inq.phone}`}
+                    className="block font-medium hover:text-brand-teal"
+                  >
+                    {inq.phone}
+                  </a>
+
+                  {inq.email && (
+                    <a
+                      href={`mailto:${inq.email}`}
+                      className="block text-xs text-gray-500 mt-2 break-all"
+                    >
+                      {inq.email}
                     </a>
-                    {inq.email && <div className="text-xs text-gray-500 truncate mt-1">{inq.email}</div>}
-                  </td>
-                  <td className="px-6 py-5 font-medium text-brand-navy">{inq.service || "—"}</td>
-                  <td className="px-6 py-5 text-sm">
-                    {inq.preferredDate && (
-                      <div className="flex items-center gap-1.5">
-                        <Calendar size={16} className="text-brand-teal" />
-                        {new Date(inq.preferredDate).toLocaleDateString()}
+                  )}
+                </td>
+
+                {/* APPOINTMENT */}
+                <td className="px-4 py-5 text-sm">
+                  {inq.preferredDate ? (
+                    <>
+                      <div>
+                        {new Date(
+                          inq.preferredDate
+                        ).toLocaleDateString()}
                       </div>
-                    )}
-                    {inq.preferredTime && (
-                      <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1">
-                        <Clock size={16} />
-                        {inq.preferredTime}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-5 text-sm text-gray-600 max-w-md line-clamp-2">
+
+                      {inq.preferredTime && (
+                        <div className="text-gray-500 mt-2">
+                          {inq.preferredTime}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    "—"
+                  )}
+                </td>
+
+                {/* CONDITION */}
+                <td className="px-4 py-5">
+                  <div className="text-sm whitespace-pre-wrap break-words leading-6 text-gray-700">
                     {inq.conditionCause || "—"}
-                  </td>
-                  <td className="px-6 py-5">
-                    <span className={`inline-block px-4 py-1 rounded-full text-xs font-medium border ${getStatusColor(inq.status)}`}>
-                      {inq.status.toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-6 py-5 text-center">
-                    {inq.status === "pending" ? (
-                      <button
-                        onClick={() => handleStatusChange(inq.id, "contacted")}
-                        className="flex items-center gap-2 mx-auto text-emerald-600 hover:text-emerald-700 font-medium px-5 py-2 rounded-2xl hover:bg-emerald-50"
-                      >
-                        <CheckCircle size={18} />
-                        Mark Contacted
-                      </button>
-                    ) : inq.status === "contacted" ? (
-                      <button
-                        onClick={() => onGenerateReport(inq)}
-                        className="mx-auto px-5 py-2 rounded-2xl bg-brand-navy text-white hover:bg-brand-navy/90"
-                      >
-                        Generate Report
-                      </button>
-                    ) : (
-                      <span className="text-blue-600 font-semibold">
-                        ✓ Report Generated
-                      </span>
-                    )}
+                  </div>
 
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  {inq.message && (
+                    <div className="mt-4 rounded-xl bg-gray-50 p-3 text-xs text-gray-600">
+                      <strong>Patient Message</strong>
 
-        {inquiries.length === 0 && !loading && (
-          <div className="p-16 text-center">
-            <MessageSquare size={64} className="mx-auto text-gray-300 mb-4" />
-            <p className="text-xl text-gray-400">No inquiries yet</p>
-          </div>
-        )}
+                      <div className="mt-2 whitespace-pre-wrap break-words">
+                        {inq.message}
+                      </div>
+                    </div>
+                  )}
+                </td>
+
+                {/* WORKFLOW */}
+                <td className="px-4 py-5 w-52">
+                  {inq.status === "pending" && (
+                    <button
+                      onClick={() =>
+                        handleStatusChange(inq.id, "contacted")
+                      }
+                      className="w-full rounded-xl bg-amber-100 px-4 py-3 font-medium text-amber-700 hover:bg-amber-200"
+                    >
+                      Mark Contacted
+                    </button>
+                  )}
+
+                  {inq.status === "contacted" && (
+                    <button
+                      onClick={() => onGenerateReport(inq)}
+                      className="w-full rounded-xl bg-brand-navy px-4 py-3 font-medium text-white hover:bg-brand-navy/90"
+                    >
+                      Generate Report
+                    </button>
+                  )}
+
+                  {inq.status === "reported" && (
+                    <div className="rounded-xl bg-blue-100 px-4 py-3 text-center font-medium text-blue-700">
+                      ✓ Report Generated
+                    </div>
+                  )}
+
+                  {inq.status === "completed" && (
+                    <div className="rounded-xl bg-purple-100 px-4 py-3 text-center font-medium text-purple-700">
+                      ✓ Completed
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Mobile Cards - Beautiful & Clean */}
