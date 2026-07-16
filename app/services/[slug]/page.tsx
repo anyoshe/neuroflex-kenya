@@ -5,6 +5,7 @@ import ServiceClient from "./ServiceClient";
 import { services } from "@/lib/site-data";
 import FaqSchema from "./FaqSchema";
 import BreadcrumbSchema from "./BreadcrumbSchema";
+import { absoluteUrl } from "@/lib/site-url";
 
 type Props = {
   params: Promise<{
@@ -24,8 +25,7 @@ export async function generateMetadata({
 
   if (!service) return {};
 
-  const url =
-    `https://www.neuroflexkenya.com/services/${service.slug}`;
+  const url = absoluteUrl(`/services/${service.slug}`);
 
   return {
 
@@ -122,8 +122,7 @@ export default async function Page({
 
     description: service.overview,
 
-    image:
-      `https://www.neuroflexkenya.com${service.image}`,
+    image: absoluteUrl(service.image),
 
     provider: {
 
@@ -147,8 +146,7 @@ export default async function Page({
 
     areaServed: "Kenya",
 
-    url:
-      `https://www.neuroflexkenya.com/services/${service.slug}`,
+    url: absoluteUrl(`/services/${service.slug}`),
 
   };
 

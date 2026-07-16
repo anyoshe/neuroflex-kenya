@@ -1,3 +1,5 @@
+import { SITE_URL, absoluteUrl } from "@/lib/site-url";
+
 export default function BreadcrumbSchema({
   service,
 }: {
@@ -16,7 +18,7 @@ export default function BreadcrumbSchema({
 
         name: "Home",
 
-        item: "https://www.neuroflexkenya.com",
+        item: SITE_URL,
       },
 
       {
@@ -26,7 +28,7 @@ export default function BreadcrumbSchema({
 
         name: "Services",
 
-        item: "https://www.neuroflexkenya.com/#services",
+        item: `${SITE_URL}/#services`,
       },
 
       {
@@ -36,7 +38,7 @@ export default function BreadcrumbSchema({
 
         name: service.title,
 
-        item: `https://www.neuroflexkenya.com/services/${service.slug}`,
+        item: absoluteUrl(`/services/${service.slug}`),
       },
     ],
   };

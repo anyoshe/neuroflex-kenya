@@ -7,9 +7,11 @@ import { Toaster } from "react-hot-toast";
 import "./report-preview.css";
 import AdminAwareLayout from "@/components/AdminAwareLayout";
 
+import { SITE_URL } from "@/lib/site-url";
+
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-const siteUrl = "https://neuroflexkenya.com";
+const siteUrl = SITE_URL;
 
   export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

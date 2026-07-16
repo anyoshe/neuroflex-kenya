@@ -1,4 +1,5 @@
 import { Condition } from "@/lib/conditions-data";
+import { absoluteUrl } from "@/lib/site-url";
 
 
 interface Props {
@@ -45,7 +46,7 @@ export default function ConditionSchema({
     mainEntityOfPage: {
       "@type": "WebPage",
 
-      "@id": `https://neuroflexkenya.com/conditions/${condition.slug}`,
+      "@id": absoluteUrl(`/conditions/${condition.slug}`),
     },
 
 

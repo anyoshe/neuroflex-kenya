@@ -1,33 +1,10 @@
-// import { MetadataRoute } from "next";
-// import { services } from "@/lib/site-data";
-// import { conditions } from "@/lib/conditions-data";
-
-// export default function sitemap(): MetadataRoute.Sitemap {
-//   const baseUrl = "https://neuroflexkenya.com";
-
-//   return [
-//     // Homepage
-//     {
-//       url: baseUrl,
-//       lastModified: new Date(),
-//       changeFrequency: "weekly",
-//       priority: 1.0,
-//     },
-
-//     // Conditions Hub
-//     {
-//       url: `${baseUrl}/conditions`,
-//       lastModified: new Date(),
-//       changeFrequency: "weekly",
-//       priority: 0.95,
-//     },
-
 import { MetadataRoute } from "next";
 import { services } from "@/lib/site-data";
 import { conditions } from "@/lib/conditions-data";
+import { SITE_URL } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://neuroflexkenya.com"; // Ensure this matches your canonical domain
+  const baseUrl = SITE_URL;
 
   const servicePages = services.map((service) => ({
     url: `${baseUrl}/services/${service.slug}`,

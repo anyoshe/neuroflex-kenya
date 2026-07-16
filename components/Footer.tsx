@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MapPin, Phone, Globe } from "lucide-react"; // Imported Globe icon
 import Logo from "./Logo";
 import { contactInfo, navLinks } from "@/lib/site-data";
+import { SITE_URL } from "@/lib/site-url";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -59,12 +60,12 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Globe className="shrink-0 text-brand-teal" size={16} />
                 <a
-                  href="https://www.neuroflexkenya.com"
+                  href={SITE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition hover:text-brand-teal"
                 >
-                  www.neuroflexkenya.com
+                  neuroflexkenya.com
                 </a>
               </li>
             </ul>

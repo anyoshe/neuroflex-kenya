@@ -1,3 +1,5 @@
+import { absoluteUrl } from "@/lib/site-url";
+
 export default function ServiceSchema({
   service,
 }: {
@@ -11,14 +13,14 @@ export default function ServiceSchema({
 
     description: service.overview,
 
-    image: `https://www.neuroflexkenya.com${service.image}`,
+    image: absoluteUrl(service.image),
 
-    url: `https://www.neuroflexkenya.com/services/${service.slug}`,
+    url: absoluteUrl(`/services/${service.slug}`),
 
     provider: {
       "@type": "MedicalBusiness",
       name: "Neuroflex Kenya",
-      image: "https://www.neuroflexkenya.com/images/logo.png",
+      image: absoluteUrl("/images/logo.png"),
       telephone: "+254729213135",
       email: "info@neuroflexkenya.com",
       address: {

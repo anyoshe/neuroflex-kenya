@@ -1,11 +1,13 @@
+import { SITE_URL, absoluteUrl } from "@/lib/site-url";
+
 export default function SchemaMarkup() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
     "name": "Neuroflex Kenya | Physio & Wellness Centre",
-    "image": "https://www.neuroflexkenya.com/assets/logos/logo2.jpeg",
-    "@id": "https://www.neuroflexkenya.com/#clinic",
-    "url": "https://www.neuroflexkenya.com",
+    "image": absoluteUrl("/assets/logos/logo2.jpeg"),
+    "@id": `${SITE_URL}/#clinic`,
+    "url": SITE_URL,
     "telephone": "+254729213135",
     "priceRange": "$$",
     "address": {

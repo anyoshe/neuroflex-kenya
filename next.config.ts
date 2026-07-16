@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const canonicalHost = "neuroflexkenya.com";
+
 const nextConfig: NextConfig = {
   output: "standalone",
 
@@ -16,6 +18,17 @@ const nextConfig: NextConfig = {
 
   env: {
     DATABASE_URL: process.env.DATABASE_URL || "",
+  },
+
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: `www.${canonicalHost}` }],
+        destination: `https://${canonicalHost}/:path*`,
+        permanent: true,
+      },
+    ];
   },
 };
 
