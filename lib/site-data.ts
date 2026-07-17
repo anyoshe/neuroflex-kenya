@@ -25,19 +25,6 @@ export const stats = [
   { value: 10, suffix: "", label: "Specialty Programs" },
 ] as const;
 
-// export const services: {
-//   icon: LucideIcon;
-//   title: string;
-//   desc: string;
-//   featured?: boolean;
-//   image: string;
-//   slug: string;
-//   duration: string;
-//   priceRange: string;
-//   bestFor: string;
-//   benefits: string[];
-//   galleryImages: string[];
-// }[] = [
 export const services: {
   icon: LucideIcon;
   title: string;
@@ -102,7 +89,7 @@ export const services: {
 
       duration: "60 - 90 minutes",
 
-      priceRange: "KSh 6,000 - 9,000",
+      priceRange: "KSh 3,500 - 6,000",
 
       bestFor: "Stroke, Parkinson's, Brain Injury",
 
@@ -199,7 +186,7 @@ export const services: {
       image: "/images/services/cardiacimage.webp",
       slug: "cardiac-pulmonary-rehab",
       duration: "45 - 70 minutes",
-      priceRange: "KSh 5,000 - 8,000",
+      priceRange: "Sh 3,500 - 6,000",
       bestFor: "Post Heart Surgery, COPD, Asthma",
       benefits: [
         "Improves heart and lung function",
@@ -264,7 +251,7 @@ export const services: {
       image: "/images/services/muscularimage1.webp",
       slug: "musculoskeletal-physiotherapy",
       duration: "45 - 75 minutes",
-      priceRange: "KSh 5,000 - 7,500",
+      priceRange: "KSh 3,500 - 6,000",
       bestFor: "Back Pain, Sports Injuries, Joint Issues",
       benefits: [
         "Pain relief and management",
@@ -428,7 +415,7 @@ export const services: {
       image: "/images/services/pedetric.webp",
       slug: "pediatric-physiotherapy",
       duration: "45 - 60 minutes",
-      priceRange: "KSh 4,000 - 7,000",
+      priceRange: "KSh 3,500 - 6,000",
       bestFor: "Children with Developmental Delays",
       benefits: [
         "Supports developmental milestones",
@@ -481,7 +468,7 @@ export const services: {
       image: "/images/services/geriaticimage1.webp",
       slug: "geriatric-care",
       duration: "45 - 60 minutes",
-      priceRange: "KSh 4,500 - 6,500",
+      priceRange: "KSh 3,500 - 6,000",
       bestFor: "Seniors & Elderly Mobility",
       benefits: [
         "Fall prevention training",
@@ -534,7 +521,7 @@ export const services: {
       image: "/images/services/fitnessimage1.webp",
       slug: "wellness-fitness",
       duration: "45 - 75 minutes",
-      priceRange: "KSh 4,000 - 7,000",
+      priceRange: "KSh 3,500 - 6,000",
       bestFor: "General Fitness & Wellness",
       benefits: [
         "Personalized fitness programs",
@@ -587,7 +574,7 @@ export const services: {
       image: "/images/services/lympaticimage1.webp",
       slug: "lymphatic-drainage",
       duration: "45 - 75 minutes",
-      priceRange: "KSh 4,500 - 7,500",
+      priceRange: "KSh 3,500 - 6,000",
       bestFor: "Swelling, Detox, Post-Surgery",
       benefits: [
         "Reduces swelling and fluid retention",
@@ -644,7 +631,7 @@ export const services: {
       image: "/images/services/carminativeimage.webp",
       slug: "carminative-management",
       duration: "40 - 60 minutes",
-      priceRange: "KSh 4,000 - 6,000",
+      priceRange: "KSh 3,500 - 6,000",
       bestFor: "Digestive Discomfort & Bloating",
       benefits: [
         "Relieves bloating and gas",
