@@ -4,20 +4,27 @@ export default function SchemaMarkup() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
-    "name": "Neuroflex Kenya | Physio & Wellness Centre",
+    "name": "Neuroflex Kenya",
+    "alternateName": "Neuroflex Physio & Wellness Centre",
     "image": absoluteUrl("/assets/logos/logo2.jpeg"),
     "@id": `${SITE_URL}/#clinic`,
     "url": SITE_URL,
     "telephone": "+254729213135",
+    "email": "info@neuroflexkenya.com",
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Nairobi, Kenya", 
+      "streetAddress": "Fedha Road, 300m off Outering Road, Embakasi",
       "addressLocality": "Nairobi",
       "addressRegion": "Nairobi County",
       "postalCode": "00100",
       "addressCountry": "KE"
     },
+    "areaServed": [
+      "Embakasi",
+      "Nairobi",
+      "Kenya"
+    ],
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",

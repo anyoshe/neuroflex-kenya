@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ConditionSchema from "@/components/ConditionSchema";
 import RelatedConditions from "@/components/RelatedConditions";
+import { absoluteUrl } from "@/lib/site-url";
 
 
 interface Props {
@@ -32,9 +33,19 @@ export async function generateMetadata(
 
     description: condition.description,
 
+    alternates: {
+      canonical: absoluteUrl(`/conditions/${condition.slug}`),
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
+
     openGraph: {
       title: condition.title,
       description: condition.description,
+      url: absoluteUrl(`/conditions/${condition.slug}`),
       images: [
         condition.image
       ],

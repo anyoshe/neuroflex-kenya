@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { conditions } from "@/lib/conditions-data";
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/site-url";
 
 
 export const metadata: Metadata = {
@@ -10,6 +11,15 @@ export const metadata: Metadata = {
 
   description:
     "Explore neurological and musculoskeletal conditions treated at Neuroflex Kenya including stroke rehabilitation, Parkinson's disease, spinal injuries, back pain, sciatica and neck pain.",
+
+  alternates: {
+    canonical: absoluteUrl("/conditions"),
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 
 };
 

@@ -31,8 +31,9 @@ const siteUrl = SITE_URL;
     "dennis masaki physiotherapist",
   ],
   authors: [{ name: "NRPT Dennis Masaki" }],
-  alternates: {
-    canonical: "/",
+  robots: {
+    index: true,
+    follow: true,
   },
   icons: {
     icon: [
