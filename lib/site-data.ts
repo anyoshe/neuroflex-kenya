@@ -725,6 +725,37 @@ export const contactInfo = {
   phoneHref: "tel:+254729213135",
   location: "Fedha Road, 300m off Outering Road, Embakasi, Nairobi, Kenya.",
   hours: "Mon – Sun: 8:00 AM – 9:00 PM",
-  email: "info@neuroflexkenya.com",
-  emailHref: "mailto:info@neuroflexkenya.com",
+  email: "neuroflexkenya@gmail.com",
+  emailHref: "mailto:neuroflexkenya@gmail.com",
 } as const;
+
+export const socialLinks = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/neuroflexkenya",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/neuroflexkenya",
+  },
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@neuroflexkenya",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/neuroflexkenya",
+  },
+  {
+    label: "X",
+    href: "https://x.com/neuroflexkenya",
+  },
+  {
+    label: "Google",
+    href: "https://www.google.com/search?q=Neuroflex+Kenya+Fedha+Road+Embakasi+Nairobi",
+  },
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/254729213135",
+  },
+] as const;

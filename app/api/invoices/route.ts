@@ -8,6 +8,7 @@ export async function POST(req: NextRequest) {
         const {
             reportId,
             serviceId,
+            serviceIds,
             customerType,
             organization,
             contactPerson,
@@ -23,17 +24,15 @@ export async function POST(req: NextRequest) {
             vatAmount,
             total,
             amountPaid,
-            balance,
             diagnosis,
             notes,
             createdBy,
             items,
         } = body;
         const invoiceTotal = Number(total);
-
         const paidAmount = Number(amountPaid || 0);
-
         const invoiceBalance = invoiceTotal - paidAmount;
+        const primaryServiceId = serviceId ?? serviceIds?.[0] ?? null;
         // ------------------------------------------------
         // Generate next invoice number
         // ------------------------------------------------
@@ -79,9 +78,9 @@ export async function POST(req: NextRequest) {
         discount,
         vat_rate,
         vat_amount,
-        invoiceTotal,
-paidAmount,
-invoiceBalance,
+        total,
+        amount_paid,
+        balance,
         diagnosis,
         notes,
         status,
@@ -98,7 +97,7 @@ invoiceBalance,
             [
                 invoiceNo,
                 reportId,
-                serviceId,
+                primaryServiceId,
                 customerType,
                 organization,
                 contactPerson,
@@ -112,12 +111,12 @@ invoiceBalance,
                 discount,
                 vatRate,
                 vatAmount,
-                total,
-                amountPaid,
-                balance,
+                invoiceTotal,
+                paidAmount,
+                invoiceBalance,
                 diagnosis,
                 notes,
-                "UNPAID",
+                invoiceBalance <= 0 ? "PAID" : paidAmount > 0 ? "PARTIALLY PAID" : "UNPAID",
                 createdBy,
             ]
         );

@@ -1,4 +1,5 @@
 import { SITE_URL, absoluteUrl } from "@/lib/site-url";
+import { socialLinks } from "@/lib/site-data";
 
 export default function SchemaMarkup() {
   const jsonLd = {
@@ -11,6 +12,7 @@ export default function SchemaMarkup() {
     "url": SITE_URL,
     "telephone": "+254729213135",
     "email": "info@neuroflexkenya.com",
+    "sameAs": socialLinks.map((link) => link.href),
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
