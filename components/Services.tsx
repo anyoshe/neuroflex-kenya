@@ -26,10 +26,7 @@ export default function Services() {
           {services.map((service, index) => {
             const Icon = service.icon;
             const isFirst = index === 0;
-            const isLast = index === services.length - 1;
-            const isSecondLast = index === services.length - 2;
-            const isHighlighted =
-              isFirst || isSecondLast || isLast;
+            const isHighlighted = isFirst;
 
             return (
               <MotionReveal
@@ -41,10 +38,6 @@ export default function Services() {
                             hover:[&_img]:scale-105 hover:border-brand-green/20 hover:shadow-lg
 
                             ${isFirst ? "lg:col-span-2" : ""}
-
-                            ${isSecondLast ? "lg:col-span-1" : ""}
-
-                            ${isLast ? "lg:col-span-2" : ""}
                             `}
               >
                 {/* Service Image */}
@@ -73,7 +66,7 @@ export default function Services() {
 
                     {isHighlighted && (
                       <span className="inline-block rounded-full bg-brand-green/10 px-3 py-1 text-xs font-semibold text-brand-green">
-                        {isFirst ? "Flagship" : "Popular Choice"}
+                        Flagship
                       </span>
                     )}
                   </h3>

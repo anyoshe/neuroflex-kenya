@@ -3,6 +3,7 @@ import {
   Brain,
   Droplets,
   Heart,
+  MessageCircle,
   UserCog,
   Users,
   Wind,
@@ -428,6 +429,67 @@ export const services: {
         "/images/services/kids2.webp",
         "/images/services/babytherapy1.webp",
         "/images/services/kids3.webp"
+      ]
+    },
+    {
+      icon: MessageCircle,
+      title: "Speech Therapy",
+      desc: "Communication, speech, language, swallowing, and developmental support for children and adults.",
+      overview:
+        "Speech Therapy at Neuroflex Kenya supports children and adults who experience difficulties with speech, language, voice, fluency, communication or swallowing. Our therapists provide compassionate, goal-focused assessment and treatment plans that help patients communicate more clearly, build confidence and improve daily participation at home, school, work and in the community.",
+
+      conditions: [
+        "Delayed Speech and Language",
+        "Speech Sound Disorders",
+        "Stuttering and Fluency Difficulties",
+        "Voice Disorders",
+        "Swallowing Difficulties",
+        "Autism Communication Support",
+        "Stroke-related Communication Problems",
+        "Developmental Communication Delays"
+      ],
+
+      treatment:
+        "Treatment begins with a detailed communication and functional assessment to understand each patient's needs, strengths and goals. Therapy may include articulation practice, language development activities, fluency strategies, voice exercises, swallowing support, social communication training, caregiver coaching and structured home programs to reinforce progress between sessions.",
+
+      faq: [
+        {
+          question: "Who can benefit from speech therapy?",
+          answer:
+            "Children with delayed speech, adults recovering from stroke, people with voice or fluency concerns and patients with swallowing or communication difficulties can benefit from speech therapy."
+        },
+        {
+          question: "At what age should a child start speech therapy?",
+          answer:
+            "A child can begin speech therapy as soon as communication delays or feeding and swallowing concerns are noticed. Early assessment often leads to better progress."
+        },
+        {
+          question: "Can speech therapy help after a stroke?",
+          answer:
+            "Yes. Speech therapy can help improve communication, speech clarity, language skills and swallowing safety after stroke or other neurological conditions."
+        },
+        {
+          question: "Do caregivers receive home activities?",
+          answer:
+            "Yes. Caregivers receive practical home activities and guidance to support communication progress outside therapy sessions."
+        }
+      ],
+      image: "/images/services/speechtherapy1.webp",
+      slug: "speech-therapy",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Speech Delays, Stroke Recovery, Swallowing Support",
+      benefits: [
+        "Improves speech clarity",
+        "Builds language and communication skills",
+        "Supports swallowing safety",
+        "Strengthens confidence in social interaction",
+        "Guides caregivers with practical home strategies"
+      ],
+      galleryImages: [
+        "/images/services/kids3.webp",
+        "/images/services/babytherapy1.webp",
+        "/images/services/speechtherapy2.webp"
       ]
     },
     {
