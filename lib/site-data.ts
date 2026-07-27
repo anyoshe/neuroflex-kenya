@@ -794,11 +794,11 @@ export const contactInfo = {
 export const socialLinks = [
   {
     label: "Facebook",
-    href: "https://www.facebook.com/neuroflexkenya",
+    href: "https://www.facebook.com/profile.php?id=61592662227306",
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/neuroflexkenya",
+    href: "https://www.instagram.com/neuroflexkenya/",
   },
   {
     label: "TikTok",
