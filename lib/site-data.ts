@@ -805,12 +805,16 @@ export const socialLinks = [
     href: "https://www.tiktok.com/@neuroflexkenya",
   },
   {
+    label: "YouTube",
+    href: "https://www.youtube.com/@NeuroflexKenya",
+  },
+  {
     label: "LinkedIn",
     href: "https://www.linkedin.com/company/neuroflexkenya",
   },
   {
     label: "X",
-    href: "https://x.com/neuroflexkenya",
+    href: "https://x.com/Neuroflexkenya",
   },
   {
     label: "Google",
