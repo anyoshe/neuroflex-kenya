@@ -12,9 +12,10 @@ export default function AdminAwareLayout({
   const pathname = usePathname();
 
   const isAdminPage = pathname?.startsWith("/admin");
+  const isReportPdfPage = pathname === "/report/pdf";
 
-  if (isAdminPage) {
-    return <>{children}</>;   // Skip public layout for admin
+  if (isAdminPage || isReportPdfPage) {
+    return <>{children}</>;
   }
 
   return <LayoutWrapper>{children}</LayoutWrapper>;
