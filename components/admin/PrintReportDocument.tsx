@@ -93,10 +93,6 @@ export default function PrintReportDocument({
 
         </div>
 
-        <h1 className="mt-1 text-center text-[30px] font-bold tracking-wide text-brand-navy">
-          Neuroflex Kenya
-        </h1>
-
         <p className="text-center text-[14px] font-medium text-brand-green">
           Physiotherapy • Neurorehabilitation • Wellness Centre
         </p>

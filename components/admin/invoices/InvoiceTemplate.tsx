@@ -92,12 +92,6 @@ export default function InvoiceTemplate({
 
                 </div>
 
-                <h1 className="text-center text-3xl font-bold text-brand-navy mt-2">
-
-                    Neuroflex Kenya
-
-                </h1>
-
                 <p className="text-center text-brand-green">
 
                     Physiotherapy • Neurorehabilitation • Wellness Centre

@@ -46,10 +46,6 @@ export default function ClinicHeader({
 
       </div>
 
-      <h1 className="text-center text-3xl font-bold text-brand-navy">
-        Neuroflex Kenya
-      </h1>
-
       <p className="text-center text-brand-green font-medium mt-1">
         Physiotherapy • Neurorehabilitation • Wellness Centre
       </p>

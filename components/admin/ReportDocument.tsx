@@ -87,11 +87,6 @@ export default function ReportTemplate({ report }: Props) {
         </div>
 
       </div>
-      <h1 className="text-center font-bold text-3xl text-brand-navy tracking-wide">
-        Neuroflex Kenya
-      </h1>
-
-
       <p className="text-center text-brand-green font-medium mt-1">
         Physiotherapy • Neurorehabilitation • Wellness Centre
       </p>
