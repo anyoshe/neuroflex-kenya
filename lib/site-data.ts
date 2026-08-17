@@ -23,7 +23,7 @@ export const stats = [
   { value: 500, suffix: "+", label: "Patients Treated" },
   { value: 98, suffix: "%", label: "Success Rate" },
   { value: 15, suffix: "+", label: "Years Experience" },
-  { value: 10, suffix: "", label: "Specialty Programs" },
+  { value: 12, suffix: "", label: "Specialty Programs" }
 ] as const;
 
 export const services: {
@@ -706,6 +706,64 @@ export const services: {
         "/images/services/carminative3.webp",
         "/images/services/carminative2.webp",
         "/images/services/carminative1.webp"
+      ]
+    },
+    {
+      icon: Wind,
+      title: "Therapeutic body manipulations",
+      desc: "Hands-on body therapy to relieve tension, improve circulation, and restore mobility.",
+      overview:
+        "Therapeutic body manipulations at Neuroflex Kenya are designed to relieve muscular tension, improve joint mobility and support the body's natural recovery process. Through carefully applied hands-on techniques, we help patients reduce stiffness, ease discomfort and restore movement without overloading the body. This service is ideal for individuals experiencing stress-related tightness, posture-related pain or limited mobility due to repetitive strain or physical exertion.",
+
+      conditions: [
+        "Muscle Tension",
+        "Joint Stiffness",
+        "Poor Posture",
+        "Back and Neck Pain",
+        "Scar Tissue Restriction",
+        "Stress-Related Body Tightness",
+        "Limited Mobility",
+        "Recovery from Physical Strain"
+      ],
+
+      treatment:
+        "Each session begins with a clinical assessment to understand your pain pattern, movement limitations and treatment goals. Treatment may include manual body manipulation, soft tissue mobilization, myofascial release, stretching, mobility exercises and guided postural correction to reduce discomfort and improve body function. We tailor every technique to your comfort, recovery needs and rehabilitation goals.",
+
+      faq: [
+        {
+          question: "Who can benefit from therapeutic body manipulations?",
+          answer: "This treatment is suitable for people with muscle tightness, stiffness, posture-related pain, limited mobility and discomfort caused by physical strain or stress."
+        },
+        {
+          question: "Does the treatment hurt?",
+          answer: "Some pressure or mild discomfort may be felt during treatment, especially in tight or sore areas, but sessions are adapted to maintain comfort and safety."
+        },
+        {
+          question: "How many sessions are usually needed?",
+          answer: "The number of sessions depends on the severity of your condition, how your body responds and your recovery goals. We will recommend a personalized treatment plan after assessment."
+        },
+        {
+          question: "Can it be combined with physiotherapy?",
+          answer: "Yes. Therapeutic body manipulations often complement physiotherapy, rehabilitation exercises and movement retraining for better outcomes."
+        }
+      ],
+      image: "/images/services/physioimage2.webp",
+      slug: "therapeutic-body-manipulations",
+      duration: "45 - 75 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Muscle Tension, Mobility, Posture",
+      benefits: [
+        "Relieves muscle and joint stiffness",
+        "Improves circulation and tissue mobility",
+        "Reduces tension from stress and posture",
+        "Enhances range of motion",
+        "Supports faster recovery from physical strain",
+        "Promotes relaxation and better body awareness"
+      ],
+      galleryImages: [
+        "/images/services/physioimage2.webp",
+        "/images/services/physioimage4.webp",
+        "/images/services/kinesologyimage1.webp"
       ]
     },
   ];
