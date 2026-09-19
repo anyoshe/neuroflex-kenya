@@ -928,7 +928,7 @@ export const services: {
           answer: "Yes. Caregivers receive practical strategies to reinforce safe routines and progress between sessions."
         }
       ],
-      image: "/images/services/neuroimage2.webp",
+      image: "/images/services/cognitive1.webp",
       slug: "cognitive-rehabilitation-therapy",
       duration: "45 - 60 minutes",
       priceRange: "KSh 3,500 - 6,000",
@@ -941,9 +941,9 @@ export const services: {
         "Guides caregivers with practical tools"
       ],
       galleryImages: [
-        "/images/services/neuroimage.webp",
-        "/images/services/neuroimage2.webp",
-        "/images/services/physioimage6.webp"
+        "/images/services/cognitive2.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/06_Cognitive_Rehabilitation_Therapy/01_Memory_Training.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/06_Cognitive_Rehabilitation_Therapy/02_Problem_Solving.webp"
       ]
     },
     {
@@ -978,7 +978,7 @@ export const services: {
           answer: "The therapist can recommend practical environmental changes and equipment based on your assessment and safety needs."
         }
       ],
-      image: "/images/services/physioimage1.webp",
+      image: "/images/services/occupation1.webp",
       slug: "occupational-therapy",
       duration: "45 - 60 minutes",
       priceRange: "KSh 3,500 - 6,000",
@@ -991,9 +991,9 @@ export const services: {
         "Provides practical adaptive strategies"
       ],
       galleryImages: [
-        "/images/services/physioimage5.webp",
-        "/images/services/physioimage1.webp",
-        "/images/services/kineshand.webp"
+        "/images/services/occupation2.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/01_Occupational_Therapy/02_Hand_Upper_Limb_Rehabilitation.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/01_Occupational_Therapy/03_Functional_Activity_Training.webp"
       ]
     },
     {
@@ -1028,7 +1028,7 @@ export const services: {
           answer: "Yes. Balance retraining, strength work and safety education can improve stability and confidence."
         }
       ],
-      image: "/images/services/geriaticimage1.webp",
+      image: "/images/services/vestbular1.webp",
       slug: "balance-vestibular-rehabilitation",
       duration: "45 - 60 minutes",
       priceRange: "KSh 3,500 - 6,000",
@@ -1041,9 +1041,9 @@ export const services: {
         "Builds independence in daily mobility"
       ],
       galleryImages: [
-        "/images/services/gatric1.webp",
-        "/images/services/gatric2.webp",
-        "/images/services/gatric3.webp"
+        "/images/services/vestbular2.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/02_Balance_and_Vestibular_Rehabilitation/01_Balance_Training.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/02_Balance_and_Vestibular_Rehabilitation/03_Gaze_Stabilization.webp"
       ]
     },
     {
@@ -1078,7 +1078,7 @@ export const services: {
           answer: "Yes. Families can learn safe assistance, transfer and walking techniques to support progress at home."
         }
       ],
-      image: "/images/services/physioimage6.webp",
+      image: "/images/services/gait&phyiscal.webp",
       slug: "gait-walking-rehabilitation",
       duration: "45 - 75 minutes",
       priceRange: "KSh 3,500 - 6,000",
@@ -1091,9 +1091,9 @@ export const services: {
         "Supports greater independence"
       ],
       galleryImages: [
-        "/images/services/physioimage1.webp",
-        "/images/services/physioimage6.webp",
-        "/images/services/physioimage5.webp"
+        "/images/services/gait1.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/03_Gait_and_Walking_Rehabilitation/02_Walking_Frame_Training.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/03_Gait_and_Walking_Rehabilitation/04_Overground_Walking_Practice.webp"
       ]
     },
     {
@@ -1128,7 +1128,7 @@ export const services: {
           answer: "Yes. Graded activity and endurance training are introduced safely according to your symptoms and medical condition."
         }
       ],
-      image: "/images/services/cardiacimage.webp",
+      image: "/images/services/respiratory1.webp",
       slug: "respiratory-physiotherapy",
       duration: "45 - 60 minutes",
       priceRange: "KSh 3,500 - 6,000",
@@ -1141,9 +1141,9 @@ export const services: {
         "Supports recovery after illness or surgery"
       ],
       galleryImages: [
-        "/images/services/cardiac2.webp",
-        "/images/services/cardiac3.webp",
-        "/images/services/cardiacimage.webp"
+        "/images/services/respiratory2.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/04_Respiratory_Physiotherapy/02_Chest_Physiotherapy.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/04_Respiratory_Physiotherapy/03_Pulmonary_Rehabilitation.webp"
       ]
     },
     {
@@ -1178,7 +1178,7 @@ export const services: {
           answer: "Yes. Caregiver training is encouraged for safe transfers, support and equipment use at home."
         }
       ],
-      image: "/images/services/muscularimage1.webp",
+      image: "/images/services/assistivedevice1.webp",
       slug: "assistive-device-mobility-training",
       duration: "45 - 60 minutes",
       priceRange: "KSh 3,500 - 6,000",
@@ -1191,9 +1191,9 @@ export const services: {
         "Trains caregivers in safe assistance"
       ],
       galleryImages: [
-        "/images/services/musket1.webp",
-        "/images/services/musket2.webp",
-        "/images/services/physioimage2.webp"
+        "/images/services/assistivedevice2.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/05_Assistive_Device_and_Mobility_Training/02_Wheelchair_Mobility_Training.webp",
+        "/images/services/Rehabilitation_Services_Website_Images/05_Assistive_Device_and_Mobility_Training/04_Transfer_Training.webp"
       ]
     },
   ];
