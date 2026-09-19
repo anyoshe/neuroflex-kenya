@@ -43,6 +43,15 @@ export const reports = pgTable("reports", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const notebookEntries = pgTable("notebook_entries", {
+  id: serial("id").primaryKey(),
+  patientName: text("patient_name").notNull(),
+  age: integer("age"),
+  notes: text("notes").notNull(),
+  createdBy: text("created_by"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const testimonials = pgTable("Testimonial", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),

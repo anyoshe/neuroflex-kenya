@@ -201,6 +201,17 @@ export async function initializeDatabase() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
+    // Rough clinical notes
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS notebook_entries (
+        id SERIAL PRIMARY KEY,
+        patient_name TEXT NOT NULL,
+        age INTEGER,
+        notes TEXT NOT NULL,
+        created_by TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
     // Testimonials
     await client.query(`
       CREATE TABLE IF NOT EXISTS "Testimonial" (

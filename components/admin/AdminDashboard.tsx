@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X, LogOut, Home, FileText, PlusCircle, Users, Receipt, Bell } from "lucide-react";
+import { Menu, X, LogOut, Home, FileText, PlusCircle, Users, Receipt, Bell, BookOpen } from "lucide-react";
 import Link from "next/link";
 import Logo from "../Logo";
 import { getReports } from "@/lib/actions/admin";
@@ -11,6 +11,7 @@ import InquiriesPanel from "./InquiriesPanel";
 import ReportBuilder from "./ReportBuilder";
 import ReportsHistory from "./ReportsHistory";
 import InvoicesPanel from "./InvoicesPanel";
+import NotebookPanel from "./NotebookPanel";
 
 type Report = {
   id: number;
@@ -39,7 +40,7 @@ type Report = {
 
 export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState<
-    "dashboard" | "inquiries" | "new-report" | "reports" | "invoices"
+    "dashboard" | "inquiries" | "notebook" | "new-report" | "reports" | "invoices"
   >("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
@@ -126,6 +127,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: Home },
     { key: "inquiries", label: "Inquiries", icon: Users },
+    { key: "notebook", label: "Clinical Notebook", icon: BookOpen },
     { key: "new-report", label: "New Report", icon: PlusCircle },
     { key: "reports", label: "Reports History", icon: FileText },
     { key: "invoices", label: "Invoices", icon: Receipt },
@@ -201,11 +203,11 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
               <div>
 
-                <h1 className="text-2xl font-bold text-brand-navy">
+                <h1 className="text-lg font-bold text-brand-navy sm:text-2xl">
                   Admin Dashboard
                 </h1>
 
-                <p className="text-sm text-gray-500">
+                <p className="hidden text-sm text-gray-500 md:block">
                   Neuroflex Kenya Management System
                 </p>
 
@@ -326,14 +328,30 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                     />
                     <p className="font-medium">Invoices</p>
                   </button>
+
+                  <button
+                    onClick={() => handleTabClick("notebook")}
+                    className="p-8 border-2 border-dashed border-gray-200 hover:border-brand-navy rounded-3xl flex flex-col items-center justify-center hover:bg-gray-50 transition-all group"
+                  >
+                    <BookOpen
+                      size={48}
+                      className="text-brand-navy mb-4 group-hover:scale-110 transition-transform"
+                    />
+                    <p className="font-medium">Clinical Notebook</p>
+                  </button>
                 </div>
               </div>
             </div>
           )}
 
           {activeTab === "inquiries" && (
-            <InquiriesPanel onGenerateReport={handleGenerateReportFromInquiry} />
+            <div className="space-y-8">
+              <InquiriesPanel onGenerateReport={handleGenerateReportFromInquiry} />
+              <NotebookPanel />
+            </div>
           )}
+
+          {activeTab === "notebook" && <NotebookPanel />}
 
           {activeTab === "new-report" && (
             <ReportBuilder

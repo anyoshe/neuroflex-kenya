@@ -64,7 +64,7 @@ export default function PrintReportDocument({
 
       <header className="border-b-[3px] border-brand-green pb-3">
 
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex items-center justify-between gap-8">
 
           <div className="flex-shrink-0">
 
@@ -79,7 +79,7 @@ export default function PrintReportDocument({
 
           </div>
 
-          <div className="text-right text-[12px] leading-5">
+          <div className="text-right text-[14px] leading-6">
 
             <p>P.O. Box 054-00506 Nairobi</p>
 
@@ -93,7 +93,7 @@ export default function PrintReportDocument({
 
         </div>
 
-        <p className="text-center text-[15px] font-medium text-brand-green">
+        <p className="mt-1 text-center text-[16px] leading-6 font-medium text-brand-green">
           Physiotherapy • Neurorehabilitation • Wellness Centre
         </p>
 

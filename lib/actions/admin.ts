@@ -39,6 +39,12 @@ type InquiryInput = {
   status?: string;
 };
 
+type NotebookEntryInput = {
+  patientName: string;
+  age?: string | number | null;
+  notes: string;
+};
+
 const TOKEN_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 // ================== FALLBACK ADMIN ==================
@@ -284,6 +290,117 @@ export async function saveReport(data: ReportInput) {
     return {
       success: false,
       error: "Could not save report.",
+    };
+  }
+}
+
+// ================== CLINICAL NOTEBOOK ==================
+export async function getNotebookEntries() {
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS notebook_entries (
+        id SERIAL PRIMARY KEY,
+        patient_name TEXT NOT NULL,
+        age INTEGER,
+        notes TEXT NOT NULL,
+        created_by TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+
+    return await query(
+      `
+      SELECT id, patient_name, age, notes, created_by, created_at
+      FROM notebook_entries
+      ORDER BY created_at DESC
+      LIMIT 20
+      `
+    );
+  } catch (error) {
+    console.error("Error fetching notebook entries:", error);
+    throw new Error("Could not load notebook entries.");
+  }
+}
+
+export async function saveNotebookEntry(data: NotebookEntryInput) {
+  const patientName = data.patientName.trim();
+  const notes = data.notes.trim();
+
+  if (!patientName || !notes) {
+    return {
+      success: false,
+      error: "Patient name and notes are required.",
+    };
+  }
+
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS notebook_entries (
+        id SERIAL PRIMARY KEY,
+        patient_name TEXT NOT NULL,
+        age INTEGER,
+        notes TEXT NOT NULL,
+        created_by TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+
+    const result = await query(
+      `
+      INSERT INTO notebook_entries (patient_name, age, notes, created_by)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, patient_name, age, notes, created_by, created_at
+      `,
+      [
+        patientName,
+        data.age === null || data.age === undefined || data.age === ""
+          ? null
+          : parseInt(String(data.age), 10),
+        notes,
+        "Dennis Masaki",
+      ]
+    );
+
+    return {
+      success: true,
+      entry: result[0],
+    };
+  } catch (error) {
+    console.error("Error saving notebook entry:", error);
+    return {
+      success: false,
+      error: "Could not save notebook entry.",
+    };
+  }
+}
+
+export async function deleteNotebookEntry(id: number) {
+  if (!Number.isInteger(id) || id <= 0) {
+    return {
+      success: false,
+      error: "Invalid notebook entry.",
+    };
+  }
+
+  try {
+    const result = await query(
+      `DELETE FROM notebook_entries WHERE id = $1 RETURNING id`,
+      [id]
+    );
+
+    if (result.length === 0) {
+      return {
+        success: false,
+        error: "Notebook entry was not found.",
+      };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting notebook entry:", error);
+    return {
+      success: false,
+      error: "Could not delete notebook entry.",
     };
   }
 }

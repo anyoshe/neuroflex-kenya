@@ -1,10 +1,14 @@
 import {
+  Accessibility,
+  Activity,
   Baby,
   Bath,
   Brain,
   Droplets,
   Heart,
   MessageCircle,
+  Footprints,
+  PersonStanding,
   ScanSearch,
   UserCog,
   Users,
@@ -25,7 +29,7 @@ export const stats = [
   { value: 500, suffix: "+", label: "Patients Treated" },
   { value: 98, suffix: "%", label: "Success Rate" },
   { value: 15, suffix: "+", label: "Years Experience" },
-  { value: 14, suffix: "", label: "Specialty Programs" }
+  { value: 20, suffix: "", label: "Specialty Programs" }
 ] as const;
 
 export const services: {
@@ -890,6 +894,306 @@ export const services: {
         "/images/services/physioimage2.webp",
         "/images/services/physioimage4.webp",
         "/images/services/kinesologyimage1.webp"
+      ]
+    },
+    {
+      icon: Brain,
+      title: "Cognitive Rehabilitation Therapy",
+      desc: "Personalized therapy to improve memory, attention, problem-solving, and everyday cognitive independence.",
+      overview:
+        "Cognitive Rehabilitation Therapy at Neuroflex Kenya helps people manage changes in memory, attention, planning, communication and problem-solving after stroke, brain injury or neurological illness. Therapy is practical and goal-focused, linking structured cognitive exercises with everyday tasks so patients can build confidence and improve participation at home, work and in the community.",
+      conditions: [
+        "Stroke-related Cognitive Changes",
+        "Traumatic Brain Injury",
+        "Memory Difficulties",
+        "Attention and Concentration Problems",
+        "Executive Function Challenges",
+        "Neurological Illness",
+        "Reduced Problem-solving Skills",
+        "Difficulty Managing Daily Tasks"
+      ],
+      treatment:
+        "Treatment begins with a functional cognitive assessment and discussion of the activities that matter most to you. Sessions may include memory strategies, attention tasks, orientation practice, planning activities, problem-solving exercises, environmental adaptations and caregiver education. Progress is reviewed regularly and exercises are adapted to your goals.",
+      faq: [
+        {
+          question: "Who can benefit from cognitive rehabilitation?",
+          answer: "People experiencing cognitive changes after stroke, brain injury or neurological illness can benefit from structured strategies and task-based rehabilitation."
+        },
+        {
+          question: "Is therapy only for severe memory loss?",
+          answer: "No. It can support mild to severe difficulties with memory, attention, planning, organization and problem-solving."
+        },
+        {
+          question: "Are caregivers involved?",
+          answer: "Yes. Caregivers receive practical strategies to reinforce safe routines and progress between sessions."
+        }
+      ],
+      image: "/images/services/neuroimage2.webp",
+      slug: "cognitive-rehabilitation-therapy",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Stroke, Brain Injury, Memory & Attention",
+      benefits: [
+        "Improves memory and attention strategies",
+        "Builds confidence in daily activities",
+        "Supports planning and organization",
+        "Promotes safer independent living",
+        "Guides caregivers with practical tools"
+      ],
+      galleryImages: [
+        "/images/services/neuroimage.webp",
+        "/images/services/neuroimage2.webp",
+        "/images/services/physioimage6.webp"
+      ]
+    },
+    {
+      icon: Accessibility,
+      title: "Occupational Therapy",
+      desc: "Practical rehabilitation that helps people regain independence in self-care, work, school, and home activities.",
+      overview:
+        "Occupational Therapy at Neuroflex Kenya helps children and adults participate more independently in meaningful daily activities. Our occupational therapy approach addresses physical, cognitive and sensory challenges affecting self-care, work, school, home routines and community participation. Programs are tailored around each person's abilities, environment and personal goals.",
+      conditions: [
+        "Difficulty with Daily Activities",
+        "Stroke Recovery",
+        "Hand Function Limitations",
+        "Neurological Conditions",
+        "Sensory Processing Challenges",
+        "Work and School Participation Problems",
+        "Post-Injury Functional Loss",
+        "Home Safety Concerns"
+      ],
+      treatment:
+        "After a functional assessment, the therapist works with you on task-specific practice, hand function, coordination, energy conservation, adaptive techniques and environmental changes. Where needed, we recommend assistive equipment and train patients and caregivers to use it safely.",
+      faq: [
+        {
+          question: "What does occupational therapy help with?",
+          answer: "It helps people perform everyday activities such as dressing, bathing, writing, working, studying, cooking and managing routines more safely."
+        },
+        {
+          question: "Can occupational therapy help after a stroke?",
+          answer: "Yes. It supports upper-limb function, self-care, cognition and the return to meaningful home, work and community activities."
+        },
+        {
+          question: "Are home adaptations included?",
+          answer: "The therapist can recommend practical environmental changes and equipment based on your assessment and safety needs."
+        }
+      ],
+      image: "/images/services/physioimage1.webp",
+      slug: "occupational-therapy",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Daily Independence, Hand Function, Stroke Recovery",
+      benefits: [
+        "Improves independence in daily tasks",
+        "Restores hand and upper-limb function",
+        "Supports return to work or school",
+        "Improves home and community safety",
+        "Provides practical adaptive strategies"
+      ],
+      galleryImages: [
+        "/images/services/physioimage5.webp",
+        "/images/services/physioimage1.webp",
+        "/images/services/kineshand.webp"
+      ]
+    },
+    {
+      icon: Activity,
+      title: "Balance and Vestibular Rehabilitation",
+      desc: "Specialized assessment and exercises for dizziness, vertigo, balance problems, and fall prevention.",
+      overview:
+        "Balance and Vestibular Rehabilitation at Neuroflex Kenya is designed for people experiencing dizziness, vertigo, unsteadiness or reduced confidence when walking. Through targeted assessment and progressive exercises, we address inner-ear and neurological balance problems, improve visual and postural control, and help patients move more safely.",
+      conditions: [
+        "Vertigo and Dizziness",
+        "Balance Impairment",
+        "Falls and Near Falls",
+        "Vestibular Disorders",
+        "Post-Stroke Balance Problems",
+        "Unsteady Walking",
+        "Motion Sensitivity",
+        "Reduced Confidence Outdoors"
+      ],
+      treatment:
+        "Treatment follows a balance and vestibular assessment that may include eye movement, head movement, gait, posture and functional balance testing. Exercises can include gaze stabilization, habituation, sensory integration, balance retraining, safe turning and graded walking practice.",
+      faq: [
+        {
+          question: "Can physiotherapy help with vertigo?",
+          answer: "Yes. After assessment, vestibular rehabilitation can help reduce dizziness and improve balance for suitable conditions."
+        },
+        {
+          question: "Is treatment safe if I feel dizzy?",
+          answer: "Exercises are introduced gradually and supervised, with intensity adjusted to your symptoms and safety."
+        },
+        {
+          question: "Can it reduce the risk of falls?",
+          answer: "Yes. Balance retraining, strength work and safety education can improve stability and confidence."
+        }
+      ],
+      image: "/images/services/geriaticimage1.webp",
+      slug: "balance-vestibular-rehabilitation",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Dizziness, Vertigo, Falls & Balance",
+      benefits: [
+        "Reduces dizziness and motion sensitivity",
+        "Improves balance and walking confidence",
+        "Supports safer movement",
+        "Reduces fall risk",
+        "Builds independence in daily mobility"
+      ],
+      galleryImages: [
+        "/images/services/gatric1.webp",
+        "/images/services/gatric2.webp",
+        "/images/services/gatric3.webp"
+      ]
+    },
+    {
+      icon: Footprints,
+      title: "Gait and Walking Rehabilitation",
+      desc: "Progressive walking therapy to improve stride, balance, coordination, endurance, and confidence.",
+      overview:
+        "Gait and Walking Rehabilitation at Neuroflex Kenya helps patients improve the way they stand, transfer and walk after neurological illness, injury, surgery or prolonged weakness. We assess walking mechanics and provide progressive, task-specific practice to make movement more efficient, safe and independent.",
+      conditions: [
+        "Post-Stroke Walking Difficulty",
+        "Parkinson's-related Gait Changes",
+        "Spinal Cord Injury",
+        "Weakness after Hospitalization",
+        "Abnormal Walking Pattern",
+        "Reduced Walking Endurance",
+        "Difficulty with Transfers",
+        "Fear of Falling"
+      ],
+      treatment:
+        "Assessment covers posture, transfers, stride, foot clearance, balance, turning and endurance. Treatment may include parallel-bar practice, stepping drills, strengthening, treadmill or over-ground walking, stair practice, cueing strategies and a safe home walking program.",
+      faq: [
+        {
+          question: "Who needs gait rehabilitation?",
+          answer: "Anyone whose walking has changed because of stroke, neurological disease, injury, surgery, pain or prolonged inactivity may benefit."
+        },
+        {
+          question: "Will I need walking equipment?",
+          answer: "If appropriate, your physiotherapist will assess and train you with a cane, walker or other mobility aid."
+        },
+        {
+          question: "Can family members participate?",
+          answer: "Yes. Families can learn safe assistance, transfer and walking techniques to support progress at home."
+        }
+      ],
+      image: "/images/services/physioimage6.webp",
+      slug: "gait-walking-rehabilitation",
+      duration: "45 - 75 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Stroke, Neurological Conditions, Walking Difficulty",
+      benefits: [
+        "Improves walking safety and efficiency",
+        "Builds leg strength and endurance",
+        "Improves transfers and stair ability",
+        "Increases confidence with mobility",
+        "Supports greater independence"
+      ],
+      galleryImages: [
+        "/images/services/physioimage1.webp",
+        "/images/services/physioimage6.webp",
+        "/images/services/physioimage5.webp"
+      ]
+    },
+    {
+      icon: Wind,
+      title: "Respiratory Physiotherapy",
+      desc: "Breathing and airway clearance therapy to improve lung function, endurance, and recovery.",
+      overview:
+        "Respiratory Physiotherapy at Neuroflex Kenya supports people with breathing difficulties, reduced exercise tolerance and chest conditions. Our physiotherapists use breathing retraining, airway clearance and graded activity to improve ventilation, manage secretions and help patients regain confidence after illness or surgery.",
+      conditions: [
+        "Chronic Obstructive Pulmonary Disease",
+        "Asthma",
+        "Post-Surgical Chest Recovery",
+        "Post-COVID Respiratory Symptoms",
+        "Excess Chest Secretions",
+        "Reduced Exercise Tolerance",
+        "Breathlessness",
+        "Weak Cough"
+      ],
+      treatment:
+        "Treatment is guided by a respiratory assessment and may include breathing control, thoracic expansion, airway clearance, positioning, supported coughing, posture correction and graded endurance training. Education helps patients manage symptoms and continue safe exercises at home.",
+      faq: [
+        {
+          question: "Who can benefit from respiratory physiotherapy?",
+          answer: "People with COPD, asthma, post-operative breathing problems, post-COVID symptoms or reduced respiratory endurance may benefit after assessment."
+        },
+        {
+          question: "Can therapy help clear chest secretions?",
+          answer: "Yes. Appropriate airway-clearance techniques can help mobilize secretions and make coughing more effective."
+        },
+        {
+          question: "Is exercise included?",
+          answer: "Yes. Graded activity and endurance training are introduced safely according to your symptoms and medical condition."
+        }
+      ],
+      image: "/images/services/cardiacimage.webp",
+      slug: "respiratory-physiotherapy",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "COPD, Asthma, Breathlessness & Recovery",
+      benefits: [
+        "Improves breathing control",
+        "Supports airway clearance",
+        "Reduces breathlessness during activity",
+        "Improves endurance and confidence",
+        "Supports recovery after illness or surgery"
+      ],
+      galleryImages: [
+        "/images/services/cardiac2.webp",
+        "/images/services/cardiac3.webp",
+        "/images/services/cardiacimage.webp"
+      ]
+    },
+    {
+      icon: PersonStanding,
+      title: "Assistive-device and Mobility Training",
+      desc: "Assessment and practical training for safe use of walking aids, wheelchairs, and mobility equipment.",
+      overview:
+        "Assistive-device and Mobility Training at Neuroflex Kenya helps patients choose, fit and use mobility equipment safely. We provide practical training with walking aids, wheelchairs and transfer techniques so patients can move with greater confidence while reducing strain and fall risk.",
+      conditions: [
+        "Walking Aid Needs",
+        "Wheelchair Skills",
+        "Post-Stroke Mobility Changes",
+        "Balance Impairment",
+        "Lower-Limb Weakness",
+        "Post-Surgical Mobility",
+        "Difficulty with Transfers",
+        "Home and Community Access Challenges"
+      ],
+      treatment:
+        "Following a mobility assessment, we recommend and adjust suitable equipment where needed. Training includes safe standing, sitting, transfers, turning, stairs, uneven surfaces, wheelchair handling and basic maintenance. Caregivers can also learn safe assistance techniques.",
+      faq: [
+        {
+          question: "Which mobility devices can you train me to use?",
+          answer: "Training may include canes, crutches, walkers, wheelchairs and other appropriate mobility equipment."
+        },
+        {
+          question: "Can you help choose the right walking aid?",
+          answer: "Yes. Your physiotherapist assesses your strength, balance, environment and goals before recommending suitable support."
+        },
+        {
+          question: "Can caregivers attend?",
+          answer: "Yes. Caregiver training is encouraged for safe transfers, support and equipment use at home."
+        }
+      ],
+      image: "/images/services/muscularimage1.webp",
+      slug: "assistive-device-mobility-training",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Walking Aids, Wheelchairs, Safe Transfers",
+      benefits: [
+        "Improves safe use of mobility devices",
+        "Reduces fall and transfer risk",
+        "Builds confidence at home and outdoors",
+        "Supports independence and participation",
+        "Trains caregivers in safe assistance"
+      ],
+      galleryImages: [
+        "/images/services/musket1.webp",
+        "/images/services/musket2.webp",
+        "/images/services/physioimage2.webp"
       ]
     },
   ];
