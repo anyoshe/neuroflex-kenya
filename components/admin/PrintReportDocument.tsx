@@ -71,10 +71,10 @@ export default function PrintReportDocument({
             <Image
               src="/assets/logos/logo3cropped.jpeg"
               alt="Neuroflex Kenya"
-              width={215}
-              height={85}
+              width={250}
+              height={82}
               priority
-              className="object-contain"
+              className="h-auto w-[250px] object-contain"
             />
 
           </div>
@@ -93,7 +93,7 @@ export default function PrintReportDocument({
 
         </div>
 
-        <p className="text-center text-[14px] font-medium text-brand-green">
+        <p className="text-center text-[15px] font-medium text-brand-green">
           Physiotherapy • Neurorehabilitation • Wellness Centre
         </p>
 

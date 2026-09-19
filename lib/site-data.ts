@@ -1,9 +1,11 @@
 import {
   Baby,
+  Bath,
   Brain,
   Droplets,
   Heart,
   MessageCircle,
+  ScanSearch,
   UserCog,
   Users,
   Wind,
@@ -23,7 +25,7 @@ export const stats = [
   { value: 500, suffix: "+", label: "Patients Treated" },
   { value: 98, suffix: "%", label: "Success Rate" },
   { value: 15, suffix: "+", label: "Years Experience" },
-  { value: 12, suffix: "", label: "Specialty Programs" }
+  { value: 14, suffix: "", label: "Specialty Programs" }
 ] as const;
 
 export const services: {
@@ -379,6 +381,68 @@ export const services: {
       ]
     },
     {
+      icon: Bath,
+      title: "Wax Bath Therapy",
+      desc: "Soothing heat therapy to ease stiff joints, relax muscles, and improve hand and foot mobility.",
+      overview:
+        "Wax Bath Therapy at Neuroflex Kenya uses carefully controlled warm paraffin wax to deliver soothing heat to the hands, feet and other small joints. The treatment helps reduce stiffness, ease muscle and joint discomfort and prepare affected areas for stretching, exercise or hands-on physiotherapy. Every session is guided by a physiotherapist and adapted to your comfort, skin condition and treatment goals.",
+
+      conditions: [
+        "Hand and Finger Stiffness",
+        "Foot and Toe Stiffness",
+        "Arthritis-related Joint Pain",
+        "Reduced Joint Mobility",
+        "Muscle Tightness",
+        "Post-Injury Stiffness",
+        "Chronic Hand or Foot Discomfort",
+        "Pre-exercise Warm-up"
+      ],
+
+      treatment:
+        "Your physiotherapist first checks the skin, circulation, sensation and movement of the treatment area. The area is then warmed in a hygienic paraffin bath for a prescribed period before gentle mobilization, stretching or exercises are provided where appropriate. Treatment is stopped or adjusted if you experience discomfort, excessive heat or skin irritation.",
+
+      faq: [
+        {
+          question: "What areas can be treated with a wax bath?",
+          answer:
+            "Wax bath therapy is commonly used for the hands, fingers, feet and toes, where gentle heat can help reduce stiffness and improve mobility."
+        },
+        {
+          question: "Is wax bath therapy painful?",
+          answer:
+            "No. The wax is maintained at a safe therapeutic temperature and should feel comfortably warm. Your therapist monitors you throughout the session."
+        },
+        {
+          question: "Who should avoid wax bath therapy?",
+          answer:
+            "It may not be suitable for people with open wounds, reduced skin sensation, active skin infections or certain circulation problems. We screen you before treatment and recommend a safer alternative when necessary."
+        },
+        {
+          question: "Can it be combined with physiotherapy?",
+          answer:
+            "Yes. Wax bath therapy is often used before stretching, joint mobilization and therapeutic exercises to help make movement more comfortable."
+        }
+      ],
+      image: "/images/services/wax-bath.webp",
+      slug: "wax-bath-therapy",
+      duration: "30 - 45 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Hand & Foot Stiffness, Arthritis, Joint Mobility",
+      benefits: [
+        "Relieves stiffness and joint discomfort",
+        "Improves hand and foot mobility",
+        "Relaxes tight muscles",
+        "Prepares joints for therapeutic exercise",
+        "Supports recovery after injury",
+        "Provides soothing, non-invasive heat"
+      ],
+      galleryImages: [
+        "/images/services/wax-bath2.webp",
+        "/images/services/wax-bath3.webp",
+        "/images/services/wax-bath.webp"
+      ]
+    },
+    {
       icon: Baby,
       title: "Pediatric Physiotherapy",
       desc: "Developmental delays, cerebral palsy, and torticollis care.",
@@ -596,6 +660,68 @@ export const services: {
         "/images/services/fitnessimage2.webp",
         "/images/services/wellnes.webp",
         "/images/services/neuroimage.webp"
+      ]
+    },
+    {
+      icon: ScanSearch,
+      title: "Physical Body Screening",
+      desc: "A comprehensive movement and wellness check to identify risks, limitations, and opportunities for better physical health.",
+      overview:
+        "Physical Body Screening at Neuroflex Kenya is a structured assessment of your movement, posture, strength, flexibility, balance and functional fitness. It gives you a clear picture of how your body is moving and helps identify early signs of pain, weakness, reduced mobility or injury risk. The results guide practical recommendations for physiotherapy, exercise, workplace ergonomics and long-term wellness.",
+
+      conditions: [
+        "Postural Imbalances",
+        "Movement Restrictions",
+        "Muscle Weakness",
+        "Reduced Flexibility",
+        "Balance and Coordination Concerns",
+        "Recurring Pain",
+        "Sports and Exercise Injury Risk",
+        "Workplace Ergonomic Concerns"
+      ],
+
+      treatment:
+        "Screening begins with a health history and discussion of your goals, followed by observation of posture, gait and functional movement. Your physiotherapist may assess joint range of motion, muscle strength, balance, flexibility and basic functional capacity. You receive a clear summary of findings with individualized advice, exercise recommendations and referral for further care when a more detailed assessment is needed.",
+
+      faq: [
+        {
+          question: "Who should have a physical body screening?",
+          answer:
+            "Anyone can benefit, including people starting an exercise program, athletes, office workers, people with recurring pain and anyone who wants to understand their movement and wellness needs."
+        },
+        {
+          question: "Do I need to be in pain to book a screening?",
+          answer:
+            "No. Screening can help identify movement or posture concerns early and support injury prevention even when you feel well."
+        },
+        {
+          question: "What should I wear to a screening?",
+          answer:
+            "Wear comfortable clothing that allows you to move freely so your physiotherapist can observe posture, movement and functional activities accurately."
+        },
+        {
+          question: "Will I receive an exercise plan?",
+          answer:
+            "Yes. Where appropriate, your physiotherapist will provide practical recommendations and exercises based on your screening results and goals."
+        }
+      ],
+      image: "/images/services/screenimage.webp",
+      slug: "physical-body-screening",
+      duration: "45 - 60 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Posture, Movement, Fitness & Injury Prevention",
+      benefits: [
+        "Identifies movement and posture concerns early",
+        "Improves awareness of physical health",
+        "Supports injury prevention",
+        "Guides personalized exercise planning",
+        "Helps optimize workplace and sports performance",
+        "Provides clear next steps for ongoing wellness"
+      ],
+      galleryImages: [
+        "/images/services/screenimage2.webp",
+        "/images/services/screenimage.webp",
+        "/images/services/physioimage6.webp"
       ]
     },
     {
