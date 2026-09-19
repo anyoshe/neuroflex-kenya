@@ -293,7 +293,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
               <div className="bg-white rounded-3xl p-8 shadow-sm border">
                 <h2 className="text-xl font-semibold mb-6">Quick Actions</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
                   <button
                     onClick={() => handleTabClick("new-report")}
                     className="p-8 border-2 border-dashed border-gray-200 hover:border-brand-navy rounded-3xl flex flex-col items-center justify-center hover:bg-gray-50 transition-all group"
