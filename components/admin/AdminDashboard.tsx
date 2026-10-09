@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X, LogOut, Home, FileText, PlusCircle, Users, Receipt, Bell, BookOpen } from "lucide-react";
+import { Menu, X, LogOut, Home, FileText, PlusCircle, Users, Receipt, Bell, BookOpen, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Logo from "../Logo";
 import { getReports } from "@/lib/actions/admin";
@@ -12,6 +12,7 @@ import ReportBuilder from "./ReportBuilder";
 import ReportsHistory from "./ReportsHistory";
 import InvoicesPanel from "./InvoicesPanel";
 import NotebookPanel from "./NotebookPanel";
+import ProductsPanel from "./ProductsPanel";
 
 type Report = {
   id: number;
@@ -40,7 +41,7 @@ type Report = {
 
 export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState<
-    "dashboard" | "inquiries" | "notebook" | "new-report" | "reports" | "invoices"
+    "dashboard" | "inquiries" | "notebook" | "new-report" | "reports" | "invoices" | "products"
   >("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
@@ -131,6 +132,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     { key: "new-report", label: "New Report", icon: PlusCircle },
     { key: "reports", label: "Reports History", icon: FileText },
     { key: "invoices", label: "Invoices", icon: Receipt },
+    { key: "products", label: "Products", icon: ShoppingBag },
   ] as const;
 
   const handleTabClick = (tab: typeof activeTab) => {
@@ -293,7 +295,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
               <div className="bg-white rounded-3xl p-8 shadow-sm border">
                 <h2 className="text-xl font-semibold mb-6">Quick Actions</h2>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                   <button
                     onClick={() => handleTabClick("new-report")}
                     className="p-8 border-2 border-dashed border-gray-200 hover:border-brand-navy rounded-3xl flex flex-col items-center justify-center hover:bg-gray-50 transition-all group"
@@ -339,6 +341,17 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                     />
                     <p className="font-medium">Clinical Notebook</p>
                   </button>
+
+                  <button
+                    onClick={() => handleTabClick("products")}
+                    className="p-8 border-2 border-dashed border-gray-200 hover:border-brand-navy rounded-3xl flex flex-col items-center justify-center hover:bg-gray-50 transition-all group"
+                  >
+                    <ShoppingBag
+                      size={48}
+                      className="text-brand-navy mb-4 group-hover:scale-110 transition-transform"
+                    />
+                    <p className="font-medium">Manage Products</p>
+                  </button>
                 </div>
               </div>
             </div>
@@ -378,6 +391,8 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           )}
 
           {activeTab === "invoices" && <InvoicesPanel />}
+
+          {activeTab === "products" && <ProductsPanel />}
         </main>
       </div>
     </div>

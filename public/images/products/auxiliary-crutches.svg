@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="96" y1="40" x2="1118" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0FAF6"/>
+      <stop offset="1" stop-color="#E7F3F2"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="420" y1="110" x2="730" y2="690" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FCFC"/>
+      <stop offset=".48" stop-color="#B9C9CD"/>
+      <stop offset=".72" stop-color="#F4F8F8"/>
+      <stop offset="1" stop-color="#9EAFB4"/>
+    </linearGradient>
+    <linearGradient id="cuff" x1="367" y1="215" x2="487" y2="266" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A3342"/>
+      <stop offset="1" stop-color="#365B68"/>
+    </linearGradient>
+    <filter id="shadow" x="170" y="560" width="860" height="160" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" rx="42" fill="url(#bg)"/>
+  <circle cx="600" cy="386" r="276" fill="#fff" fill-opacity=".68"/>
+  <ellipse cx="598" cy="649" rx="313" ry="28" fill="#7FA59E" fill-opacity=".22" filter="url(#shadow)"/>
+  <g stroke="#B7C7CA" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m423 197 60 406"/>
+    <path d="m423 197-66 58 17 77"/>
+    <path d="m357 255-38-31"/>
+    <path d="m483 603-4 39"/>
+    <path d="m695 197 60 406"/>
+    <path d="m695 197-66 58 17 77"/>
+    <path d="m629 255-38-31"/>
+    <path d="m755 603-4 39"/>
+  </g>
+  <g stroke="url(#metal)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m423 197 60 406"/>
+    <path d="m423 197-66 58 17 77"/>
+    <path d="m357 255-38-31"/>
+    <path d="m483 603-4 39"/>
+    <path d="m695 197 60 406"/>
+    <path d="m695 197-66 58 17 77"/>
+    <path d="m629 255-38-31"/>
+    <path d="m755 603-4 39"/>
+  </g>
+  <g fill="url(#cuff)" stroke="#18313E" stroke-width="8" stroke-linejoin="round">
+    <path d="M381 177c-17-28-7-55 19-69l65-34c25-13 52-4 64 21l12 25-145 78-15-21Z"/>
+    <path d="M653 177c-17-28-7-55 19-69l65-34c25-13 52-4 64 21l12 25-145 78-15-21Z"/>
+  </g>
+  <g fill="#243F4B">
+    <rect x="296" y="202" width="54" height="19" rx="9.5" transform="rotate(39 296 202)"/>
+    <rect x="568" y="202" width="54" height="19" rx="9.5" transform="rotate(39 568 202)"/>
+  </g>
+  <g fill="#203B45">
+    <path d="M454 630h57c11 0 20 9 20 20v7c0 8-6 14-14 14h-68c-8 0-14-6-14-14v-7c0-11 9-20 19-20Z"/>
+    <path d="M726 630h57c11 0 20 9 20 20v7c0 8-6 14-14 14h-68c-8 0-14-6-14-14v-7c0-11 9-20 19-20Z"/>
+  </g>
+  <g fill="#fff" fill-opacity=".58">
+    <path d="M404 190c7-8 19-14 30-17l24-9 5 17-41 22-18-13Z"/>
+    <path d="M676 190c7-8 19-14 30-17l24-9 5 17-41 22-18-13Z"/>
+  </g>
+  <text x="600" y="739" fill="#42636A" font-family="Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="4" text-anchor="middle">AUXILIARY CRUTCHES</text>
+</svg>

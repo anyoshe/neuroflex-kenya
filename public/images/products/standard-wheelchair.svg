@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="24" x2="1110" y2="775" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0FAF6"/>
+      <stop offset="1" stop-color="#E7F3F2"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="390" y1="200" x2="800" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FCFC"/>
+      <stop offset=".48" stop-color="#AFC0C4"/>
+      <stop offset=".72" stop-color="#EDF3F3"/>
+      <stop offset="1" stop-color="#83999E"/>
+    </linearGradient>
+    <filter id="shadow" x="184" y="578" width="836" height="145" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" rx="42" fill="url(#bg)"/>
+  <circle cx="600" cy="388" r="276" fill="#fff" fill-opacity=".68"/>
+  <ellipse cx="600" cy="650" rx="323" ry="28" fill="#7FA59E" fill-opacity=".22" filter="url(#shadow)"/>
+  <circle cx="427" cy="481" r="164" fill="#263F4A"/>
+  <circle cx="427" cy="481" r="139" fill="#EAF1F2" stroke="#526A72" stroke-width="9"/>
+  <circle cx="427" cy="481" r="12" fill="#334F58"/>
+  <g stroke="#A6B6BA" stroke-width="7">
+    <path d="m427 342 0 278M288 481h278M329 383l196 196M525 383 329 579M374 350l106 262M296 428l262 106M480 350 374 612M296 534l262-106"/>
+  </g>
+  <circle cx="789" cy="542" r="68" fill="#263F4A"/>
+  <circle cx="789" cy="542" r="50" fill="#DFE8E9" stroke="#526A72" stroke-width="8"/>
+  <circle cx="789" cy="542" r="10" fill="#334F58"/>
+  <g stroke="#A6B6BA" stroke-width="6">
+    <path d="m789 492v100M739 542h100M754 507l70 70M824 507l-70 70"/>
+  </g>
+  <g stroke="#87999E" stroke-width="27" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m510 256 111 86 116 5 61 156M512 256l-4 132 201 0M508 388l99 149 166 5M607 537l-42 94M773 542l56 94"/>
+    <path d="m618 342-10 195"/>
+  </g>
+  <g stroke="url(#frame)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m510 256 111 86 116 5 61 156M512 256l-4 132 201 0M508 388l99 149 166 5M607 537l-42 94M773 542l56 94"/>
+    <path d="m618 342-10 195"/>
+  </g>
+  <path d="M495 248c0-14 11-25 25-25h34v24l-28 23-31-22Z" fill="#263F4A"/>
+  <path d="M561 373h160l-10 72H553l8-72Z" fill="#243D48"/>
+  <path d="M585 463h134v55H585v-55Z" fill="#324F5A"/>
+  <path d="M704 348h52c12 0 22 10 22 22v10h-74v-32Z" fill="#263F4A"/>
+  <path d="M819 631h34l15 17h-72l23-17ZM534 631h35l-11 17h-74l50-17Z" fill="#263F4A"/>
+  <path d="M594 344h39" stroke="#EAF1F2" stroke-width="7" stroke-linecap="round"/>
+  <text x="600" y="739" fill="#42636A" font-family="Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="4" text-anchor="middle">STANDARD WHEELCHAIR</text>
+</svg>

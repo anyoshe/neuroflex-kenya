@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="24" x2="1110" y2="775" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0FAF6"/>
+      <stop offset="1" stop-color="#E7F3F2"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="383" y1="205" x2="820" y2="636" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FCFC"/>
+      <stop offset=".48" stop-color="#AFC0C4"/>
+      <stop offset=".72" stop-color="#EDF3F3"/>
+      <stop offset="1" stop-color="#83999E"/>
+    </linearGradient>
+    <filter id="shadow" x="187" y="577" width="826" height="144" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" rx="42" fill="url(#bg)"/>
+  <circle cx="600" cy="388" r="276" fill="#fff" fill-opacity=".68"/>
+  <ellipse cx="600" cy="650" rx="314" ry="28" fill="#7FA59E" fill-opacity=".22" filter="url(#shadow)"/>
+  <g stroke="#81969B" stroke-width="31" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m399 275 6 337M801 275l-6 337M399 275l-76 337M801 275l76 337"/>
+    <path d="M397 275h406"/>
+  </g>
+  <g stroke="url(#metal)" stroke-width="19" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m399 275 6 337M801 275l-6 337M399 275l-76 337M801 275l76 337"/>
+    <path d="M397 275h406"/>
+  </g>
+  <path d="M376 254c0-15 12-27 27-27h28v30h-55v-3ZM769 227h28c15 0 27 12 27 27v3h-55v-30Z" fill="#263F4A"/>
+  <path d="M343 402h514" stroke="#C2D0D2" stroke-width="9" stroke-linecap="round"/>
+  <path d="M362 472h476" stroke="#C2D0D2" stroke-width="9" stroke-linecap="round"/>
+  <g fill="#263F4A">
+    <path d="M305 602h39l-3 27c-1 10-9 17-19 17h-12c-10 0-18-8-18-18l1-9c1-10 10-17 12-17Z"/>
+    <path d="M385 602h39l3 27c1 10-7 17-17 17h-12c-10 0-18-7-19-17l-3-9c-1-10 1-18 9-18Z"/>
+    <path d="M755 602h39l-3 27c-1 10-9 17-19 17h-12c-10 0-18-8-18-18l1-9c1-10 10-17 12-17Z"/>
+    <path d="M835 602h39l3 27c1 10-7 17-17 17h-12c-10 0-18-7-19-17l-3-9c-1-10 1-18 9-18Z"/>
+  </g>
+  <g fill="#fff" fill-opacity=".58">
+    <path d="m391 289 15-6 5 280-13 2-7-276Z"/>
+    <path d="m793 289 15-6-7 276-13-2 5-268Z"/>
+  </g>
+  <path d="M565 386v127" stroke="#7E9398" stroke-width="8" stroke-dasharray="15 18" stroke-linecap="round"/>
+  <text x="600" y="739" fill="#42636A" font-family="Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="4" text-anchor="middle">FOLDABLE ALUMINIUM WALKER</text>
+</svg>

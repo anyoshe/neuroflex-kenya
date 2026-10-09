@@ -37,20 +37,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
 
-    // Service Pages
-    ...services.map((service) => ({
-      url: `${baseUrl}/services/${service.slug}`,
+    // Products
+    {
+      url: `${baseUrl}/products`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
-      priority: 0.9,
-    })),
+      priority: 0.8,
+    },
+
+    // Service Pages
+    ...servicePages,
 
     // Condition Pages
-    ...conditions.map((condition) => ({
-      url: `${baseUrl}/conditions/${condition.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    })),
+    ...conditionPages,
   ];
 }

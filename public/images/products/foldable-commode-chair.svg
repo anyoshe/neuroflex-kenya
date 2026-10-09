@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="85" y1="30" x2="1102" y2="770" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0FAF6"/>
+      <stop offset="1" stop-color="#E7F3F2"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="396" y1="210" x2="802" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FCFC"/>
+      <stop offset=".5" stop-color="#B4C5C9"/>
+      <stop offset=".72" stop-color="#EDF3F3"/>
+      <stop offset="1" stop-color="#8FA5AA"/>
+    </linearGradient>
+    <filter id="shadow" x="205" y="575" width="790" height="138" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="21"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" rx="42" fill="url(#bg)"/>
+  <circle cx="600" cy="390" r="276" fill="#fff" fill-opacity=".68"/>
+  <ellipse cx="600" cy="649" rx="282" ry="27" fill="#7FA59E" fill-opacity=".22" filter="url(#shadow)"/>
+  <g stroke="#82969B" stroke-width="27" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m410 267 35 337M790 267l-35 337M415 266l-94 60 112 267M785 266l94 60-112 267"/>
+    <path d="M364 296h472"/>
+  </g>
+  <g stroke="url(#frame)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m410 267 35 337M790 267l-35 337M415 266l-94 60 112 267M785 266l94 60-112 267"/>
+    <path d="M364 296h472"/>
+  </g>
+  <path d="M393 252c0-19 15-34 34-34h345c19 0 34 15 34 34v16H393v-16Z" fill="#263F4A"/>
+  <path d="M394 302c0-13 11-24 24-24h365c13 0 24 11 24 24v17H394v-17Z" fill="#294651"/>
+  <path d="M434 342c0-18 14-32 32-32h268c18 0 32 14 32 32v155H434V342Z" fill="#E8EEF0" stroke="#91A4A8" stroke-width="11"/>
+  <path d="M466 356h268v111H466V356Z" fill="#fff" stroke="#C1CFD1" stroke-width="8"/>
+  <path d="M464 402h272" stroke="#C6D2D4" stroke-width="8" stroke-linecap="round"/>
+  <path d="M465 477h270v29H465v-29Z" fill="#263F4A"/>
+  <path d="M457 534h286" stroke="#83999E" stroke-width="19" stroke-linecap="round"/>
+  <g>
+    <circle cx="442" cy="610" r="35" fill="#263F4A"/>
+    <circle cx="442" cy="610" r="18" fill="#D9E3E4"/>
+    <circle cx="758" cy="610" r="35" fill="#263F4A"/>
+    <circle cx="758" cy="610" r="18" fill="#D9E3E4"/>
+    <path d="M410 639c-10 8-24 7-32-3-7-9-6-23 3-31l10-8 27 33-8 9Z" fill="#263F4A"/>
+    <path d="M790 639c10 8 24 7 32-3 7-9 6-23-3-31l-10-8-27 33 8 9Z" fill="#263F4A"/>
+  </g>
+  <path d="M510 369c0-18 15-33 33-33h142c18 0 33 15 33 33v29H510v-29Z" fill="#D4E0E2"/>
+  <text x="600" y="739" fill="#42636A" font-family="Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="4" text-anchor="middle">FOLDABLE COMMODE CHAIR</text>
+</svg>

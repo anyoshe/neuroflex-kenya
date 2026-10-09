@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight, BookOpen } from "lucide-react";
-import { services } from "@/lib/site-data";
+import { ArrowUpRight, BookOpen, ShoppingBag } from "lucide-react";
+import { productSectionByServiceSlug, services } from "@/lib/site-data";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import ContactModal from "@/components/Contact";
@@ -38,6 +39,7 @@ export default function Services() {
                             hover:[&_img]:scale-105 hover:border-brand-green/20 hover:shadow-lg
 
                             ${isFirst ? "lg:col-span-2" : ""}
+                            ${index === services.length - 1 ? "lg:col-start-2 lg:row-start-8" : ""}
                             `}
               >
                 {/* Service Image */}
@@ -95,6 +97,13 @@ export default function Services() {
                       Learn more
                       <BookOpen size={16} />
                     </a>
+                    <Link
+                      href={`/products#${productSectionByServiceSlug[service.slug] ?? "physio-recovery"}`}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-green transition hover:gap-2"
+                    >
+                      Products that support recovery
+                      <ShoppingBag size={16} />
+                    </Link>
                   </div>
                 </div>
               </MotionReveal>

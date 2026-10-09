@@ -5,6 +5,7 @@ import {
   Bath,
   Brain,
   Droplets,
+  Dumbbell,
   Heart,
   MessageCircle,
   Footprints,
@@ -22,6 +23,7 @@ export const navLinks = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#team", label: "Team" },
+  { href: "/products", label: "Products" },
   { href: "#contact", label: "Contact" },
 ] as const;
 
@@ -29,7 +31,7 @@ export const stats = [
   { value: 500, suffix: "+", label: "Patients Treated" },
   { value: 98, suffix: "%", label: "Success Rate" },
   { value: 15, suffix: "+", label: "Years Experience" },
-  { value: 20, suffix: "", label: "Specialty Programs" }
+  { value: 21, suffix: "", label: "Specialty Programs" }
 ] as const;
 
 export const services: {
@@ -274,6 +276,67 @@ export const services: {
       ]
     },
 
+    {
+      icon: Dumbbell,
+      title: "Sports Therapy",
+      desc: "Injury assessment, sports rehabilitation, and performance support for active people and athletes.",
+      overview:
+        "Sports Therapy at Neuroflex Kenya helps athletes and active people recover from sports injuries, rebuild strength and movement, and return to activity with confidence. Treatment is tailored to your sport, injury and goals, with a focus on safe progression and reducing the risk of re-injury.",
+
+      conditions: [
+        "Muscle Strains and Tears",
+        "Ligament Sprains",
+        "Running and Overuse Injuries",
+        "Knee and Ankle Injuries",
+        "Shoulder Injuries",
+        "Tendon Pain",
+        "Post-Training Muscle Soreness",
+        "Return-to-Sport Rehabilitation"
+      ],
+
+      treatment:
+        "Your sports therapy plan begins with an assessment of your injury, strength, mobility and movement patterns. Treatment may include hands-on therapy, progressive strengthening and mobility exercises, balance and coordination work, sport-specific drills, recovery guidance and a graded return-to-sport plan. We adapt the program as you progress and provide advice to help reduce future injury risk.",
+
+      image: "/images/services/southafrica-mo-1.webp",
+      slug: "sports-therapy",
+      duration: "45 - 75 minutes",
+      priceRange: "KSh 3,500 - 6,000",
+      bestFor: "Sports Injuries, Active Recovery, Return to Sport",
+      benefits: [
+        "Supports a safe return to sport",
+        "Restores strength, mobility and coordination",
+        "Addresses sport-specific movement needs",
+        "Helps reduce the risk of re-injury",
+        "Provides guidance for training and recovery"
+      ],
+      galleryImages: [
+        "/images/services/fitnessimage2.webp",
+        "/images/services/musket1.webp",
+        "/images/services/cryotherapy1.webp"
+      ],
+      faq: [
+        {
+          question: "Who can benefit from sports therapy?",
+          answer:
+            "Athletes and active people recovering from an injury, managing recurring discomfort or preparing to return to training can benefit from an individualized sports therapy plan."
+        },
+        {
+          question: "Do I need to stop all exercise while recovering?",
+          answer:
+            "Not always. Your therapist can advise which activities are appropriate and how to progress safely based on your injury and assessment."
+        },
+        {
+          question: "Can sports therapy help prevent future injuries?",
+          answer:
+            "Sports therapy can identify movement or strength needs and provide targeted exercises and training guidance to help reduce injury risk."
+        },
+        {
+          question: "When can I return to my sport?",
+          answer:
+            "Return timing depends on your injury, sport and progress. Your therapist will help you work toward a gradual, criteria-based return."
+        }
+      ]
+    },
     {
       icon: Droplets,
       title: "Cryotherapy",
@@ -1197,6 +1260,26 @@ export const services: {
       ]
     },
   ];
+
+export const productSectionByServiceSlug: Record<string, string> = {
+  "neurological-rehabilitation": "neuro-rehab",
+  "cognitive-rehabilitation-therapy": "neuro-rehab",
+  "balance-vestibular-rehabilitation": "neuro-rehab",
+  "gait-walking-rehabilitation": "neuro-rehab",
+  "assistive-device-mobility-training": "neuro-rehab",
+  "sports-therapy": "sports-recovery",
+  "musculoskeletal-physiotherapy": "sports-recovery",
+  cryotherapy: "sports-recovery",
+  "kinesiology-taping-therapy": "sports-recovery",
+  "wellness-fitness": "sports-recovery",
+  "cardiac-pulmonary-rehab": "respiratory-recovery",
+  "respiratory-physiotherapy": "respiratory-recovery",
+  "occupational-therapy": "daily-living",
+  "pediatric-physiotherapy": "daily-living",
+  "speech-therapy": "daily-living",
+  "geriatric-care": "daily-living",
+};
+
 export const processSteps = [
   {
     step: "01",

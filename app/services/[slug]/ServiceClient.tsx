@@ -3,8 +3,8 @@
 import { useState, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle } from "lucide-react";
-import { services } from "@/lib/site-data";
+import { ArrowLeft, CheckCircle, ShoppingBag } from "lucide-react";
+import { productSectionByServiceSlug, services } from "@/lib/site-data";
 import { notFound } from "next/navigation";
 import ContactModal from "@/components/Contact";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -18,6 +18,8 @@ export default function ServiceClient({ params }: { params: Promise<{ slug: stri
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     if (!service) notFound();
+
+    const productHref = `/products#${productSectionByServiceSlug[service.slug] ?? "physio-recovery"}`;
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -120,6 +122,25 @@ export default function ServiceClient({ params }: { params: Promise<{ slug: stri
                             />
 
                         </div>
+
+                        <section className="rounded-3xl bg-brand-navy p-8 text-white sm:p-10">
+                            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-brand-teal">
+                                <ShoppingBag size={24} />
+                            </div>
+                            <h2 className="text-2xl font-semibold sm:text-3xl">
+                                Equipment to support your recovery
+                            </h2>
+                            <p className="mt-3 max-w-2xl leading-relaxed text-white/80">
+                                Explore products and recovery aids related to {service.title}. Our team can help you choose options that fit your treatment plan.
+                            </p>
+                            <Link
+                                href={productHref}
+                                className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-navy transition hover:bg-gray-100"
+                            >
+                                Shop recovery products
+                                <ShoppingBag size={18} />
+                            </Link>
+                        </section>
 
                         <div>
                             <h2 className="text-3xl font-semibold mb-6">Key Benefits</h2>
