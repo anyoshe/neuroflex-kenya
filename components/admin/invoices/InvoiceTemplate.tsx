@@ -75,6 +75,8 @@ export default function InvoiceTemplate({
                         alt="Neuroflex Kenya"
                         width={250}
                         height={100}
+                        loading="eager"
+                        unoptimized
                         className="object-contain"
                     />
 
@@ -158,23 +160,23 @@ export default function InvoiceTemplate({
 
                         <tr className="bg-brand-navy text-white">
 
-                            <th className="text-left px-3 py-3 w-24">
+                            <th className="text-left px-3 py-2 w-24">
                                 Code
                             </th>
 
-                            <th className="text-left px-3 py-3">
+                            <th className="text-left px-3 py-2">
                                 Description
                             </th>
 
-                            <th className="text-center px-3 py-3 w-20">
+                            <th className="text-center px-3 py-2 w-20">
                                 Qty
                             </th>
 
-                            <th className="text-right px-3 py-3 w-36">
+                            <th className="text-right px-3 py-2 w-36">
                                 Unit Price
                             </th>
 
-                            <th className="text-right px-3 py-3 w-36">
+                            <th className="text-right px-3 py-2 w-36">
                                 Total
                             </th>
 
@@ -191,19 +193,19 @@ export default function InvoiceTemplate({
                                 className="border-b"
                             >
 
-                                <td className="px-3 py-3">
+                                <td className="px-3 py-2">
                                     {item.item_code}
                                 </td>
 
-                                <td className="px-3 py-3">
+                                <td className="px-3 py-2">
                                     {item.description}
                                 </td>
 
-                                <td className="text-center px-3 py-3">
+                                <td className="text-center px-3 py-2">
                                     {item.quantity}
                                 </td>
 
-                                <td className="text-right px-3 py-3">
+                                <td className="text-right px-3 py-2">
                                     {
                                         Number(item.unit_price).toLocaleString(undefined, {
                                             minimumFractionDigits: 2,
@@ -212,7 +214,7 @@ export default function InvoiceTemplate({
 
                                 </td>
 
-                                <td className="text-right px-3 py-3 font-medium">
+                                <td className="text-right px-3 py-2 font-medium">
 
                                     {
                                         Number(item.line_total).toLocaleString(undefined, {
@@ -233,11 +235,11 @@ export default function InvoiceTemplate({
 
             {/* ================= TOTALS ================= */}
 
-            <div className="mt-10 flex justify-end">
+            <div className="mt-4 flex justify-end">
 
                 <div className="w-[320px]">
 
-                    <div className="flex justify-between py-2">
+                    <div className="flex justify-between py-1">
                         <span>Subtotal</span>
                         <span>
                             KSh {
@@ -248,7 +250,7 @@ export default function InvoiceTemplate({
                         </span>
                     </div>
 
-                    <div className="flex justify-between py-2">
+                    <div className="flex justify-between py-1">
                         <span>Discount</span>
                         <span>
                             KSh {
@@ -261,7 +263,7 @@ export default function InvoiceTemplate({
 
                     {Number(invoice.vat_rate) > 0 && (
                         <>
-                            <div className="flex justify-between py-2">
+                            <div className="flex justify-between py-1">
                                 <span>
                                     VAT ({invoice.vat_rate}%)
                                 </span>
@@ -277,7 +279,7 @@ export default function InvoiceTemplate({
                         </>
                     )}
 
-                    <div className="border-t-2 border-brand-green mt-2 pt-3 flex justify-between text-xl font-bold">
+                    <div className="border-t-2 border-brand-green mt-2 pt-2 flex justify-between text-xl font-bold">
 
                         <span>Total</span>
 
@@ -291,7 +293,7 @@ export default function InvoiceTemplate({
 
                     </div>
 
-                    <div className="flex justify-between py-2">
+                    <div className="flex justify-between py-1">
                         <span>Amount Paid</span>
 
                         <span>
@@ -320,9 +322,9 @@ export default function InvoiceTemplate({
                 </div>
 
             </div>
-              <div className="border-b-2 border-brand-green mt-5" />
+              <div className="border-b-2 border-brand-green mt-2" />
 
-            <div className="mt-15">
+            <div className="mt-2">
 
                 <div className="grid grid-cols-3 gap-8">
 
@@ -333,7 +335,7 @@ export default function InvoiceTemplate({
                             Prepared By: <strong>{invoice.created_by}</strong>
                         </span>
 
-                        <div className="border-b-2 border-brand-green mt-10" />
+                        <div className="border-b-2 border-brand-green mt-8" />
 
 
                     </div>
@@ -344,7 +346,7 @@ export default function InvoiceTemplate({
                             Authorized By
                         </p>
 
-                        <div className="border-b-2 border-brand-green mt-10" />
+                        <div className="border-b-2 border-brand-green mt-8" />
 
                     </div>
 
@@ -354,7 +356,7 @@ export default function InvoiceTemplate({
                             Received By
                         </p>
 
-                        <div className="border-b-2 border-brand-green mt-10" />
+                        <div className="border-b-2 border-brand-green mt-8" />
 
                     </div>
 
@@ -362,7 +364,41 @@ export default function InvoiceTemplate({
 
             </div>
 
-            <div className="mt-12 pt-4 border-t-4 border-brand-green flex justify-between text-xs text-gray-600">
+            <div className="mt-2 border-t border-brand-green/50 pt-2 break-inside-avoid">
+                <h3 className="mb-1 text-[9px] font-bold tracking-wider text-brand-navy">
+                    PAYMENT DETAILS
+                </h3>
+
+                <div className="grid grid-cols-[1.1fr_1fr_1fr] gap-8 text-[10px] leading-[1.2] text-gray-700">
+                    <div>
+                        <p className="font-semibold text-brand-navy">
+                            BANK TRANSFER / CHEQUE
+                        </p>
+                        <p>ABSA Bank | A/C Name: Dennis Masaki</p>
+                        <p>A/C No: 2046794241 | Branch: River Road</p>
+                    </div>
+
+                    <div>
+                        <div className="mx-auto w-fit">
+                            <p className="font-semibold text-brand-navy">
+                                ABSA PAYBILL
+                            </p>
+                            <p>PayBill: 303030</p>
+                            <p>Account No: 2046794241</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="font-semibold text-brand-navy">
+                            M-PESA
+                        </p>
+                        <p>Pochi la Biashara /</p>
+                        <p>M-Pesa Transfer: 0729 213 135</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="mt-1 pt-3 border-t-4 border-brand-green flex justify-between text-xs text-gray-600">
 
                 <span>
 
