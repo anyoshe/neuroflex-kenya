@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 export type ReportData = {
+  documentTitle?: string;
   reportNo: string;
   patientName: string;
   age?: string | number;
@@ -95,7 +96,7 @@ export default function ReportTemplate({ report }: Props) {
       <div className="h-1 bg-gradient-to-r from-brand-green via-brand-teal to-brand-navy rounded-full my-4" />
 
       <h2 className="text-center font-bold text-xl text-brand-navy uppercase tracking-wide mb-8">
-        PHYSIOTHERAPIST / NEUROREHABILITATION REPORT
+        {report.documentTitle || "PHYSIOTHERAPIST / NEUROREHABILITATION REPORT"}
       </h2>
 
       {/* ================= PATIENT DETAILS ================= */}

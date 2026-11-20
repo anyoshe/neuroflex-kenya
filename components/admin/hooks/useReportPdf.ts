@@ -2,11 +2,14 @@
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import PrintReportDocument from "../PrintReportDocument";
+import type { ReportData } from "../PrintReportDocument";
 
 export function useReportPdf() {
 
-  async function generatePDF(report: any) {
+  async function generatePDF(report: ReportData) {
     const params = new URLSearchParams({
+      documentTitle: report.documentTitle ?? "",
+      isNotebookTemplate: report.isNotebookTemplate ? "true" : "",
       reportNo: report.reportNo,
       patientName: report.patientName,
       age: String(report.age ?? ""),
@@ -49,7 +52,7 @@ export function useReportPdf() {
     window.URL.revokeObjectURL(url);
   }
 
-  function printReport(report: any) {
+  function printReport(report: ReportData) {
     const printWindow = window.open("", "_blank");
 
     if (!printWindow) {
@@ -66,7 +69,7 @@ export function useReportPdf() {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Assessment Report</title>
+        <title>${report.documentTitle || "Assessment Report"}</title>
 
         ${styles}
 

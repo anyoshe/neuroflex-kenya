@@ -12,6 +12,7 @@ import ReportBuilder from "./ReportBuilder";
 import ReportsHistory from "./ReportsHistory";
 import InvoicesPanel from "./InvoicesPanel";
 import NotebookPanel from "./NotebookPanel";
+import DischargeSummaryNotebook from "./DischargeSummaryNotebook";
 import ProductsPanel from "./ProductsPanel";
 
 type Report = {
@@ -43,6 +44,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState<
     "dashboard" | "inquiries" | "notebook" | "new-report" | "reports" | "invoices" | "products"
   >("dashboard");
+  const [activeNotebookTab, setActiveNotebookTab] = useState<"clinical" | "discharge">("clinical");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
   const [editingReport, setEditingReport] = useState<Report | null>(null);
@@ -128,7 +130,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: Home },
     { key: "inquiries", label: "Inquiries", icon: Users },
-    { key: "notebook", label: "Clinical Notebook", icon: BookOpen },
+    { key: "notebook", label: "Notebooks", icon: BookOpen },
     { key: "new-report", label: "New Report", icon: PlusCircle },
     { key: "reports", label: "Reports History", icon: FileText },
     { key: "invoices", label: "Invoices", icon: Receipt },
@@ -138,6 +140,9 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const handleTabClick = (tab: typeof activeTab) => {
     setActiveTab(tab);
     setIsSidebarOpen(false);
+    if (tab === "notebook") {
+      setActiveNotebookTab("clinical");
+    }
     if (tab === "new-report") {
       setEditingReport(null);
       setPrefillReport(null);
@@ -339,7 +344,7 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                       size={48}
                       className="text-brand-navy mb-4 group-hover:scale-110 transition-transform"
                     />
-                    <p className="font-medium">Clinical Notebook</p>
+                    <p className="font-medium">Notebooks</p>
                   </button>
 
                   <button
@@ -358,13 +363,42 @@ export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           )}
 
           {activeTab === "inquiries" && (
-            <div className="space-y-8">
-              <InquiriesPanel onGenerateReport={handleGenerateReportFromInquiry} />
-              <NotebookPanel />
-            </div>
+            <InquiriesPanel onGenerateReport={handleGenerateReportFromInquiry} />
           )}
 
-          {activeTab === "notebook" && <NotebookPanel />}
+          {activeTab === "notebook" && (
+            <div className="space-y-6">
+              <div className="flex flex-wrap gap-2 rounded-2xl bg-white p-2 shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => setActiveNotebookTab("clinical")}
+                  className={`rounded-xl px-5 py-3 font-semibold transition ${
+                    activeNotebookTab === "clinical"
+                      ? "bg-brand-navy text-white"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  Clinical Notebook
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveNotebookTab("discharge")}
+                  className={`rounded-xl px-5 py-3 font-semibold transition ${
+                    activeNotebookTab === "discharge"
+                      ? "bg-brand-navy text-white"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  Discharge Summary
+                </button>
+              </div>
+              {activeNotebookTab === "clinical" ? (
+                <NotebookPanel />
+              ) : (
+                <DischargeSummaryNotebook />
+              )}
+            </div>
+          )}
 
           {activeTab === "new-report" && (
             <ReportBuilder

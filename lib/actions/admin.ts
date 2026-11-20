@@ -273,7 +273,7 @@ export async function saveReport(data: ReportInput) {
 }
 
 // ================== CLINICAL NOTEBOOK ==================
-export async function getNotebookEntries() {
+export async function getNotebookEntries(type: "clinical" | "discharge" = "clinical") {
   try {
     await query(`
       CREATE TABLE IF NOT EXISTS notebook_entries (
@@ -290,9 +290,21 @@ export async function getNotebookEntries() {
       `
       SELECT id, patient_name, age, notes, created_by, created_at
       FROM notebook_entries
+      WHERE (
+        $1 = 'discharge'
+        AND (
+          notes LIKE '{"documentType":"discharge-summary"%'
+          OR notes LIKE '{"reportNo":%'
+        )
+      ) OR (
+        $1 = 'clinical'
+        AND notes NOT LIKE '{"documentType":"discharge-summary"%'
+        AND notes NOT LIKE '{"reportNo":%'
+      )
       ORDER BY created_at DESC
       LIMIT 20
-      `
+      `,
+      [type]
     );
   } catch (error) {
     console.error("Error fetching notebook entries:", error);

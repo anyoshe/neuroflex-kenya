@@ -2,6 +2,8 @@ import PrintReportDocument from "@/components/admin/PrintReportDocument";
 
 type Props = {
   searchParams: Promise<{
+    documentTitle?: string;
+    isNotebookTemplate?: string;
     reportNo?: string;
     patientName?: string;
     age?: string;
@@ -27,6 +29,8 @@ export default async function PdfPage({
     <div className="bg-white">
       <PrintReportDocument
   report={{
+    documentTitle: params.documentTitle ?? "PHYSIOTHERAPIST / NEUROREHABILITATION REPORT",
+    isNotebookTemplate: params.isNotebookTemplate === "true",
     reportNo: params.reportNo ?? "",
     patientName: params.patientName ?? "",
     age: params.age ?? "",

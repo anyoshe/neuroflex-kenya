@@ -3,6 +3,8 @@
 import Image from "next/image";
 
 export type ReportData = {
+  documentTitle?: string;
+  isNotebookTemplate?: boolean;
   reportNo: string;
   patientName: string;
   age?: string | number;
@@ -104,8 +106,7 @@ export default function PrintReportDocument({
       <div className="mt-3 mb-3">
 
         <h2 className="rounded-md bg-brand-navy py-2 text-center text-[17px] font-bold tracking-wide text-white">
-
-          PHYSIOTHERAPIST / NEUROREHABILITATION REPORT
+          {report.documentTitle || "PHYSIOTHERAPIST / NEUROREHABILITATION REPORT"}
 
         </h2>
 
@@ -175,21 +176,25 @@ export default function PrintReportDocument({
                 <ReportSection
           title="Presenting History"
           value={report.presentingHistory}
+                  isNotebookTemplate={report.isNotebookTemplate}
         />
 
         <ReportSection
           title="Assessment Findings"
           value={report.assessmentFindings}
+          isNotebookTemplate={report.isNotebookTemplate}
         />
 
         <ReportSection
           title="Intervention"
           value={report.intervention}
+          isNotebookTemplate={report.isNotebookTemplate}
         />
 
         <ReportSection
           title="Review & Recommendations"
           value={report.review}
+          isNotebookTemplate={report.isNotebookTemplate}
         />
 
       </main>
@@ -292,9 +297,11 @@ export default function PrintReportDocument({
 function ReportSection({
   title,
   value,
+  isNotebookTemplate,
 }: {
   title: string;
   value?: string;
+  isNotebookTemplate?: boolean;
 }) {
   return (
 
@@ -305,30 +312,22 @@ function ReportSection({
       }}
     >
 
-      <div className="rounded-t-md bg-brand-navy px-3 py-1.5">
-
-        <h3 className="text-[14px] font-semibold text-white">
-
-          {title}
-
-        </h3>
-
-      </div>
+      {!isNotebookTemplate && (
+        <div className="rounded-t-md bg-brand-navy px-3 py-1.5">
+          <h3 className="text-[14px] font-semibold text-white">{title}</h3>
+        </div>
+      )}
 
       <div
-        className="
-          rounded-b-md
-          border
-          border-brand-navy/20
-          border-t-0
-          px-4
-          py-2
-          text-[13px]
-          leading-5
-          whitespace-pre-wrap
-        "
+        className={`rounded-b-md border border-brand-navy/20 border-t-0 px-4 py-2 text-[13px] leading-5 whitespace-pre-wrap ${
+          isNotebookTemplate ? "min-h-[120px]" : ""
+        }`}
+        style={isNotebookTemplate ? {
+          backgroundImage: "linear-gradient(to bottom, transparent 19px, #d8e5e5 20px)",
+          backgroundSize: "100% 20px",
+        } : undefined}
       >
-        {value || "-"}
+        {value || (isNotebookTemplate ? "" : "-")}
       </div>
 
     </section>
